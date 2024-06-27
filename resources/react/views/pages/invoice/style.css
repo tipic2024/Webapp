@@ -1,0 +1,61 @@
+/* 
+
+@media print{
+    .print-area{
+        visibility: visible;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+    }
+
+    .overflow-view{
+        overflow-x: hidden;
+    }
+
+    
+
+ 
+        .no-print {
+          display: none;
+        }
+      
+} */
+
+
+  
+
+
+
+  .invoice-content {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+  }
+  
+  @media (max-width: 768px) {
+    .invoice-content {
+      font-size: 10px;
+    }
+    .table {
+      font-size: 10px;
+    }
+  }
+  @media print {
+    /* Set the page size and margins */
+    @page {
+      size: A4; /* or Letter, depending on your region */
+      margin: 1cm;
+    }
+  
+    /* Remove unnecessary elements when printing */
+    .nav, .footer, .header {
+      display: none;
+    }
+
+    .no-print {
+        display: none;
+      }
+    
+  
+  }
