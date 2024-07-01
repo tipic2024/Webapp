@@ -4,48 +4,48 @@ import "jspdf-autotable";
 import Logo from "./Images/Logo.png";
 import SignatureImage from "./Images/E-SIGNATURE.png";
 
-export function generatePDF(grandTotal, invoiceNo, customerName, formData) {
-    const numberToWords = (number) => {
-        const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
-        const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-        const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+export function generatePDF(grandTotal, invoiceNo, customerName, formData,remainingAmount,totalAmountWords) {
+    // const numberToWords = (number) => {
+    //     const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+    //     const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    //     const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
-        if (number === 0) {
-            return 'Zero';
-        }
+    //     if (number === 0) {
+    //         return 'Zero';
+    //     }
 
-        let words = '';
-        if (number >= 100000) {
-            words += numberToWords(Math.floor(number / 1000)) + ' Lakh ';
-            number %= 100000;
-        }
+    //     let words = '';
+    //     if (number >= 100000) {
+    //         words += numberToWords(Math.floor(number / 1000)) + ' Lakh ';
+    //         number %= 100000;
+    //     }
 
-        if (number >= 1000) {
-            words += numberToWords(Math.floor(number / 1000)) + ' Thousand ';
-            number %= 1000;
-        }
+    //     if (number >= 1000) {
+    //         words += numberToWords(Math.floor(number / 1000)) + ' Thousand ';
+    //         number %= 1000;
+    //     }
 
-        if (number >= 100) {
-            words += units[Math.floor(number / 100)] + ' Hundred ';
-            number %= 100;
-        }
+    //     if (number >= 100) {
+    //         words += units[Math.floor(number / 100)] + ' Hundred ';
+    //         number %= 100;
+    //     }
 
-        if (number >= 20) {
-            words += tens[Math.floor(number / 10)] + ' ';
-            number %= 10;
-        }
+    //     if (number >= 20) {
+    //         words += tens[Math.floor(number / 10)] + ' ';
+    //         number %= 10;
+    //     }
 
-        if (number >= 10) {
-            words += teens[number - 10] + ' ';
-            number = 0;
-        }
+    //     if (number >= 10) {
+    //         words += teens[number - 10] + ' ';
+    //         number = 0;
+    //     }
 
-        if (number > 0) {
-            words += units[number] + ' ';
-        }
+    //     if (number > 0) {
+    //         words += units[number] + ' ';
+    //     }
 
-        return words.trim();
-    };
+    //     return words.trim();
+    // };
 
     // PDF generation logic
     const pdf = new jsPDF({
@@ -56,13 +56,13 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData) {
 
     const fontSize = 10;
     pdf.setFontSize(fontSize);
-    pdf.setLineWidth(0.5);
+    // pdf.setLineWidth(0.5);
     pdf.setDrawColor("#333");
     pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), "S");
 
     const img = new Image();
     img.src = Logo;
-    pdf.addImage(img, "PNG", 10, 10, 40, 40);
+    pdf.addImage(img, "PNG", 15, 10, 40, 40);
     pdf.setFontSize(15);
     pdf.setTextColor("#000");
 
@@ -92,10 +92,10 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData) {
     pdf.setFont("normal");
     pdf.setTextColor("#000"); // Reset to default color
 
-    pdf.text("Shree Samarth Nursery", pdf.internal.pageSize.getWidth() - 60, 10);
-    pdf.text("Nira-Lonand Road, At.Po,Padegaon", pdf.internal.pageSize.getWidth() - 60, 15);
-    pdf.text("Tal. Khandala, Dist. Satara, 415521", pdf.internal.pageSize.getWidth() - 60, 20);
-    pdf.text("Phone: 9730465591", pdf.internal.pageSize.getWidth() - 60, 25);
+    pdf.text("Shree Samarth Nursery", pdf.internal.pageSize.getWidth() - 65, 20);
+    pdf.text("Nira-Lonand Road, At.Po,Padegaon", pdf.internal.pageSize.getWidth() - 65, 25);
+    pdf.text("Tal. Khandala, Dist. Satara, 415521", pdf.internal.pageSize.getWidth() - 65, 30);
+    pdf.text("Phone: 9730465591", pdf.internal.pageSize.getWidth() - 65, 35);
 
     pdf.setTextColor("#000");
     pdf.setFontSize(13);
@@ -105,15 +105,15 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData) {
     pdf.text(`Customer Name    : ${formData.customerName}`, 15, 70);
     pdf.text(`Customer Address : ${formData.customerAddress}`, 15, 75);
     pdf.text(`Mobile Number     : ${formData.mobileNumber}`, 15, 80);
-    pdf.text(`Invoice No: ${invoiceNo}`, 150, 70);
+    pdf.text(`Invoice No: ${invoiceNo}`, 145, 70);
 
     const formattedDate = formData.date.split("-").reverse().join("-");
-    pdf.text(`Invoice Date: ${formattedDate}`, 150, 75);
+    pdf.text(`Invoice Date: ${formattedDate}`, 145, 75);
     let y;
 
     if (formData.InvoiceType == 2) {
         const formattedDeliveryDate = formData.DeliveryDate.split("-").reverse().join("-");
-        pdf.text(`Delivery Date: ${formattedDeliveryDate}`, 150, 80);
+        pdf.text(`Delivery Date: ${formattedDeliveryDate}`, 145, 80);
         pdf.setFontSize(10);
         y = 90; // Adjust y coordinate for subsequent text if any
     } else {
@@ -150,7 +150,7 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData) {
     });
 
     y = pdf.autoTable.previous.finalY + 10;
-    const totalAmountWords = numberToWords(parseFloat(grandTotal));
+    const totalAmountWord = totalAmountWords;
 
     // Prepare additional details data
     const additionalDetailsData = [];
@@ -161,7 +161,7 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData) {
 
     additionalDetailsData.push(
         ["Amount Paid:", formData.amountPaid.toFixed(2)],
-        ["Balance Amount:", formData.remainingAmount.toFixed(2)],
+        ["Balance Amount:", remainingAmount.toFixed(2)],
         ["Payment Mode:", formData.paymentMode]
     );
 
@@ -180,39 +180,41 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData) {
 
     pdf.setTextColor("#000");
     pdf.setFontSize(10);
-    pdf.text(`${totalAmountWords} Rs Only`, 60, y);
-
+    pdf.setFont("bold");
+    pdf.text(`${totalAmountWord} Rs Only`, 60, y);
+    pdf.setFont("normal");
     const bankDetailsY = y + 10 + 40 + 10;
     const signatureY = bankDetailsY + 15;
 
     pdf.setLineWidth(0.2);
     pdf.setDrawColor("#000");
-    pdf.rect(10, bankDetailsY, pdf.internal.pageSize.getWidth() - 20, 40, "S");
-    pdf.setFontSize(10);
+    pdf.rect(13.5, bankDetailsY, pdf.internal.pageSize.getWidth() - 28.5, 40, "S");
+    pdf.setFontSize(12);
 
-    pdf.text("Bank Details", 15, bankDetailsY + 10);
+    pdf.text("Bank Details", 20, bankDetailsY + 9);
+    pdf.setFontSize(10);
     pdf.setFont("normal");
-    pdf.text("Name: BANK OF BARODA", 15, bankDetailsY + 15);
-    pdf.text("Account No: 04440200000597", 15, bankDetailsY + 20);
-    pdf.text("IFSC code: BARB0LONAND", 15, bankDetailsY + 25);
+    pdf.text("Name         : BANK OF BARODA", 20, bankDetailsY + 20);
+    pdf.text("Account No: 04440200000597", 20, bankDetailsY + 25);
+    pdf.text("IFSC code  : BARB0LONAND", 20, bankDetailsY + 30);
     pdf.setFont("bold");
     pdf.text(
-        "For: Shree Samarth Nursery",
-        pdf.internal.pageSize.width - 80,
-        bankDetailsY + 10
+        "E-SIGNATURE DR.BAPURAO CHOPADE",
+        pdf.internal.pageSize.width - 84,
+        bankDetailsY + 8
     );
     pdf.addImage(
         SignatureImage,
         "JPG",
-        pdf.internal.pageSize.width - 80,
-        bankDetailsY + 15,
-        30,
-        15
+        pdf.internal.pageSize.width - 72,
+        bankDetailsY + 9,
+        35,
+        20
     );
     pdf.setFontSize(10);
     pdf.text(
         "Authorized Signature",
-        pdf.internal.pageSize.width - 75,
+        pdf.internal.pageSize.width - 70,
         bankDetailsY + 36
     );
 
