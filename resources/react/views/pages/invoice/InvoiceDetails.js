@@ -154,9 +154,10 @@ const InvoiceDetails = () => {
             <p>Mobile Number: {formData.mobileNumber}</p>
           </div>
         </div>
-        <div className="flex-fill">
-          <p>Invoice No: {formData.InvoiceNumber}</p>
-          <p>Date: {formData.date}</p>
+        <div className="flex-fill align-items-center">
+          <h5>Invoice No: {formData.InvoiceNumber}</h5>
+          <p>Invoice Date: {formData.date}</p>
+          {formData.InvoiceType === 2 && <p>Delivery Date: {formData.DeliveryDate}</p>}
         </div>
       </div>
 
@@ -222,33 +223,29 @@ const InvoiceDetails = () => {
         </div>
       </div>
 
-     
-<div className="d-flex  border p-3">
-<div className='flex-fill'>
-  <div className="d-flex flex-column mb-3">
+      <div className="d-flex  border p-3">
+        <div className='flex-fill'>
+          <div className="d-flex flex-column mb-3">
+            <h6>Bank Details</h6>
+            <p>Name: BANK OF BARODA</p>
+            <p>Account No: 04440200000597</p>
+            <p>IFSC code: BARBOLONAND</p>
+          </div>
+        </div>
+        <div className='flex-fill'>
+          <div className="d-flex flex-column  align-items-center text-center ">
+            <h6>E-SIGNATURE DR.BAPURAO CHOPADE</h6>
+            <img height="100" width="200" src={SignatureImage} alt="signature" />
+            <p>Authorized Signature</p>
+          </div>
+        </div>
+      </div>
 
-    <h6>Bank Details</h6>
-    <p>Name: BANK OF BARODA</p>
-    <p>Account No: 04440200000597</p>
-    <p>IFSC code: BARBOLONAND</p>
-  </div>
-  </div>
-  <div className='flex-fill  '>
-  <div className="d-flex flex-column  align-items-center text-center ">
-    <h6>E-SIGNATURE DR.BAPURAO CHOPADE</h6>
-    <img height="100" width="200" src={SignatureImage} alt="signature" />
-    <p>Authorized Signature</p>
-  </div>
-  </div>
-</div>
-
-<div className="row section">
-  <div className="col-md-12 text-center">
-    <p>This is a computer-generated bill.</p>
-  </div>
-</div>
-
-
+      <div className="row section">
+        <div className="col-md-12 text-center">
+          <p>This is a computer-generated bill.</p>
+        </div>
+      </div>
 
       <button onClick={handleDownload}>Download</button>
       <button onClick={handlePrint}>Print</button>

@@ -1,38 +1,18 @@
 
+@media print {
+  body {
+    margin: 50px;
+  }
 
-
-  
-
-
+  /* Hide header and timestamp */
+  header, footer {
+    display: none;
+  }
 
   .invoice-content {
-    font-family: Arial, sans-serif;
-    font-size: 12px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
   }
-  
-  @media (max-width: 768px) {
-    .invoice-content {
-      font-size: 10px;
-    }
-    .table {
-      font-size: 10px;
-    }
-  }
-  @media print {
-  
-    @page {
-      size: A4; 
-      margin: 1cm;
-    }
-  
-  
-    .nav, .footer, .header {
-      display: none;
-    }
-
-    .no-print {
-        display: none;
-      }
-    
-  
-  }
+}
+ 
