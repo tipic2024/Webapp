@@ -1,18 +1,33 @@
+.invoice-content {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .invoice-content {
+    font-size: 10px;
+  }
+  .table {
+    font-size: 10px;
+  }
+}
 
 @media print {
-  body {
-    margin: 50px;
+  @page {
+    size: A4; 
+    margin: 1cm;
   }
 
-  /* Hide header and timestamp */
-  header, footer {
+  .nav, .footer, .header {
     display: none;
   }
 
-  .invoice-content {
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
+  .no-print {
+    display: none;
+  }
+
+  /* Add these rules to remove the header and timestamp */
+  header, .header, .timestamp, .time-stamp {
+    display: none;
   }
 }
- 
