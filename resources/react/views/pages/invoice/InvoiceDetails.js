@@ -1,6 +1,6 @@
 import './style.css';
 import Logo from './Images/Logo.png';
-import { CContainer } from '@coreui/react';
+import { CButton, CContainer } from '@coreui/react';
 import React, { useState, useEffect } from 'react';
 import { generatePDF } from './InvoicePdf';
 import { getAPICall } from '../../../util/api';
@@ -154,7 +154,7 @@ const InvoiceDetails = () => {
             <p>Mobile Number: {formData.mobileNumber}</p>
           </div>
         </div>
-        <div className="flex-fill align-items-center">
+        <div className="flex-fill">
           <h5>Invoice No: {formData.InvoiceNumber}</h5>
           <p>Invoice Date: {formData.date}</p>
           {formData.InvoiceType === 2 && <p>Delivery Date: {formData.DeliveryDate}</p>}
@@ -247,8 +247,10 @@ const InvoiceDetails = () => {
         </div>
       </div>
 
-      <button onClick={handleDownload}>Download</button>
-      <button onClick={handlePrint}>Print</button>
+      <div className='d-flex justify-content-center '>
+      <CButton color="primary" variant="outline"  onClick={handlePrint} className='d-print-none me-2'>Print</CButton>
+      <CButton color="success" variant="outline" onClick={handleDownload} className='d-print-none '>Download</CButton>
+      </div>
     </CContainer>
   );
 };

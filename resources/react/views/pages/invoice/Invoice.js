@@ -296,7 +296,7 @@ const Invoice = () => {
                     <CFormInput
                       type="phone"
                       id="customerMobile"
-                      placeholder="9921074899"
+                      placeholder="9123456780"
                       name="customerMobile"
                       value={state.customerMobile}
                       onChange={handleChange}

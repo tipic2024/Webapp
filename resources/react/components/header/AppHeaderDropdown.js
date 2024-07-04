@@ -12,7 +12,9 @@ import {
 import { cilLockLocked, cilSettings, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+// import avatar8 from './../../assets/images/avatars/8.jpg'
+import avatar8 from './../../views/pages/invoice/Images/Logo.png'
+
 import { logout } from '../../util/api'
 import { deleteUserData } from '../../util/session'
 import { useNavigate } from 'react-router-dom'

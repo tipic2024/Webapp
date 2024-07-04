@@ -47,6 +47,8 @@ const routes = [
   { path: '/expense/report', name: 'Expense Report', element: ExpenseReport },
   { path: '/charts', name: 'Charts', element: Charts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
+  // { path: '/reports/salesreport', name: 'Sales Report', element: Widget },
+
 ]
 
 export default routes

@@ -91,6 +91,8 @@ const AllCategory = () => {
                           onClick={() => {
                             handleEdit(p)
                           }}
+                          role="button"
+
                         >
                           Edit
                         </CBadge>{' '}
@@ -100,6 +102,8 @@ const AllCategory = () => {
                           onClick={() => {
                             handleDelete(p)
                           }}
+                          role="button"
+
                         >
                           Delete
                         </CBadge>

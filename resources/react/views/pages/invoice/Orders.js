@@ -121,6 +121,7 @@ const Orders = () => {
                           onClick={() => {
                             handleShow(order)
                           }}
+                          role="button"
                         >
                           Show
                         </CBadge>{' '}
@@ -130,6 +131,7 @@ const Orders = () => {
                             onClick={() => {
                               handleEdit(order)
                             }}
+                            role="button"
                           >
                             Mark Delivered
                           </CBadge>
@@ -140,6 +142,7 @@ const Orders = () => {
                             onClick={() => {
                               handleDelete(order)
                             }}
+                            role="button"
                           >
                             Cancel
                           </CBadge>

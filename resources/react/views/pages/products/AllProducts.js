@@ -93,7 +93,7 @@ const AllProducts = () => {
                         )}
                       </CTableDataCell>
                       <CTableDataCell>
-                        <CBadge
+                        <CBadge role="button"
                           color="info"
                           onClick={() => {
                             handleEdit(p)
@@ -102,7 +102,7 @@ const AllProducts = () => {
                           Edit
                         </CBadge>{' '}
                         &nbsp;
-                        <CBadge
+                        <CBadge role="button"
                           color="danger"
                           onClick={() => {
                             handleDelete(p)
