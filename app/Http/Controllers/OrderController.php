@@ -118,4 +118,24 @@ class OrderController extends Controller
     {
         Order::destroy($id);
     }
+
+    public function Sales(Request $request)
+    {
+        $startDate = $request->query('startDate');
+        $endDate = $request->query('endDate');
+        
+        $query = Order::whereNotIn('orderStatus', [0, 2])
+                       ->where('orderStatus',1) ;// Initial filter for orderStatus = 1
+        
+        if ($startDate && $endDate) {
+            $query->whereBetween('invoiceDate', [$startDate, $endDate]);
+        }
+        
+        $result = $query->get()->filter(function ($order) {
+            return $order->orderStatus == 1; // Filter out any order with orderStatus other than 1
+        });
+        
+        return response()->json($result);
+    }
+
 }

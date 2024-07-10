@@ -20,7 +20,11 @@ const AllExpenseType = React.lazy(() => import('./views/pages/expense/AllExpense
 const EditExpenseType = React.lazy(() => import('./views/pages/expense/EditExpenseType'))
 const NewExpenseType = React.lazy(() => import('./views/pages/expense/NewExpenseType'))
 const NewExpense = React.lazy(() => import('./views/pages/expense/NewExpense'))
-const ExpenseReport = React.lazy(() => import('./views/pages/expense/ExpenseReport'))
+
+//Reports
+const ExpenseReport = React.lazy(() => import('./views/pages/report/ExpenseReport'))
+const SalesReport = React.lazy(() => import('./views/pages/report/SalesReport'))
+
 
 const Charts = React.lazy(() => import('./views/charts/Charts'))
 
@@ -44,10 +48,11 @@ const routes = [
   { path: '/expense/edit-type/:id', name: 'Edit Type', element: EditExpenseType },
   { path: '/expense/all-type', name: 'All Types', element: AllExpenseType },
   { path: '/expense/new', name: 'New Expense', element: NewExpense },
-  { path: '/expense/report', name: 'Expense Report', element: ExpenseReport },
   { path: '/charts', name: 'Charts', element: Charts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
-  // { path: '/reports/salesreport', name: 'Sales Report', element: Widget },
+  { path: '/Reports/Expense_Report', name: 'Expense Report', element: ExpenseReport },
+  { path: 'Reports/Sales_Report', name: 'Sales Report', element: SalesReport },
+
 
 ]
 

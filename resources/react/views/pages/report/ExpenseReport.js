@@ -55,6 +55,7 @@ const ExpenseReport = () => {
     const resp = await getAPICall(
       '/api/expense?startDate=' + state.start_date + '&endDate=' + state.end_date,
     )
+    
     if (resp) {
       setExpenses(resp)
       const totalExp = resp.reduce((acc, current) => {
@@ -65,6 +66,21 @@ const ExpenseReport = () => {
       }, 0)
       setTotalExpense(totalExp)
       setErrorMessage(null)
+
+      // Grouping expenses by expense_date and summing total_price
+      const groupedExpenses = resp.reduce((acc, expense) => {
+        if (!acc[expense.expense_date]) {
+          acc[expense.expense_date] = {
+            expense_date: expense.expense_date,
+            totalExpense: 0,
+          }
+        }
+        acc[expense.expense_date].totalExpense += expense.total_price
+        return acc
+      }, {})
+
+      const expensesArray = Object.values(groupedExpenses)
+      console.log(expensesArray)
     } else {
       setErrorMessage('Failed to fetch records')
     }
@@ -170,9 +186,9 @@ const ExpenseReport = () => {
             <CTable>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Id</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Date</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Expence Type</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Expense Type</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Details</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Quantity</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price Per Unit</CTableHeaderCell>
@@ -225,7 +241,7 @@ const ExpenseReport = () => {
                 <CTableRow>
                   <CTableHeaderCell scope="row"></CTableHeaderCell>
                   <CTableHeaderCell className="text-end" colSpan={5}>
-                    {'Total   '}
+                    {'Total '}
                   </CTableHeaderCell>
                   <CTableHeaderCell colSpan={3}>{totalExpense}</CTableHeaderCell>
                 </CTableRow>

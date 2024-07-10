@@ -143,7 +143,7 @@ const NewExpense = () => {
                       name="expense_id"
                       options={expenseTypes}
                       onChange={handleChange}
-                      invalid={state.typeNotSet}
+                      // invalid={state.typeNotSet}
                       required
                       feedbackInvalid="Select Expense type."
                     />
@@ -190,7 +190,7 @@ const NewExpense = () => {
                       name="price"
                       value={state.price}
                       onChange={handleChange}
-                      invalid={state.price <= 0}
+                      // invalid={state.price <= 0}
                       required
                       feedbackInvalid="Please provide price per unit."
                     />
@@ -207,7 +207,7 @@ const NewExpense = () => {
                       value={state.qty}
                       onChange={handleChange}
                       required
-                      invalid={state.qty < 1}
+                      // invalid={state.qty < 1}
                       feedbackInvalid="Please provide total units."
                     />
                   </div>

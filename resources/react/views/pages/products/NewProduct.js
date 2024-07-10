@@ -87,11 +87,13 @@ const NewProduct = () => {
       if (resp) {
         setSuccessMessage('Product added successfully')
         setErrorMessage(null)
+        handleClear()
       } else {
         setSuccessMessage(null)
         setErrorMessage('Failed to add product')
+        handleClear()
       }
-      handleClear()
+      
     } catch (error) {
       setErrorMessage(error.message ?? 'Please provide valid data')
     }

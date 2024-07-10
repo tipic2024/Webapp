@@ -64,7 +64,7 @@ class ProductController extends Controller
             'slug'=> 'required',
             'categoryId'=> 'required',
             'incStep'=> 'required',
-            'desc'=> 'required',
+            'desc'=> 'nullable',
             'multiSize'=> 'required',
             'show'
         ]);

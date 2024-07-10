@@ -7,6 +7,7 @@ import {
   cilCursor,
   // cilDescription,
   cilNotes,
+  cilChart,
   cilPuzzle,
   // cilSpeedometer,
   cilNoteAdd,
@@ -95,11 +96,7 @@ const _nav = [
         name: 'New Expense',
         to: '/expense/new',
       },
-      {
-        component: CNavItem,
-        name: 'Expense Report',
-        to: '/expense/report',
-      },
+      
       {
         component: CNavItem,
         name: 'New Expense Type',
@@ -112,61 +109,31 @@ const _nav = [
       },
     ],
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'Charts',
-  //   to: '/charts',
-  //   icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Icons',
-  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-  //   items: [],
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Notifications',
-  //   icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
-  //   items: [],
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Widgets',
-  //   to: '/widgets',
-  //   icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //     text: 'NEW',
-  //   },
-  // },
-  // {
-  //   component: CNavTitle,
-  //   name: 'Extras',
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Pages',
-  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Error 404',
-  //       to: '/404',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Error 500',
-  //       to: '/500',
-  //     },
-  //   ],
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Docs',
-  //   href: 'https://coreui.io/react/docs/templates/installation/',
-  //   icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
-  // },
+
+
+  {
+    component: CNavGroup,
+    name: 'Report',
+    icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Expense Report',
+        to: 'Reports/Expense_Report',
+      },
+      {
+        component: CNavItem,
+        name: 'Sales Report',
+        to: 'Reports/Sales_Report',
+      },
+      {
+        component: CNavItem,
+        name: 'Profit and Loss Report',
+        to: 'Reports/Profit-Losss_Report',
+      },
+    ],
+  },
+ 
 ]
 
 export default _nav
