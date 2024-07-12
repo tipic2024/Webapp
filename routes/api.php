@@ -36,6 +36,7 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::resource('category',CategoryController::class);
     Route::resource('subCategory',SubCategoryController::class);
     Route::resource('subSubCategory',SubSubCategoryController::class);
+    Route::post('/product/updateQty', [ProductController::class, 'updateQty']);
 });
 
 Route::get('/user', function (Request $request) {

@@ -189,7 +189,7 @@ const NewProduct = () => {
                 />
               </div>
               <div className="mb-3">
-                <CFormLabel htmlFor="bPrice"></CFormLabel>
+                <CFormLabel htmlFor="bPrice">Base Price</CFormLabel>
                 <CFormInput
                   type="number"
                   id="bPrice"

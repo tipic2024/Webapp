@@ -24,6 +24,8 @@ const NewExpense = React.lazy(() => import('./views/pages/expense/NewExpense'))
 //Reports
 const ExpenseReport = React.lazy(() => import('./views/pages/report/ExpenseReport'))
 const SalesReport = React.lazy(() => import('./views/pages/report/SalesReport'))
+const PnLReport = React.lazy(() => import('./views/pages/report/PnLReport'))
+
 
 
 const Charts = React.lazy(() => import('./views/charts/Charts'))
@@ -52,6 +54,11 @@ const routes = [
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/Reports/Expense_Report', name: 'Expense Report', element: ExpenseReport },
   { path: 'Reports/Sales_Report', name: 'Sales Report', element: SalesReport },
+  { path: 'Reports/pnl_Report', name: 'Profit and Loss Report', element: PnLReport },
+
+
+  
+
 
 
 ]

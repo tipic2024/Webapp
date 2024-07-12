@@ -217,6 +217,36 @@ class ProductController extends Controller
         return $product;
     }
 
+
+ public function updateQty(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:product_sizes,id',
+        'qty' => 'required|integer'
+    ]);
+
+    $productSize = ProductSize::find($request->id);
+    if ($productSize) {
+        $productSize->qty = DB::raw('qty + '.$request->qty);
+        $productSize->save();
+        $productSize = ProductSize::find($request->id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Quantity updated successfully.',
+            'productSize' => $productSize
+        ]);
+    }
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Product size not found.'
+    ], 404);
+}
+
+
+
+
     /**
      * Remove the specified resource from storage.
      *

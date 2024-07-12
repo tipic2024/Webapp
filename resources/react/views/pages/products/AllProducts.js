@@ -26,6 +26,7 @@ const AllProducts = () => {
   const fetchProducts = async () => {
     const response = await getAPICall('/api/product')
     setProducts(response)
+    console.log(response)
   }
 
   useEffect(() => {

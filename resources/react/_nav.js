@@ -16,12 +16,7 @@ import {
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
-  // {
-  //   component: CNavItem,
-  //   name: 'Dashboard',
-  //   to: '/dashboard',
-  //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-  // },
+ 
   {
     component: CNavItem,
     name: 'Invoice',
@@ -129,7 +124,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Profit and Loss Report',
-        to: 'Reports/Profit-Losss_Report',
+        to: 'Reports/pnl_Report',
       },
     ],
   },
