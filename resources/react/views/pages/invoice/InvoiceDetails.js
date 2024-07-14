@@ -1,6 +1,6 @@
 import './style.css';
 import Logo from './Images/Logo.png';
-import { CButton, CContainer } from '@coreui/react';
+import { CButton, CCard, CCardBody, CCardHeader, CContainer } from '@coreui/react';
 import React, { useState, useEffect } from 'react';
 import { generatePDF } from './InvoicePdf';
 import { getAPICall } from '../../../util/api';
@@ -129,6 +129,11 @@ const InvoiceDetails = () => {
   };
 
   return (
+    <CCard className="mb-4">
+        <CCardHeader>
+          <strong>Invoice</strong>
+        </CCardHeader>
+        <CCardBody>
     <CContainer className="container-md invoice-content">
       <div className="d-flex flex-row">
         <div className="flex-fill">
@@ -252,6 +257,8 @@ const InvoiceDetails = () => {
       <CButton color="success" variant="outline" onClick={handleDownload} className='d-print-none '>Download</CButton>
       </div>
     </CContainer>
+    </CCardBody>
+    </CCard>
   );
 };
 

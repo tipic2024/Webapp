@@ -218,23 +218,38 @@ class ProductController extends Controller
     }
 
 
- public function updateQty(Request $request)
+    public function updateQty(Request $request)
 {
+    // Validate request inputs
     $request->validate([
         'id' => 'required|exists:product_sizes,id',
-        'qty' => 'required|integer'
+        'qty' => 'nullable|integer',
+        'show' => 'nullable|integer'
     ]);
 
+    // Find the product size
     $productSize = ProductSize::find($request->id);
+    $products = Product::find($request->id);
+
+    
     if ($productSize) {
-        $productSize->qty = DB::raw('qty + '.$request->qty);
+        // Update quantity if provided
+        if ($request->filled('qty')) {
+            $productSize->qty = $productSize->qty + $request->qty;
+        }
+        
+        // Update visibility if provided
+        if ($request->filled('show')) {
+            $products->show = $request->show;
+        }
+
+        // Save the updated product size
         $productSize->save();
-        $productSize = ProductSize::find($request->id);
+        $products->save();
 
         return response()->json([
             'success' => true,
             'message' => 'Quantity updated successfully.',
-            'productSize' => $productSize
         ]);
     }
 
@@ -244,6 +259,7 @@ class ProductController extends Controller
     ], 404);
 }
 
+    
 
 
 

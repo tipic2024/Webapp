@@ -111,6 +111,15 @@ const AllProducts = () => {
                         >
                           Delete
                         </CBadge>
+                        &nbsp;
+                        <CBadge role="button"
+                          color="danger"
+                          onClick={() => {
+                            handleAdd(p)
+                          }}
+                        >
+                          Add
+                        </CBadge>
                       </CTableDataCell>
                     </CTableRow>
                   )

@@ -14,6 +14,8 @@ const AllProducts = React.lazy(() => import('./views/pages/products/AllProducts'
 const AllCategory = React.lazy(() => import('./views/pages/category/AllCategory'))
 const EditProduct = React.lazy(() => import('./views/pages/products/EditProduct'))
 const EditCategory = React.lazy(() => import('./views/pages/category/EditCategory'))
+const BulkQuantity = React.lazy(() => import('./views/pages/products/BulkQuantity'))
+
 
 //Expense
 const AllExpenseType = React.lazy(() => import('./views/pages/expense/AllExpenseType'))
@@ -55,9 +57,8 @@ const routes = [
   { path: '/Reports/Expense_Report', name: 'Expense Report', element: ExpenseReport },
   { path: 'Reports/Sales_Report', name: 'Sales Report', element: SalesReport },
   { path: 'Reports/pnl_Report', name: 'Profit and Loss Report', element: PnLReport },
+  { path: 'products/updateqty', name: 'Update Bulk Quantity', element: BulkQuantity },
 
-
-  
 
 
 

@@ -38,6 +38,13 @@ const _nav = [
         name: 'All Products',
         to: '/products/all',
       },
+      {
+        component: CNavItem,
+        name: 'Bulk Quantity ',
+        to: 'products/updateqty',
+      },
+
+      
     ],
   },
   {
