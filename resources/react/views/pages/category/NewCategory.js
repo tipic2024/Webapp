@@ -10,14 +10,13 @@ import {
   CFormCheck,
   CFormInput,
   CFormLabel,
-  CFormTextarea,
   CRow,
 } from '@coreui/react'
 import { post } from '../../../util/api'
 
 const NewCategory = () => {
-  const [errorMessage, setErrorMessage] = useState()
-  const [successMessage, setSuccessMessage] = useState()
+  const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const [state, setState] = useState({
     name: '',
     slug: '',
@@ -36,16 +35,23 @@ const NewCategory = () => {
     setState({ ...state, [name]: checked })
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const form = e.target
+    if (!form.checkValidity()) {
+      form.classList.add('was-validated')
+      return
+    }
+
     let data = { ...state }
     data.slug = data.name.replace(/[^\w]/g, '_')
     try {
       const resp = await post('/api/category', data)
       if (resp) {
         setSuccessMessage('Category added successfully')
-        setErrorMessage(null)
+        setErrorMessage('')
       } else {
-        setSuccessMessage(null)
+        setSuccessMessage('')
         setErrorMessage('Failed to add category')
       }
       handleClear()
@@ -54,7 +60,7 @@ const NewCategory = () => {
     }
   }
 
-  const handleClear = async () => {
+  const handleClear = () => {
     setState({
       name: '',
       slug: '',
@@ -63,6 +69,7 @@ const NewCategory = () => {
       show: true,
     })
   }
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -71,28 +78,34 @@ const NewCategory = () => {
             <strong>Create New Category</strong>
           </CCardHeader>
           <CCardBody>
-            <CForm>
+            <CForm className="needs-validation" noValidate onSubmit={handleSubmit}>
               <div className="mb-3">
                 <CFormLabel htmlFor="pname">Category Name</CFormLabel>
                 <CFormInput
                   type="text"
+                  pattern="^[a-zA-Z ]+$"
                   id="pname"
-                  placeholder="Product Name"
+                  placeholder="Category Name"
                   name="name"
                   value={state.name}
                   onChange={handleChange}
+                  required
                 />
+                <div className="invalid-feedback">Please provide a valid category name (letters and spaces only).</div>
               </div>
               <div className="mb-3">
-                <CFormLabel htmlFor="pname">Category Local Name</CFormLabel>
+                <CFormLabel htmlFor="plname">Category Local Name</CFormLabel>
                 <CFormInput
                   type="text"
+                  pattern="^[a-zA-Z ]+$"
                   id="plname"
-                  placeholder="Product Name"
+                  placeholder="Category Local Name"
                   name="localName"
                   value={state.localName}
                   onChange={handleChange}
+                  required
                 />
+                <div className="invalid-feedback">Please provide a valid local name (letters and spaces only).</div>
               </div>
               <div className="mb-3">
                 <CFormCheck
@@ -100,11 +113,9 @@ const NewCategory = () => {
                   label="Show for invoicing"
                   name="show"
                   checked={state.show}
-                  // value={state.show}
                   onChange={handleCBChange}
                 />
               </div>
-              {/* TODO: image uploader in future */}
               <div>
                 {successMessage && (
                   <CRow>
@@ -118,7 +129,7 @@ const NewCategory = () => {
                 )}
               </div>
               <div className="mb-3">
-                <CButton color="success" onClick={handleSubmit}>
+                <CButton color="success" type="submit">
                   Submit
                 </CButton>
                 &nbsp;

@@ -119,6 +119,10 @@ const InvoiceDetails = () => {
     }
   };
 
+
+
+
+
   useEffect(() => {
     fetchProduct();
   }, [param.id]);
@@ -127,6 +131,20 @@ const InvoiceDetails = () => {
     const invoiceNo = formData.InvoiceNumber;
     generatePDF(grandTotal, invoiceNo, formData.customerName, formData, remainingAmount, totalAmountWords);
   };
+
+  let invoiceName;
+  if (formData.status==0) {
+    invoiceName = <h5 className='text-danger '>{formData.InvoiceStatus}</h5>;
+  } 
+  if(formData.status==1) {
+    invoiceName = <h5 className='text-danger '>{formData.InvoiceStatus}</h5>;
+    
+  }
+  if(formData.status==2) {
+    invoiceName = <h5 className='text-warning '>{formData.InvoiceStatus}</h5>;
+    
+  };
+
 
   return (
     <CCard className="mb-4">
@@ -140,7 +158,7 @@ const InvoiceDetails = () => {
           <img src={Logo} width="150" height="150" alt="Logo" />
         </div>
         <div className="flex-fill">
-          <p className='text-md'>{formData.InvoiceStatus}</p>
+       {invoiceName}
         </div>
         <div className="ml-3">
           <p>Shree Samarth Nursery</p>
@@ -168,7 +186,7 @@ const InvoiceDetails = () => {
 
       <div className="row section">
         <div className="col-md-12">
-          <table className="table table-bordered">
+          <table className="table table-bordered border-black">
             <thead>
               <tr>
                 <th>Sr No</th>
@@ -182,8 +200,8 @@ const InvoiceDetails = () => {
               {formData.products.map((product, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
+                  <td>{product.product_name}</td>
                   <td>{product.oPrice}</td>
-                  <td>{product.total_price}</td>
                   <td>{product.qty}</td>
                   <td>{product.total_price}</td>
                 </tr>
@@ -198,19 +216,26 @@ const InvoiceDetails = () => {
       </div>
 
       <div className="row section">
-        <div className="col-md-12">
-          <p>Total Amount (In Words): {totalAmountWords} Rs Only</p>
+        <div className="col-md-12 row">
+      <p>  Total Amount (In Words):</p> &nbsp; <p className='fw-bold'> {totalAmountWords} Rupees Only /-</p>
         </div>
       </div>
 
       <div className="row section">
         <div className="col-md-12">
-          <table className="table table-bordered">
+          <table className="table table-bordered border-black">
             <tbody>
-              <tr>
+              {/* <tr>
                 <td>Discount (%):</td>
-                <td>{formData.discount}%</td>
-              </tr>
+                <td>{formData.discount}&nbsp;%</td>
+              </tr> */}
+              
+              {formData.discount > 0 && (
+             <tr>
+                 <td>Discount (%):</td>
+                 <td>{formData.discount}&nbsp;%</td>
+           </tr>
+                 )}
               <tr>
                 <td>Amount Paid:</td>
                 <td>{formData.amountPaid}</td>
@@ -228,7 +253,7 @@ const InvoiceDetails = () => {
         </div>
       </div>
 
-      <div className="d-flex  border p-3">
+      <div className="d-flex  border p-3 border-black">
         <div className='flex-fill'>
           <div className="d-flex flex-column mb-3">
             <h6>Bank Details</h6>
@@ -237,6 +262,7 @@ const InvoiceDetails = () => {
             <p>IFSC code: BARBOLONAND</p>
           </div>
         </div>
+
         <div className='flex-fill'>
           <div className="d-flex flex-column  align-items-center text-center ">
             <h6>E-SIGNATURE DR.BAPURAO CHOPADE</h6>
@@ -259,6 +285,7 @@ const InvoiceDetails = () => {
     </CContainer>
     </CCardBody>
     </CCard>
+    
   );
 };
 

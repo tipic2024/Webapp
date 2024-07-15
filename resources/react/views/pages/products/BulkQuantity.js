@@ -19,6 +19,7 @@ import { getAPICall, post } from '../../../util/api';
 
 function BulkQuantity() {
   const [products, setProducts] = useState([]);
+  const [productStates, setProductStates] = useState([]);
   const [submitStatus, setSubmitStatus] = useState('');
 
   useEffect(() => {
@@ -29,30 +30,53 @@ function BulkQuantity() {
     try {
       const response = await getAPICall('/api/products');
       setProducts(response);
+      // Initialize product states based on fetched products
+      const initialStates = response.map(product => ({
+        id: product.id,
+        newQty: '',
+        show: product.show === 1
+      }));
+      setProductStates(initialStates);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
 
-  const handleSwitchChange = (productId, currentShow) => {
-    const updatedProducts = products.map(product =>
-      product.id === productId ? { ...product, show: currentShow === 1 ? 0 : 1 } : product
+  const handleSwitchChange = (productId) => {
+    setProductStates(prevStates =>
+      prevStates.map(productState =>
+        productState.id === productId
+          ? { ...productState, show: !productState.show }
+          : productState
+      )
     );
-    setProducts(updatedProducts);
+  };
+
+  const handleInputChange = (productId, newQty) => {
+    setProductStates(prevStates =>
+      prevStates.map(productState =>
+        productState.id === productId
+          ? { ...productState, newQty: newQty }
+          : productState
+      )
+    );
   };
 
   const handleSubmit = async () => {
     try {
-      for (const product of products) {
-        const data = {
-          id: product.id,
-          show: product.show,
-        };
-        await post('/api/product/updateQty', data); // Adjust endpoint as per your API
+      for (const productState of productStates) {
+        if (productState.newQty !== '') {
+          const data = {
+            id: productState.id,
+            qty: productState.newQty,
+            show: productState.show ? 1 : 0,
+          };
+          await post('/api/product/updateQty', data);
+        }
       }
       setSubmitStatus('Submitted successfully');
-      setProducts([]); // Clear products state
-      fetchProducts(); // Fetch updated data
+      // Optionally, refetch updated data here if needed
+      fetchProducts();
     } catch (error) {
       console.error('Error submitting data:', error);
       setSubmitStatus('Submission failed');
@@ -73,27 +97,43 @@ function BulkQuantity() {
                   <CTableRow>
                     <CTableHeaderCell scope="col">Id</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Current Quantity</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Add Quantity</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Visibility</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {products.map((p, index) => (
-                    <CTableRow key={p.id}>
-                      <CTableHeaderCell scope="row">{p.id}</CTableHeaderCell>
-                      <CTableDataCell>{p.name}</CTableDataCell>
-                      <CTableDataCell>
-                        <CFormSwitch
-                          size="xl"
-                          label=""
-                          id={`formSwitchCheckDefaultXL-${p.id}`}
-                          checked={p.show === 1}
-                          onChange={() => handleSwitchChange(p.id, p.show)}
-                          valid={p.show === 1}
-                          invalid={p.show !== 1}
-                        />
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
+                  {products.map((p, index) => {
+                    const productState = productStates.find(ps => ps.id === p.id) || {};
+                    return (
+                      <CTableRow key={p.id}>
+                        <CTableHeaderCell scope="row">{p.id}</CTableHeaderCell>
+                        <CTableDataCell>{p.name}</CTableDataCell>
+                        <CTableDataCell>{p.sizes[0]?.qty}</CTableDataCell>
+                        <CTableDataCell>
+                          <CFormInput
+                            type="number"
+                            value={productState.newQty}
+                            onChange={(e) => handleInputChange(p.id, e.target.value)}
+                            size="lg"
+                            placeholder="Enter quantity"
+                            aria-label="Quantity input"
+                          />
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <CFormSwitch
+                            size="xl"
+                            label=""
+                            id={`formSwitchCheckDefaultXL-${p.id}`}
+                            checked={productState.show}
+                            onChange={() => handleSwitchChange(p.id)}
+                            valid={productState.show}
+                            invalid={!productState.show}
+                          />
+                        </CTableDataCell>
+                      </CTableRow>
+                    )
+                  })}
                 </CTableBody>
               </CTable>
             </div>

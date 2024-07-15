@@ -227,9 +227,9 @@ class ProductController extends Controller
         'show' => 'nullable|integer'
     ]);
 
-    // Find the product size
+    
     $productSize = ProductSize::find($request->id);
-    $products = Product::find($request->id);
+    // $products = Product::find($request->id);
 
     
     if ($productSize) {
@@ -240,16 +240,18 @@ class ProductController extends Controller
         
         // Update visibility if provided
         if ($request->filled('show')) {
-            $products->show = $request->show;
+            $productSize->show = $request->show;
         }
 
         // Save the updated product size
         $productSize->save();
-        $products->save();
+       
+        $productSize = ProductSize::find($request->id);
 
         return response()->json([
             'success' => true,
             'message' => 'Quantity updated successfully.',
+            'product' => $productSize,
         ]);
     }
 

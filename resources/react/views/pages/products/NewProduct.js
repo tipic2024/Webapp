@@ -17,8 +17,8 @@ import {
 import { getAPICall, post } from '../../../util/api'
 
 const NewProduct = () => {
-  const [errorMessage, setErrorMessage] = useState()
-  const [successMessage, setSuccessMessage] = useState()
+  const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const [state, setState] = useState({
     name: '',
     localName: '',
@@ -34,7 +34,6 @@ const NewProduct = () => {
     media: [],
     sizes: [],
   })
-
   const [categoryOptions, setCategoryOptions] = useState([])
 
   const fetchCategory = async () => {
@@ -64,8 +63,14 @@ const NewProduct = () => {
     setState({ ...state, [name]: checked })
   }
 
-  const handleSubmit = async () => {
-    console.log(state)
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const form = e.target
+    if (!form.checkValidity()) {
+      form.classList.add('was-validated')
+      return
+    }
+
     let data = { ...state }
     data.slug = data.name.replace(/[^\w]/g, '_')
     if (!state.multiSize) {
@@ -86,20 +91,18 @@ const NewProduct = () => {
       const resp = await post('/api/product', data)
       if (resp) {
         setSuccessMessage('Product added successfully')
-        setErrorMessage(null)
+        setErrorMessage('')
         handleClear()
       } else {
-        setSuccessMessage(null)
+        setSuccessMessage('')
         setErrorMessage('Failed to add product')
-        handleClear()
       }
-      
     } catch (error) {
       setErrorMessage(error.message ?? 'Please provide valid data')
     }
   }
 
-  const handleClear = async () => {
+  const handleClear = () => {
     setState({
       name: '',
       localName: '',
@@ -116,6 +119,7 @@ const NewProduct = () => {
       sizes: [],
     })
   }
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -124,7 +128,7 @@ const NewProduct = () => {
             <strong>Create New Product</strong>
           </CCardHeader>
           <CCardBody>
-            <CForm>
+            <CForm className="needs-validation" noValidate onSubmit={handleSubmit}>
               <div className="mb-3">
                 <CFormLabel htmlFor="pname">Product Name</CFormLabel>
                 <CFormInput
@@ -134,38 +138,38 @@ const NewProduct = () => {
                   name="name"
                   value={state.name}
                   onChange={handleChange}
+                  required
+                  feedbackInvalid="Please provide name."
+                      feedbackValid="Looks good!"
                 />
+                <div className="invalid-feedback">Product name is required</div>
               </div>
               <div className="mb-3">
-                <CFormLabel htmlFor="pname">Local Name</CFormLabel>
+                <CFormLabel htmlFor="plname">Local Name</CFormLabel>
                 <CFormInput
                   type="text"
                   id="plname"
-                  placeholder="Product Name"
+                  placeholder="Local Name"
                   name="localName"
                   value={state.localName}
                   onChange={handleChange}
+                  required
+                  feedbackInvalid="Please provide Local name."
+                      feedbackValid="Looks good!"
                 />
+                <div className="invalid-feedback">Local name is required</div>
               </div>
-              {/* TODO: image uploader in future */}
-
               <div className="mb-3">
-                <CFormLabel htmlFor="pname">Product Category</CFormLabel>
+                <CFormLabel htmlFor="categoryId">Product Category</CFormLabel>
                 <CFormSelect
                   aria-label="Select Category"
                   name="categoryId"
                   value={state.categoryId}
                   options={categoryOptions}
                   onChange={handleChange}
+                  required
                 />
-                {/* <CFormInput
-                  type="number"
-                  id="plname"
-                  placeholder="0"
-                  name="categoryId"
-                  value={state.categoryId}
-                  onChange={handleChange}
-                /> */}
+                <div className="invalid-feedback">Please select a category</div>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="desc">Product Description</CFormLabel>
@@ -183,10 +187,13 @@ const NewProduct = () => {
                   type="number"
                   id="qty"
                   placeholder="0"
+                  min="1"
                   name="qty"
                   value={state.qty}
                   onChange={handleChange}
+                  required
                 />
+                <div className="invalid-feedback">Quantity must be greater than 0</div>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="bPrice">Base Price</CFormLabel>
@@ -194,10 +201,13 @@ const NewProduct = () => {
                   type="number"
                   id="bPrice"
                   placeholder="0"
+                  min="1"
                   name="bPrice"
                   value={state.bPrice}
                   onChange={handleChange}
+                  required
                 />
+                <div className="invalid-feedback">Base price must be greater than 0</div>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="oPrice">Selling Price</CFormLabel>
@@ -205,10 +215,13 @@ const NewProduct = () => {
                   type="number"
                   id="oPrice"
                   placeholder="0"
+                  min="1"
                   name="oPrice"
                   value={state.oPrice}
                   onChange={handleChange}
+                  required
                 />
+                <div className="invalid-feedback">Selling price must be greater than 0</div>
               </div>
               <div className="mb-3">
                 <CFormCheck
@@ -216,7 +229,6 @@ const NewProduct = () => {
                   label="Show for invoicing"
                   name="show"
                   checked={state.show}
-                  // value={state.show}
                   onChange={handleCBChange}
                 />
               </div>
@@ -233,7 +245,7 @@ const NewProduct = () => {
                 )}
               </div>
               <div className="mb-3">
-                <CButton color="success" onClick={handleSubmit}>
+                <CButton color="success" type="submit">
                   Submit
                 </CButton>
                 &nbsp;

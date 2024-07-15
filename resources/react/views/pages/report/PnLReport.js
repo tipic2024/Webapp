@@ -39,7 +39,7 @@ const PnLReport = () => {
 
   const fetchSales = async () => {
     const resp = await getAPICall(
-      `/api/ReportSales?startDate=${state.start_date}&endDate=${state.end_date}`
+      `/api/reportSales?startDate=${state.start_date}&endDate=${state.end_date}`
     )
     if (resp) {
       const groupedSales = resp.reduce((acc, sale) => {

@@ -215,7 +215,8 @@ const Invoice = () => {
       setErrorMessage('Failed to create order. ' + error.message)
     }
   }
-
+  
+  const today = new Date().toISOString().split('T')[0];
   const handleClear = async () => {
     setState({
       customerName: '',
@@ -262,12 +263,13 @@ const Invoice = () => {
                     <CFormLabel htmlFor="pname">Customer Name</CFormLabel>
                     <CFormInput
                       type="text"
+                       pattern="^[a-zA-Z ]+$"               
                       id="pname"
                       placeholder="Customer Name"
-                      name="customerName"
-                      value={state.customerName}
+                       name="customerName"
+                       value={state.customerName}
                       onChange={handleChange}
-                      required
+                       required
                       feedbackInvalid="Please provide name."
                       feedbackValid="Looks good!"
                     />
@@ -294,15 +296,19 @@ const Invoice = () => {
                   <div className="mb-3">
                     <CFormLabel htmlFor="customerMobile">Mobile Number</CFormLabel>
                     <CFormInput
-                      type="phone"
-                      id="customerMobile"
-                      placeholder="9123456780"
-                      name="customerMobile"
-                      value={state.customerMobile}
-                      onChange={handleChange}
-                      required
-                      feedbackInvalid="Please provide mobile number."
-                    />
+                         type="text"
+                         maxLength="10"
+                         minLength
+                         pattern="[0-9]*"
+                         id="customerMobile"
+                         placeholder="9123456780"
+                         name="customerMobile"
+                         value={state.customerMobile}
+                         onChange={handleChange}
+                         required
+                         feedbackInvalid="Please provide a valid 10-digit mobile number."
+                       />
+
                   </div>
                 </div>
                 <div className="col-sm-6">
@@ -361,6 +367,7 @@ const Invoice = () => {
                       id="invoiceDate"
                       placeholder="Pune"
                       name="invoiceDate"
+                      max={today}
                       value={state.invoiceDate}
                       onChange={handleChange}
                       required
@@ -379,6 +386,7 @@ const Invoice = () => {
                         name="deliveryDate"
                         value={state.deliveryDate}
                         onChange={handleChange}
+                        min={state.invoiceDate} 
                         required={state.invoiceType == 2}
                         feedbackInvalid="Please select date."
                       />
@@ -386,7 +394,7 @@ const Invoice = () => {
                   )}
                 </div>
               </div>
-              {/* Products table */}
+            
               <div className="row">
                 <div className="col-1">
                   <div className="mb-1">

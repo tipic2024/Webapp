@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   CAlert,
   CButton,
@@ -13,52 +13,53 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import { login } from '../../../util/api'
-import { isLogIn, storeUserData } from '../../../util/session'
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import { cilLockLocked, cilUser } from '@coreui/icons';
+import { login } from '../../../util/api';
+import { isLogIn, storeUserData } from '../../../util/session';
 
 const Login = () => {
-  const [errorMessage, setErrorMessage] = useState()
-  const [validated, setValidated] = useState(false)
-  const navigate = useNavigate()
-  const userNameRef = useRef()
-  const userPwdRef = useRef()
+  const [errorMessage, setErrorMessage] = useState();
+  const [validated, setValidated] = useState(false);
+  const navigate = useNavigate();
+  const userNameRef = useRef();
+  const userPwdRef = useRef();
 
   useEffect(() => {
     if (isLogIn()) {
-      navigate('/')
+      navigate('/');
     }
-  }, [])
+  }, [navigate]);
 
   const handleLogin = async (event) => {
-    const form = event.currentTarget
-    event.preventDefault()
-    event.stopPropagation()
+    const form = event.currentTarget;
+    event.preventDefault();
+    event.stopPropagation();
     if (form.checkValidity() !== true) {
-      console.log('Invalid')
-      setValidated(true)
-      return
+      console.log('Invalid');
+      setValidated(true);
+      return;
     }
-    setValidated(true)
-    const email = userNameRef.current?.value
-    const password = userPwdRef.current?.value
-    console.log(userPwdRef.current?.value)
+    setValidated(true);
+    const email = userNameRef.current?.value;
+    const password = userPwdRef.current?.value;
+    console.log(userPwdRef.current?.value);
     try {
-      const resp = await login({ email, password })
-      console.log(resp)
-      storeUserData(resp)
-      navigate('/invoice')
+      const resp = await login({ email, password });
+      console.log(resp);
+      storeUserData(resp);
+      navigate('/invoice');
     } catch (error) {
-      setErrorMessage('Please provide valid email and password')
+      setErrorMessage('Please provide valid email and password');
     }
-  }
+  };
+
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={8}>
+          <CCol md={6}>
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
@@ -113,7 +114,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
+              {/* <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
                     <h2>Sign up</h2>
@@ -128,13 +129,13 @@ const Login = () => {
                     </Link>
                   </div>
                 </CCardBody>
-              </CCard>
+              </CCard> */}
             </CCardGroup>
           </CCol>
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

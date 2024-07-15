@@ -25,7 +25,7 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::get('/appUsers',[AuthController::class, 'allUsers']);
     Route::resource('product',ProductController::class);
     Route::resource('order',OrderController::class);
-    Route::get('/ReportSales', [OrderController::class, 'Sales']);
+    Route::get('/reportSales', [OrderController::class, 'Sales']);
     Route::resource('expenseType',ExpenseTypeController::class);
     Route::resource('expense',ExpenseController::class);
     Route::post('/newStock',[ProductController::class, 'newStock'])->name('newStock');
