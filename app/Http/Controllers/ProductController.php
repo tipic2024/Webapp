@@ -223,8 +223,8 @@ class ProductController extends Controller
     // Validate request inputs
     $request->validate([
         'id' => 'required|exists:product_sizes,id',
-        'qty' => 'nullable|integer',
-        'show' => 'nullable|integer'
+        'qty' => 'required|integer|min:0',
+        // 'show' => 'nullable|integer'
     ]);
 
     
@@ -232,16 +232,16 @@ class ProductController extends Controller
     // $products = Product::find($request->id);
 
     
-    if ($productSize) {
+    if ($productSize ) {
         // Update quantity if provided
         if ($request->filled('qty')) {
             $productSize->qty = $productSize->qty + $request->qty;
         }
         
         // Update visibility if provided
-        if ($request->filled('show')) {
-            $productSize->show = $request->show;
-        }
+        // if ($request->filled('show')) {
+        //     $productSize->show = $request->show;
+        // }
 
         // Save the updated product size
         $productSize->save();

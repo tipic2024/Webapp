@@ -6,7 +6,6 @@ import {
   CCardHeader,
   CCol,
   CFormInput,
-  CFormSwitch,
   CRow,
   CTable,
   CTableBody,
@@ -34,7 +33,6 @@ function BulkQuantity() {
       const initialStates = response.map(product => ({
         id: product.id,
         newQty: '',
-        show: product.show === 1
       }));
       setProductStates(initialStates);
     } catch (error) {
@@ -42,21 +40,12 @@ function BulkQuantity() {
     }
   };
 
-  const handleSwitchChange = (productId) => {
-    setProductStates(prevStates =>
-      prevStates.map(productState =>
-        productState.id === productId
-          ? { ...productState, show: !productState.show }
-          : productState
-      )
-    );
-  };
-
   const handleInputChange = (productId, newQty) => {
+    const qty = newQty === '' ? '' : parseInt(newQty, 10);
     setProductStates(prevStates =>
       prevStates.map(productState =>
-        productState.id === productId
-          ? { ...productState, newQty: newQty }
+        productState.sizes?.[0]?.id === productId
+          ? { ...productState, newQty: isNaN(qty) ? '' : qty }
           : productState
       )
     );
@@ -67,9 +56,8 @@ function BulkQuantity() {
       for (const productState of productStates) {
         if (productState.newQty !== '') {
           const data = {
-            id: productState.id,
+            id: productState.sizes[0].id,
             qty: productState.newQty,
-            show: productState.show ? 1 : 0,
           };
           await post('/api/product/updateQty', data);
         }
@@ -81,6 +69,10 @@ function BulkQuantity() {
       console.error('Error submitting data:', error);
       setSubmitStatus('Submission failed');
     }
+  };
+
+  const isFormValid = () => {
+    return productStates.every(productState => productState.newQty === '' || productState.newQty >= 0);
   };
 
   return (
@@ -99,11 +91,10 @@ function BulkQuantity() {
                     <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Current Quantity</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Add Quantity</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Visibility</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {products.map((p, index) => {
+                  {products.map((p) => {
                     const productState = productStates.find(ps => ps.id === p.id) || {};
                     return (
                       <CTableRow key={p.id}>
@@ -114,21 +105,11 @@ function BulkQuantity() {
                           <CFormInput
                             type="number"
                             value={productState.newQty}
-                            onChange={(e) => handleInputChange(p.id, e.target.value)}
+                            onChange={(e) => handleInputChange(p.sizes[0].id, e.target.value)}
                             size="lg"
                             placeholder="Enter quantity"
+                            min="0"
                             aria-label="Quantity input"
-                          />
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CFormSwitch
-                            size="xl"
-                            label=""
-                            id={`formSwitchCheckDefaultXL-${p.id}`}
-                            checked={productState.show}
-                            onChange={() => handleSwitchChange(p.id)}
-                            valid={productState.show}
-                            invalid={!productState.show}
                           />
                         </CTableDataCell>
                       </CTableRow>
@@ -137,13 +118,13 @@ function BulkQuantity() {
                 </CTableBody>
               </CTable>
             </div>
-            <CButton color="primary" onClick={handleSubmit}>Submit</CButton>
+            <CButton color="primary" onClick={handleSubmit} disabled={!isFormValid()}>Submit</CButton>
             {submitStatus && <div>{submitStatus}</div>}
           </CCardBody>
         </CCard>
       </CCol>
     </CRow>
-  )
+  );
 }
 
 export default BulkQuantity;
