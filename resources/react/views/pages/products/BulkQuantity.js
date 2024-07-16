@@ -31,7 +31,7 @@ function BulkQuantity() {
       setProducts(response);
       // Initialize product states based on fetched products
       const initialStates = response.map(product => ({
-        id: product.id,
+        id: product.sizes?.[0]?.id,
         newQty: '',
       }));
       setProductStates(initialStates);
@@ -44,7 +44,7 @@ function BulkQuantity() {
     const qty = newQty === '' ? '' : parseInt(newQty, 10);
     setProductStates(prevStates =>
       prevStates.map(productState =>
-        productState.sizes?.[0]?.id === productId
+        productState.id === productId
           ? { ...productState, newQty: isNaN(qty) ? '' : qty }
           : productState
       )
@@ -56,7 +56,7 @@ function BulkQuantity() {
       for (const productState of productStates) {
         if (productState.newQty !== '') {
           const data = {
-            id: productState.sizes[0].id,
+            id: productState.id,
             qty: productState.newQty,
           };
           await post('/api/product/updateQty', data);
