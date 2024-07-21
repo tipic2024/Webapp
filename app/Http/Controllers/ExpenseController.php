@@ -32,14 +32,22 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=> 'required',
+            'name'=> 'required|string',
             'expense_date'=> 'required',
-            'price'=> 'required',
-            'qty'=> 'required',
-            'total_price'=> 'required',
+            'price'=> 'required|integer|min:0',
+            'qty'=> 'required|integer|min:0',
+            'total_price'=> 'required|integer|:min:0',
             'show'=> 'required'
         ]);
-        return Expense::create($request->all());
+
+
+        $expStore= Expense::create($request->all());
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Expence  created successfully.',
+            'product' => $expStore,
+        ]);
     }
 
     /**

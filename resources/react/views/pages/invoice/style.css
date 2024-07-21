@@ -16,6 +16,7 @@
   @page {
     size: A4; 
     margin: 1cm;
+    margin-top: 5rem;
   }
 
   .nav, .footer, .header {

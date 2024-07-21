@@ -137,7 +137,7 @@ const InvoiceDetails = () => {
     invoiceName = <h5 className='text-danger '>{formData.InvoiceStatus}</h5>;
   } 
   if(formData.status==1) {
-    invoiceName = <h5 className='text-danger '>{formData.InvoiceStatus}</h5>;
+    invoiceName = <h5 className='text-success '>{formData.InvoiceStatus}</h5>;
     
   }
   if(formData.status==2) {
@@ -148,17 +148,23 @@ const InvoiceDetails = () => {
 
   return (
     <CCard className="mb-4">
-        <CCardHeader>
+        <CCardHeader className='no-print'>
           <strong>Invoice</strong>
         </CCardHeader>
         <CCardBody>
     <CContainer className="container-md invoice-content">
-      <div className="d-flex flex-row">
+      <div className='row'>
+        <div className='col-4'></div>
+        <div className='col-4 text-center'>{invoiceName}</div>
+        <div className='col-4'></div>
+
+      </div>
+      <div className="d-flex flex-row mb-3">
         <div className="flex-fill">
           <img src={Logo} width="150" height="150" alt="Logo" />
         </div>
         <div className="flex-fill">
-       {invoiceName}
+       
         </div>
         <div className="ml-3">
           <p>Shree Samarth Nursery</p>
@@ -168,47 +174,50 @@ const InvoiceDetails = () => {
         </div>
       </div>
 
-      <div className="d-flex flex-row mt-10">
-        <div className="flex-fill">
+      <div className="row mt-10">
+      <div className="flex-fill col-6">
           <div className="col-md-6">
-            <h5>Invoice To:</h5>
-            <p>Customer Name: {formData.customerName}</p>
-            <p>Customer Address: {formData.customerAddress}</p>
-            <p>Mobile Number: {formData.mobileNumber}</p>
+            <h6  style={{ fontWeight: 'bold' }}>Invoice To:</h6>
+            <p style={{ fontWeight: 'bold' }}>Customer Name&nbsp;:&nbsp; <span  style={{ fontWeight: 'bold' }}>{formData.customerName}</span></p>
+            <p style={{ fontWeight: 'bold' }}>Customer Address&nbsp;:&nbsp; <span  style={{ fontWeight: 'bold' }}>{formData.customerAddress}</span> </p>
+            <p  style={{ fontWeight: 'bold' }}>Mobile Number&nbsp;: &nbsp;<span  style={{ fontWeight: 'bold' }}>{formData.mobileNumber}</span></p>
           </div>
         </div>
-        <div className="flex-fill">
-          <h5>Invoice No: {formData.InvoiceNumber}</h5>
-          <p>Invoice Date: {formData.date}</p>
-          {formData.InvoiceType === 2 && <p>Delivery Date: {formData.DeliveryDate}</p>}
+        <div className='col-2'></div>
+        <div className='col-4'>
+        <div className="flex-fill col-md-8">
+          <h6  style={{ fontWeight: 'bold' }}>Invoice No&nbsp;: {formData.InvoiceNumber}</h6>
+          <p style={{ fontWeight: 'bold' }}>Invoice Date : &nbsp;<span style={{ fontWeight: 'bold' }}>{formData.date}</span></p>
+          {formData.InvoiceType === 2 && <p style={{ fontWeight: 'bold' }}>Delivery Date :&nbsp;<span style={{ fontWeight: 'bold' }}>{formData.DeliveryDate}</span></p>}
         </div>
+      </div>
       </div>
 
       <div className="row section">
         <div className="col-md-12">
           <table className="table table-bordered border-black">
-            <thead>
-              <tr>
-                <th>Sr No</th>
-                <th>Item Name</th>
-                <th>Price (Rs)</th>
-                <th>Quantity</th>
-                <th>Total (Rs)</th>
+            <thead  className='table-success border-black' >
+              <tr >
+                <th className=' text-center'>Sr No</th>
+                <th className='text-center'>Item Name</th>
+                <th className='text-center'>Price (Rs)</th>
+                <th className='text-center'>Quantity</th>
+                <th className='text-center'>Total (Rs)</th>
               </tr>
             </thead>
             <tbody>
               {formData.products.map((product, index) => (
                 <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{product.product_name}</td>
-                  <td>{product.oPrice}</td>
-                  <td>{product.qty}</td>
-                  <td>{product.total_price}</td>
+                  <td className='text-center'>{index + 1}</td>
+                  <td className='text-center'>{product.product_name}</td>
+                  <td className='text-center'>{product.oPrice}&nbsp;₹</td>
+                  <td className='text-center'>{product.qty}</td>
+                  <td className='text-center'>{product.total_price}&nbsp;₹</td>
                 </tr>
               ))}
               <tr>
-                <td colSpan="4">Grand Total</td>
-                <td>{formData.finalAmount}</td>
+                <td colSpan="4" >Grand Total</td>
+                <td className='text-center'>{formData.finalAmount}&nbsp;₹</td>
               </tr>
             </tbody>
           </table>
@@ -216,10 +225,13 @@ const InvoiceDetails = () => {
       </div>
 
       <div className="row section">
-        <div className="col-md-12 row">
-      <p>  Total Amount (In Words):</p> &nbsp; <p className='fw-bold'> {totalAmountWords} Rupees Only /-</p>
-        </div>
-      </div>
+  <div className="col-md-12 flex">
+    <p>
+      Total Amount (In Words): &nbsp; 
+      <span style={{ fontWeight: 'bold' }}>{totalAmountWords} Rupees Only </span>
+    </p>
+  </div>
+</div>
 
       <div className="row section">
         <div className="col-md-12">
@@ -238,11 +250,11 @@ const InvoiceDetails = () => {
                  )}
               <tr>
                 <td>Amount Paid:</td>
-                <td>{formData.amountPaid}</td>
+                <td>{formData.amountPaid}&nbsp;₹</td>
               </tr>
               <tr>
                 <td>Balance Amount:</td>
-                <td>{remainingAmount}</td>
+                <td>{remainingAmount}&nbsp;₹</td>
               </tr>
               <tr>
                 <td>Payment Mode:</td>
@@ -272,9 +284,9 @@ const InvoiceDetails = () => {
         </div>
       </div>
 
-      <div className="row section">
+      <div className="row section mt-3">
         <div className="col-md-12 text-center">
-          <p>This is a computer-generated bill.</p>
+          <p>This bill has been computer-generated and is authorized.</p>
         </div>
       </div>
 

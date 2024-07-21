@@ -135,6 +135,25 @@ const _nav = [
       },
     ],
   },
+
+  {
+    component: CNavGroup,
+    name: 'User Management',
+    icon: <CIcon icon={cilChart} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'All Users',
+        to: 'usermanagement/all-users',
+      },
+      {
+        component: CNavItem,
+        name: 'Create User',
+        to: 'usermanagement/create-user',
+      },
+      
+    ],
+  },
  
 ]
 

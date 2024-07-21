@@ -2,6 +2,12 @@ import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
+//NewRegister
+const NewUsers = React.lazy(() => import('./views/pages/register/NewUsers'))
+const AllUser = React.lazy(() => import('./views/pages/register/AllUser'))
+
+
+
 //Invoice
 const Invoice = React.lazy(() => import('./views/pages/invoice/Invoice'))
 const Orders = React.lazy(() => import('./views/pages/invoice/Orders'))
@@ -27,6 +33,9 @@ const NewExpense = React.lazy(() => import('./views/pages/expense/NewExpense'))
 const ExpenseReport = React.lazy(() => import('./views/pages/report/ExpenseReport'))
 const SalesReport = React.lazy(() => import('./views/pages/report/SalesReport'))
 const PnLReport = React.lazy(() => import('./views/pages/report/PnLReport'))
+
+//Password Newpassword
+const Updatepassword = React.lazy(() => import('./views/pages/Password/Newpassword'))
 
 
 
@@ -58,10 +67,10 @@ const routes = [
   { path: 'Reports/Sales_Report', name: 'Sales Report', element: SalesReport },
   { path: 'Reports/pnl_Report', name: 'Profit and Loss Report', element: PnLReport },
   { path: 'products/updateqty', name: 'Update Bulk Quantity', element: BulkQuantity },
-
-
-
-
+  { path:'/updatepassword', name: 'Update Password', element: Updatepassword },
+  { path:'/usermanagement/create-user', name: 'Create User', element: NewUsers },
+  { path:'usermanagement/all-users', name: 'All Users', element: AllUser },
+  
 ]
 
 export default routes

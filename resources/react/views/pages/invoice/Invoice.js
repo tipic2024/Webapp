@@ -258,7 +258,7 @@ const Invoice = () => {
           <CCardBody>
             <CForm noValidate validated={validated} onSubmit={handleSubmit}>
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-sm-4">
                   <div className="mb-3">
                     <CFormLabel htmlFor="pname">Customer Name</CFormLabel>
                     <CFormInput
@@ -275,7 +275,7 @@ const Invoice = () => {
                     />
                   </div>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-sm-4">
                   <div className="mb-3">
                     <CFormLabel htmlFor="customerAddress">Customer Address</CFormLabel>
                     <CFormInput
@@ -290,9 +290,8 @@ const Invoice = () => {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
+
+                <div className="col-sm-4">
                   <div className="mb-3">
                     <CFormLabel htmlFor="customerMobile">Mobile Number</CFormLabel>
                     <CFormInput
@@ -310,8 +309,11 @@ const Invoice = () => {
                        />
 
                   </div>
+              </div>
+              <div className="row">
+                
                 </div>
-                <div className="col-sm-6">
+                <div className="col-sm-4">
                   <div className="mb-3">
                     <CFormLabel htmlFor="invoiceType">Invoice Type</CFormLabel>
                     <CFormSelect
@@ -334,31 +336,7 @@ const Invoice = () => {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-4">
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="paymentType">Payment Type</CFormLabel>
-                    <CFormSelect
-                      aria-label="Select Invoice Type"
-                      name="paymentType"
-                      value={state.paymentType}
-                      options={[
-                        {
-                          label: 'Cash',
-                          value: 1,
-                        },
-                        {
-                          label: 'Online - (UPI / Bank Transfer)',
-                          value: 2,
-                        },
-                      ]}
-                      onChange={handleChange}
-                      required
-                      feedbackInvalid="Please select type."
-                    />
-                  </div>
-                </div>
+
                 <div className="col-sm-4">
                   <div className="mb-3">
                     <CFormLabel htmlFor="invoiceDate">Invoice Date</CFormLabel>
@@ -393,7 +371,17 @@ const Invoice = () => {
                     </div>
                   )}
                 </div>
+
               </div>
+
+
+
+              <div className="row">
+                
+                
+              </div>
+
+              <hr className='mt-4'/>
             
               <div className="row">
                 <div className="col-1">
@@ -401,14 +389,19 @@ const Invoice = () => {
                     <b>Sr. No </b>
                   </div>
                 </div>
-                <div className="col-3">
+                <div className="col-2">
                   <div className="mb-1">
                     <b>Product</b>
                   </div>
                 </div>
                 <div className="col-2">
                   <div className="mb-1">
-                    <b>Price</b>
+                    <b>Price ₹ (1N) </b>
+                  </div>
+                </div>
+                <div className="col-2">
+                  <div className="mb-1">
+                    <b>Stock </b>
                   </div>
                 </div>
                 <div className="col-2">
@@ -418,10 +411,10 @@ const Invoice = () => {
                 </div>
                 <div className="col-2">
                   <div className="mb-1">
-                    <b>Total (RS)</b>
+                    <b>Total ₹</b>
                   </div>
                 </div>
-                <div className="col-2">
+                <div className="col-1">
                   <div className="mb-1">
                     <b>Action</b>
                   </div>
@@ -433,7 +426,7 @@ const Invoice = () => {
                   <div className="col-1">
                     <div className="mb-1"> {index + 1} </div>
                   </div>
-                  <div className="col-3">
+                  <div className="col-2">
                     <div className="mb-1">
                       <CFormSelect
                         aria-label="Select Product"
@@ -450,9 +443,12 @@ const Invoice = () => {
                     <CFormInput type="number" placeholder="" readOnly value={oitem.oPrice} />
                   </div>
                   <div className="col-2">
+                    <CFormInput type="number" placeholder="" readOnly value={oitem.stockQty} />
+                  </div>
+                  <div className="col-2">
                     <CFormInput
                       type="number"
-                      value={oitem.qty}
+      
                       invalid={oitem.invalidQty == true}
                       required
                       feedbackInvalid={`Max ${oitem.stockQty}`}
@@ -462,7 +458,7 @@ const Invoice = () => {
                   <div className="col-2">
                     <CFormInput type="number" readOnly value={oitem.total_price} />
                   </div>
-                  <div className="col-2">
+                  <div className="col-1">
                     {state.items.length > 1 && (
                       <CButton color="" onClick={() => handleRemoveProductRow(index)}>
                         <CIcon icon={cilDelete} size="xl" style={{ '--ci-primary-color': 'red' }} />
@@ -481,12 +477,13 @@ const Invoice = () => {
                 <div className="col-1">
                   <div className="mb-1"> </div>
                 </div>
-                <div className="col-3">
+                <div className="col-2">
                   <div className="mb-1"></div>
                 </div>
                 <div className="col-2"></div>
+                <div className="col-2"></div>
                 <div className="col-2">
-                  <b>Total (RS)</b>
+                  <b> Grand Total ₹ </b>
                 </div>
                 <div className="col-2">
                   <CFormInput
@@ -497,6 +494,7 @@ const Invoice = () => {
                     onChange={handleChange}
                   />
                 </div>
+                <hr className='mt-4'/>
                 <div className="col-2"></div>
               </div>
               {/* Payment info */}
@@ -509,6 +507,8 @@ const Invoice = () => {
                       id="discount"
                       placeholder=""
                       name="discount"
+                      min='0'
+                      max='100'
                       value={state.discount}
                       onChange={handleChange}
                     />
@@ -516,21 +516,22 @@ const Invoice = () => {
                 </div>
                 <div className="col-sm-3">
                   <div className="mb-3">
-                    <CFormLabel htmlFor="paidAmount">Balance Amount (Rs)</CFormLabel>
+                  <CFormLabel htmlFor="finalAmount">Final Amount ₹</CFormLabel>
                     <CFormInput
                       type="number"
-                      id="balanceAmount"
+                      id="finalAmount"
                       placeholder=""
+                      name="finalAmount"
                       readOnly
-                      name="balanceAmount"
-                      value={state.balanceAmount}
+                      value={state.finalAmount}
                       onChange={handleChange}
                     />
+
                   </div>
                 </div>
-                <div className="col-sm-3">
+                <div className="col-sm-2">
                   <div className="mb-3">
-                    <CFormLabel htmlFor="paidAmount">Paid Amount (Rs)</CFormLabel>
+                    <CFormLabel htmlFor="paidAmount">Paid Amount ₹</CFormLabel>
                     <CFormInput
                       type="number"
                       id="paidAmount"
@@ -543,19 +544,47 @@ const Invoice = () => {
                 </div>
                 <div className="col-sm-2">
                   <div className="mb-3">
-                    <CFormLabel htmlFor="finalAmount">Final Amount (Rs)</CFormLabel>
+                  <CFormLabel htmlFor="paidAmount">Balance Amount ₹</CFormLabel>
                     <CFormInput
                       type="number"
-                      id="finalAmount"
+                      id="balanceAmount"
                       placeholder=""
-                      name="finalAmount"
                       readOnly
-                      value={state.finalAmount}
+                      name="balanceAmount"
+                 
+                      value= {state.balanceAmount}
                       onChange={handleChange}
+                    />
+                    
+                  </div>
+                </div>
+
+                <div className="col-sm-3">
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="paymentType">Payment Type</CFormLabel>
+                    <CFormSelect
+                      aria-label="Select Invoice Type"
+                      name="paymentType"
+                      value={state.paymentType}
+                      options={[
+                        {
+                          label: 'Cash',
+                          value: 1,
+                        },
+                        {
+                          label: 'Online - (UPI / NEFT)',
+                          value: 2,
+                        },
+                      ]}
+                      onChange={handleChange}
+                      required
+                      feedbackInvalid="Please select type."
                     />
                   </div>
                 </div>
               </div>
+             
+
               <div>
                 {errorMessage && (
                   <CRow>
@@ -571,6 +600,7 @@ const Invoice = () => {
                 <CButton color="secondary" onClick={handleClear}>
                   Clear
                 </CButton>
+
               </div>
             </CForm>
           </CCardBody>

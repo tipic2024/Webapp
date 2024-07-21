@@ -125,22 +125,22 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData,remain
 
 
 
-    const grandTotalRow = ["", "", "", "Grand Total", grandTotal];
+    const grandTotalRow = ["", "", "", "Grand Total", grandTotal+" /-"];
     pdf.autoTable({
         startY: y,
         head: [["Sr No", "Item Name", "Price (Rs)", "Quantity", "Total (Rs)"]],
         body: [
             ...formData.products.map((product, index) => [
                 index + 1,
-                product.size_name,
-                product.oPrice,
+                product.size_name ,
+                product.oPrice +" /-",
                 product.qty,
-                product.total_price
+                product.total_price+" /-"
             ]),
             grandTotalRow,
         ],
         theme: "grid",
-        styles: { halign: "center", valign: "middle", fontSize: 10 },
+        styles: { halign: "center", valign: "middle", fontSize: 10, lineWidth: 0.1, lineColor: [0, 0, 0] },
         columnStyles: {
             0: { halign: "center" },
             2: { halign: "center" },
@@ -156,12 +156,12 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData,remain
     const additionalDetailsData = [];
 
     if (formData.discount > 0) {
-        additionalDetailsData.push(["Discount (%):", `${formData.discount}`]);
+        additionalDetailsData.push(["Discount (%):", `${formData.discount} %`]);
     }
 
     additionalDetailsData.push(
-        ["Amount Paid:", formData.amountPaid.toFixed(2)],
-        ["Balance Amount:", remainingAmount.toFixed(2)],
+        ["Amount Paid:",`${formData.amountPaid.toFixed(2)}`+" /-"],
+        ["Balance Amount:",`${remainingAmount.toFixed(2)}`+" /-" ],
         ["Payment Mode:", formData.paymentMode]
     );
 
@@ -169,7 +169,7 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData,remain
         body: additionalDetailsData,
         startY: y,
         theme: "grid",
-        styles: { halign: "left", valign: "middle", fontSize: 10 },
+        styles: { halign: "left", valign: "middle", fontSize: 10, lineWidth: 0.1, lineColor: [0, 0, 0] },
         margin: { bottom: 30 },
     });
 
@@ -218,14 +218,14 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData,remain
         bankDetailsY + 36
     );
 
-    const additionalMessage = "This is a computer-generated bill.";
-    const additionalMessageWidth = pdf.getStringUnitWidth(additionalMessage) * 10;
+    const additionalMessage = "This bill has been computer-generated and is authorized.";
+    const additionalMessageWidth = pdf.getStringUnitWidth(additionalMessage) * 6;
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     pdf.setDrawColor(0);
     pdf.rect(0, 0, pageWidth, pageHeight);
     pdf.setFontSize(10);
-    const shiftRight = 20;
+    const shiftRight = 15;
     const textXAdditional = (pageWidth - additionalMessageWidth) / 1.3 + shiftRight;
     const textY = pageHeight - 5;
     pdf.text(additionalMessage, textXAdditional, textY);
@@ -236,7 +236,7 @@ export function generatePDF(grandTotal, invoiceNo, customerName, formData,remain
 function InvoicePdf() {
     return (
         <div>
-            {/* Your component content */}
+           
         </div>
     );
 }

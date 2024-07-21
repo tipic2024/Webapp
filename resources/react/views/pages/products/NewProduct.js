@@ -253,6 +253,9 @@ const NewProduct = () => {
                   Clear
                 </CButton>
               </div>
+            
+
+
             </CForm>
           </CCardBody>
         </CCard>

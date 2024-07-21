@@ -101,13 +101,13 @@ class AuthController extends Controller
 
     function changePassword(Request $request){
         $fields = $request->validate([
-            'mobile' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string',
             'new_password' => 'required|string',
         ]);
 
         //Check if email exists
-        $user = User::where('mobile',$fields['mobile'])->first();
+        $user = User::where('email',$fields['email'])->first();
 
         //Check password
         if(!$user || !Hash::check($fields['password'], $user->password)){
@@ -122,8 +122,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('webapp')->plainTextToken;
         $response = [
-            'user'=> $user,
-            'token'=> $token
+            'Message'=> 'Password Changed Successfully,Login with new Password',
+            'status'=> 1
+            // 'user'=> $user,
+            // 'token'=> $token
         ];
         return response($response,200);
     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   CAlert,
   CButton,
@@ -11,16 +11,16 @@ import {
   CFormLabel,
   CFormSelect,
   CRow,
-} from '@coreui/react'
-import { getAPICall, post } from '../../../util/api'
-import { useNavigate } from 'react-router-dom'
+} from '@coreui/react';
+import { getAPICall, post } from '../../../util/api';
+import { useNavigate } from 'react-router-dom';
 
 const NewExpense = () => {
-  const [validated, setValidated] = useState(false)
-  const [errorMessage, setErrorMessage] = useState()
-  const [successMessage, setSuccessMessage] = useState()
-  const [expenseTypes, setExpenseTypes] = useState()
-  const navigate = useNavigate()
+  const [validated, setValidated] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [expenseTypes, setExpenseTypes] = useState([]);
+  const navigate = useNavigate();
   const [state, setState] = useState({
     name: '',
     desc: '',
@@ -31,83 +31,80 @@ const NewExpense = () => {
     total_price: 0,
     expense_date: '',
     show: true,
-  })
+  });
 
   const fetchExpenseTypes = async () => {
-    const response = await getAPICall('/api/expenseType')
-    const options = ['Select Expense Type']
+    const response = await getAPICall('/api/expenseType');
+    const options = ['Select Expense Type'];
     options.push(
       ...response
-        .filter((p) => p.show == 1)
-        .map((p) => {
-          return {
-            label: p.name,
-            value: p.id,
-            disabled: p.show !== 1,
-          }
-        }),
-    )
-    setExpenseTypes(options)
-  }
+        .filter((p) => p.show === 1)
+        .map((p) => ({
+          label: p.name,
+          value: p.id,
+          disabled: p.show !== 1,
+        }))
+    );
+    setExpenseTypes(options);
+  };
 
   useEffect(() => {
-    fetchExpenseTypes()
-  }, [])
+    fetchExpenseTypes();
+  }, []);
 
   const calculateFinalAmount = (old) => {
-    old.total_price = (parseFloat(old.price) || 0) * (parseInt(old.qty) || 0)
-  }
+    old.total_price = (parseFloat(old.price) || 0) * (parseInt(old.qty) || 0);
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     if (name === 'price' || name === 'qty') {
       setState((prev) => {
-        const old = { ...prev }
-        old[name] = value
-        calculateFinalAmount(old)
-        return { ...old }
-      })
+        const old = { ...prev };
+        old[name] = value;
+        calculateFinalAmount(old);
+        return { ...old };
+      });
     } else if (name === 'expense_id') {
       setState((prev) => {
-        const old = { ...prev }
-        old[name] = value
-        old.typeNotSet = value === undefined
-        return { ...old }
-      })
+        const old = { ...prev };
+        old[name] = value;
+        old.typeNotSet = value === undefined;
+        return { ...old };
+      });
+    } else if (name === 'name') {
+      const regex = /^[A-Za-z\s]*$/;
+      if (regex.test(value)) {
+        setState({ ...state, [name]: value });
+      }
     } else {
-      setState({ ...state, [name]: value })
+      setState({ ...state, [name]: value });
     }
-  }
+  };
 
   const handleSubmit = async (event) => {
-    try {
-      const form = event.currentTarget
-      event.preventDefault()
-      event.stopPropagation()
-      setValidated(true)
-      if (form.checkValidity() === true && state.expense_id && state.price > 0 && state.qty > 0) {
-        const resp = await post('/api/expense', { ...state })
-        console.log('Response', resp)
-        // if (res) {
-        //   navigate('/invoice-details/' + res.id)
-        // }
+    event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
+
+    if (state.expense_id && state.price > 0 && state.qty > 0 && state.name) {
+      try {
+        const resp = await post('/api/expense', { ...state });
         if (resp) {
-          setSuccessMessage('New expense added successfully')
-          setErrorMessage(null)
+          setSuccessMessage('New expense added successfully');
+          setErrorMessage(null);
         } else {
-          setSuccessMessage(null)
-          setErrorMessage('Failed to add new expense')
+          setSuccessMessage(null);
+          setErrorMessage('Failed to add new expense');
         }
-        handleClear()
-      } else {
-        setState((old) => {
-          return { ...old, typeNotSet: old.expense_id === undefined }
-        })
+        handleClear();
+      } catch (error) {
+        setErrorMessage('Failed to create expense. ' + error.message);
       }
-    } catch (error) {
-      setErrorMessage('Failed to create order. ' + error.message)
+    } else {
+      setState((old) => ({ ...old, typeNotSet: old.expense_id === undefined }));
     }
-  }
+  };
 
   const handleClear = async () => {
     setState({
@@ -120,9 +117,10 @@ const NewExpense = () => {
       expense_date: '',
       show: true,
       typeNotSet: state.expense_id === undefined,
-    })
-    setValidated(false)
-  }
+    });
+    setValidated(false);
+  };
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -135,15 +133,14 @@ const NewExpense = () => {
               <div className="row">
                 <div className="col-4">
                   <div className="mb-3">
-                    <CFormLabel htmlFor="invoiceDate">Expense Type</CFormLabel>
+                    <CFormLabel htmlFor="expense_id">Expense Type</CFormLabel>
                     <CFormSelect
-                      aria-label="Select ExpenseTypes"
+                      aria-label="Select Expense Type"
                       value={state.expense_id}
                       id="expense_id"
                       name="expense_id"
                       options={expenseTypes}
                       onChange={handleChange}
-                      // invalid={state.typeNotSet}
                       required
                       feedbackInvalid="Select Expense type."
                     />
@@ -160,13 +157,13 @@ const NewExpense = () => {
                       value={state.name}
                       onChange={handleChange}
                       required
-                      feedbackInvalid="Please provide some note."
+                      feedbackInvalid="Please provide some note. Only alphabets and spaces are allowed."
                     />
                   </div>
                 </div>
                 <div className="col-sm-4">
                   <div className="mb-3">
-                    <CFormLabel htmlFor="invoiceDate">Expense Date</CFormLabel>
+                    <CFormLabel htmlFor="expense_date">Expense Date</CFormLabel>
                     <CFormInput
                       type="date"
                       id="expense_date"
@@ -185,44 +182,47 @@ const NewExpense = () => {
                     <CFormLabel htmlFor="price">Price Per Unit</CFormLabel>
                     <CFormInput
                       type="number"
+                      min="0"
                       id="price"
                       placeholder=""
                       name="price"
                       value={state.price}
                       onChange={handleChange}
-                      // invalid={state.price <= 0}
                       required
-                      feedbackInvalid="Please provide price per unit."
+                      feedbackInvalid="Please provide price per unit. Negative numbers not allowed."
                     />
                   </div>
                 </div>
                 <div className="col-sm-4">
                   <div className="mb-3">
-                    <CFormLabel htmlFor="price">Total Units</CFormLabel>
+                    <CFormLabel htmlFor="qty">Total Units</CFormLabel>
                     <CFormInput
                       type="number"
                       id="qty"
                       placeholder=""
                       name="qty"
+                      min="0"
                       value={state.qty}
                       onChange={handleChange}
                       required
-                      // invalid={state.qty < 1}
-                      feedbackInvalid="Please provide total units."
+                      feedbackInvalid="Please provide total units .Negative numbers not allowed.."
                     />
                   </div>
                 </div>
                 <div className="col-sm-4">
                   <div className="mb-3">
-                    <CFormLabel htmlFor="price">Total Price</CFormLabel>
+                    <CFormLabel htmlFor="total_price">Total Price</CFormLabel>
                     <CFormInput
                       type="number"
-                      id="price"
+                      min="0"
+                      id="total_price"
                       placeholder=""
-                      name="price"
+                      name="total_price"
+
                       value={state.total_price}
                       onChange={handleChange}
                       readOnly
+                      
                     />
                   </div>
                 </div>
@@ -253,7 +253,7 @@ const NewExpense = () => {
         </CCard>
       </CCol>
     </CRow>
-  )
-}
+  );
+};
 
-export default NewExpense
+export default NewExpense;

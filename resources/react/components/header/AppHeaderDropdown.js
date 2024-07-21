@@ -17,7 +17,7 @@ import avatar8 from './../../views/pages/invoice/Images/Logo.png'
 
 import { logout } from '../../util/api'
 import { deleteUserData } from '../../util/session'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
@@ -37,10 +37,10 @@ const AppHeaderDropdown = () => {
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilSettings} className="me-2" />
-          Password
+        
+        <CDropdownItem ><Link style={{ textDecoration: 'none', color: 'inherit' }} to="/updatepassword"><CIcon icon={cilSettings} className="me-2" />Password        </Link>
         </CDropdownItem>
+
         <CDropdownDivider />
         <CDropdownItem onClick={handleLogout}>
           {/* <button onClick={handleLogout}> */}

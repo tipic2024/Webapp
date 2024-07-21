@@ -34,6 +34,7 @@ function BulkQuantity() {
         id: product.sizes?.[0]?.id,
         newQty: '',
       }));
+      console.log(initialStates);
       setProductStates(initialStates);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -62,6 +63,7 @@ function BulkQuantity() {
           await post('/api/product/updateQty', data);
         }
       }
+      // console.log(productStates);
       setSubmitStatus('Submitted successfully');
       // Optionally, refetch updated data here if needed
       fetchProducts();
@@ -95,7 +97,7 @@ function BulkQuantity() {
                 </CTableHead>
                 <CTableBody>
                   {products.map((p) => {
-                    const productState = productStates.find(ps => ps.id === p.id) || {};
+                    const productState = productStates.find(ps => ps.id === p.sizes?.[0]?.id) || {};
                     return (
                       <CTableRow key={p.id}>
                         <CTableHeaderCell scope="row">{p.id}</CTableHeaderCell>
@@ -105,7 +107,7 @@ function BulkQuantity() {
                           <CFormInput
                             type="number"
                             value={productState.newQty}
-                            onChange={(e) => handleInputChange(p.sizes[0].id, e.target.value)}
+                            onChange={(e) => handleInputChange(productState.id, e.target.value)}
                             size="lg"
                             placeholder="Enter quantity"
                             min="0"
