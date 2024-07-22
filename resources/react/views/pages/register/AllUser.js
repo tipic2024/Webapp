@@ -66,7 +66,7 @@ function AllUsers() {
                                         <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                                         <CTableHeaderCell scope="col">Mobile</CTableHeaderCell>
                                         <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                                        <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">Blocked</CTableHeaderCell>
                                         
                                     </CTableRow>
                                 </CTableHead>
@@ -79,11 +79,13 @@ function AllUsers() {
                                             <CTableDataCell>{user.mobile}</CTableDataCell>
                                             <CTableDataCell>{user.type}</CTableDataCell>
                                             <CTableDataCell>
-                                                <CFormSwitch
-                                                    id={`formSwitchCheckDefault${user.id}`}
-                                                    checked={user.blocked === 1}
-                                                    onChange={() => toggleVisibility(user)}
-                                                />
+                                            <CFormSwitch
+                                                id={`formSwitchCheckDefault${user.id}`}
+                                                checked={user.blocked === 1}
+                                                onChange={() => toggleVisibility(user)}
+    
+                                                  />
+
                                             </CTableDataCell>
                                             
                                         </CTableRow>

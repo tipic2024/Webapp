@@ -4,6 +4,7 @@ import {
   CButton,
   CCard,
   CCardBody,
+  CCardHeader,
   CCol,
   CContainer,
   CDropdown,
@@ -20,7 +21,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser, cilMobile,cilPeople } from '@coreui/icons'
 import { register } from '../../../util/api'
-import { isLogIn, storeUserData } from '../../../util/session'
+import { getUserType, isLogIn, storeUserData } from '../../../util/session'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -43,6 +44,49 @@ const NewUsers = () => {
     password_confirmation: '',
     type: '',
   });
+
+  // {
+  //   "id": 3,
+  //   "name": "Samir Sutar",
+  //   "email": "sutarss33@gmail.com",
+  //   "mobile": "9604977112",
+  //   "profilepic": null,
+  //   "type": 0,
+  //   "blocked": 0,
+  //   "email_verified_at": null,
+  //   "created_at": "2024-07-22T05:01:56.000000Z",
+  //   "updated_at": "2024-07-22T05:07:22.000000Z"
+  // }
+
+  let userTypes=[];
+  const userType =getUserType();
+  if(userType=== 0){
+    userTypes= [
+      { label: 'Select User Type ', value: '' },
+      { label: 'Super Admin', value: '0' },
+      { label: 'Admin', value: '1' },
+      { label: 'User', value: '2', disabled: false }
+    ]
+  }
+  if(userType=== 1)
+    {
+      userTypes= [
+        { label: 'Select User Type ', value: '' },
+        { label: 'Admin', value: '1' },
+        { label: 'User', value: '2', disabled: false }
+      ]
+    }
+  else{
+    userTypes= [
+      { label: 'Select User Type ', value: '' },
+      { label: 'User', value: '2', disabled: false }
+    ]
+
+  }
+
+
+
+ 
 
   const handleSelect = () => {
     const value = parseInt(typeRef.current.value, 10);
@@ -85,15 +129,18 @@ const NewUsers = () => {
   }
 
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+    <div className="bg-body-tertiary min-vh-100 d-flex flex-row ">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={9} lg={7} xl={6}>
+          <CCol md={9} lg={12} xl={12}>
             <CCard className="mx-6">
+            <CCardHeader>
+                        <strong>Create User </strong>
+                    </CCardHeader>
               <CCardBody className="p-4">
                 <CForm noValidate validated={validated} onSubmit={handleSubmit}>
-                  <h1>Register User </h1>
-                  <p className="text-body-secondary">Create User account</p>
+                  {/* <h1>Register User </h1>
+                  <p className="text-body-secondary">Create User account</p> */}
 
                   <CInputGroup className="mb-4">
                     <CInputGroupText>
@@ -104,12 +151,7 @@ const NewUsers = () => {
                       aria-label="Default select example"
                       ref={typeRef}
                       invalid={isTypeInvalid}
-                      options={[
-                        { label: 'Select User Type ', value: '' },
-                        { label: 'Super Admin', value: '0' },
-                        { label: 'Admin', value: '1' },
-                        { label: 'User', value: '2', disabled: false }
-                      ]}
+                      options={userTypes}
                       feedbackInvalid="Please select a valid option."
                     />
                   </CInputGroup>
@@ -183,7 +225,7 @@ const NewUsers = () => {
                       <CAlert color="danger">{errorMessage}</CAlert>
                     </CRow>
                   )}
-                  <div className="d-grid">
+                  <div className="d-grid col-sm-3">
                     <CButton color="success" type="submit">
                       Create Account
                     </CButton>

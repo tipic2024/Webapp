@@ -34,35 +34,70 @@ class AuthController extends Controller
         return response($response,201);
     }
 
-    function login(Request $request){
+    // function login(Request $request){
+    //     $fields = $request->validate([
+    //         'email' => 'required|string',
+    //         'password' => 'required|string'
+    //     ]);
+
+    //     //Check if email exists
+    //     $user = User::where('email',$fields['email'])->first();
+
+    //     //Check password
+    //     if(!$user || !Hash::check($fields['password'], $user->password)){
+    //         return response()->json([
+    //             'message' => 'User not allowed. Kindly contact admin.'
+    //         ], 403);
+    //     }
+
+    //     if($user->blocked == 1){
+    //         return response()->json([
+    //             'message'=>'User not allowed. Kindly contact admin.'
+    //         ],403);
+    //     }
+
+    //     $token = $user->createToken('webapp')->plainTextToken;
+    //     $response = [
+    //         'user'=> $user,
+    //         'token'=> $token
+    //     ];
+    //     return response($response,201);
+    // }    
+
+    public function login(Request $request)
+    {
         $fields = $request->validate([
             'email' => 'required|string',
             'password' => 'required|string'
         ]);
-
-        //Check if email exists
-        $user = User::where('email',$fields['email'])->first();
-
-        //Check password
-        if(!$user || !Hash::check($fields['password'], $user->password)){
-            return response([
-                'message'=>'Please provide valid credentials'
-            ],401);
+    
+        // Check if email exists
+        $user = User::where('email', $fields['email'])->first();
+    
+        // Check password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response()->json([
+                'message' => 'Invalid credentials'
+            ], 401);
         }
-
-        if($user->blocked == 1){
-            return response([
-                'message'=>'User not allowed. Kindly contact admin.'
-            ],401);
+    
+        // Check if user is blocked
+        if ($user->blocked == 1) {
+            return response()->json([
+                'message' => 'User not allowed. Kindly contact admin.'
+            ], 201);
         }
-
+    
         $token = $user->createToken('webapp')->plainTextToken;
         $response = [
-            'user'=> $user,
-            'token'=> $token
+            'user' => $user,
+            'token' => $token
         ];
-        return response($response,201);
+        return response()->json($response, 201);
     }
+
+
+
 
     function mobileLogin(Request $request){
         $fields = $request->validate([
@@ -75,7 +110,7 @@ class AuthController extends Controller
 
         //Check password
         if(!$user || !Hash::check($fields['password'], $user->password)){
-            return response([
+            return response->json([
                 'message'=>'Please provide valid credentials'
             ],401);
         }

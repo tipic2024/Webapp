@@ -32,28 +32,62 @@ const Login = () => {
     }
   }, [navigate]);
 
-  const handleLogin = async (event) => {
-    const form = event.currentTarget;
-    event.preventDefault();
-    event.stopPropagation();
-    if (form.checkValidity() !== true) {
-      console.log('Invalid');
-      setValidated(true);
-      return;
-    }
+
+
+
+//   const handleLogin = async (event) => {
+//     const form = event.currentTarget;
+//     event.preventDefault();
+//     event.stopPropagation();
+//     if (form.checkValidity() !== true) {
+//         console.log('Invalid');
+//         setValidated(true);
+//         return;
+//     }
+//     setValidated(true);
+//     const email = userNameRef.current?.value;
+//     const password = userPwdRef.current?.value;
+//     console.log(userPwdRef.current?.value);
+//     try {
+//         const resp = await login({ email, password });
+//         setErrorMessage(resp.message);
+//         console.log(resp.message);
+//         if(resp.message!=='User not allowed. Kindly contact admin.')
+//         {navigate('/invoice');}
+//     } catch (error) {
+//         console.log(error.status);
+//         setErrorMessage('Please Provide Valid Credentials');
+//     }
+// };
+
+const handleLogin = async (event) => {
+  const form = event.currentTarget;
+  event.preventDefault();
+  event.stopPropagation();
+  if (form.checkValidity() !== true) {
+    console.log('Invalid');
     setValidated(true);
-    const email = userNameRef.current?.value;
-    const password = userPwdRef.current?.value;
-    console.log(userPwdRef.current?.value);
-    try {
-      const resp = await login({ email, password });
-      console.log(resp);
+    return;
+  }
+  setValidated(true);
+  const email = userNameRef.current?.value;
+  const password = userPwdRef.current?.value;
+  console.log(userPwdRef.current?.value);
+  try {
+    const resp = await login({ email, password });
+    console.log(resp);
+    if(resp.message=='User not allowed. Kindly contact admin.'){
+      setErrorMessage('User not allowed. Kindly contact admin.')
+    }
+    else{
       storeUserData(resp);
       navigate('/invoice');
-    } catch (error) {
-      setErrorMessage('Please provide valid email and password');
     }
-  };
+   
+  } catch (error) {
+    setErrorMessage('Please provide valid email and password');
+  }
+};
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">

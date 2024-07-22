@@ -22,3 +22,7 @@ export function getToken() {
   const userData = JSON.parse(sessionStorage.getItem('userData'))
   return userData ? userData.token : null
 }
+export function getUserType() {
+  const userData = JSON.parse(sessionStorage.getItem('userData'))
+  return userData ? userData.user.type : null
+}
