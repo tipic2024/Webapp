@@ -84,7 +84,8 @@ class AuthController extends Controller
         // Check if user is blocked
         if ($user->blocked == 1) {
             return response()->json([
-                'message' => 'User not allowed. Kindly contact admin.'
+                'message' => 'User not allowed. Kindly contact admin.',
+                'test' => 123
             ], 201);
         }
     
