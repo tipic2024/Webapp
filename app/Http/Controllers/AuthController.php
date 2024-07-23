@@ -34,35 +34,7 @@ class AuthController extends Controller
         return response($response,201);
     }
 
-    // function login(Request $request){
-    //     $fields = $request->validate([
-    //         'email' => 'required|string',
-    //         'password' => 'required|string'
-    //     ]);
-
-    //     //Check if email exists
-    //     $user = User::where('email',$fields['email'])->first();
-
-    //     //Check password
-    //     if(!$user || !Hash::check($fields['password'], $user->password)){
-    //         return response()->json([
-    //             'message' => 'User not allowed. Kindly contact admin.'
-    //         ], 403);
-    //     }
-
-    //     if($user->blocked == 1){
-    //         return response()->json([
-    //             'message'=>'User not allowed. Kindly contact admin.'
-    //         ],403);
-    //     }
-
-    //     $token = $user->createToken('webapp')->plainTextToken;
-    //     $response = [
-    //         'user'=> $user,
-    //         'token'=> $token
-    //     ];
-    //     return response($response,201);
-    // }    
+      
 
     public function login(Request $request)
     {
@@ -85,7 +57,7 @@ class AuthController extends Controller
         if ($user->blocked == 1) {
             return response()->json([
                 'message' => 'User not allowed. Kindly contact admin.',
-                'test' => 1
+                'blocked'=> true
             ], 201);
         }
     
