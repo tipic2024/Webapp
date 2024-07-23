@@ -76,8 +76,8 @@ const handleLogin = async (event) => {
   try {
     const resp = await login({ email, password });
     console.log(resp);
-    if(resp.message=='User not allowed. Kindly contact admin.'){
-      setErrorMessage('User not allowed. Kindly contact admin.')
+    if(resp.blocked){
+      setErrorMessage(resp.message)
     }
     else{
       storeUserData(resp);
