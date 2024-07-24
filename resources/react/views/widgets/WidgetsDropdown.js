@@ -14,6 +14,7 @@ import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import WidgetsBrand from './WidgetsBrand'
 
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
@@ -39,9 +40,14 @@ const WidgetsDropdown = (props) => {
 
   return (
     <CRow className={props.className} xs={{ gutter: 4 }}>
-      <CCol sm={6} xl={4} xxl={3}>
+       
+       <CCol sm={6} xl={6} xxl={6}>
+        <WidgetsBrand ></WidgetsBrand>
+      </CCol>
+                            
+      <CCol sm={6} xl={6} xxl={6}>
         <CWidgetStatsA
-          color="primary"
+          color="success"
           value={
             <>
               26K{' '}
@@ -50,7 +56,7 @@ const WidgetsDropdown = (props) => {
               </span>
             </>
           }
-          title="Users"
+          title="Profit"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -129,22 +135,22 @@ const WidgetsDropdown = (props) => {
           }
         />
       </CCol>
-      <CCol sm={6} xl={4} xxl={3}>
+      <CCol sm={6} xl={6} xxl={6}>
         <CWidgetStatsA
           color="info"
           value={
             <>
-              $6.200{' '}
+              ₹6.200{' '}
               <span className="fs-6 fw-normal">
                 (40.9% <CIcon icon={cilArrowTop} />)
               </span>
             </>
           }
-          title="Income"
+          title="Sells"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-                <CIcon icon={cilOptions} />
+                 <CIcon icon={cilOptions} />
               </CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem>Action</CDropdownItem>
@@ -218,7 +224,7 @@ const WidgetsDropdown = (props) => {
           }
         />
       </CCol>
-      <CCol sm={6} xl={4} xxl={3}>
+      {/* <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsA
           color="warning"
           value={
@@ -288,9 +294,9 @@ const WidgetsDropdown = (props) => {
               }}
             />
           }
-        />
-      </CCol>
-      <CCol sm={6} xl={4} xxl={3}>
+        /> 
+      </CCol>*/}
+      <CCol sm={6} xl={6} xxl={6}>
         <CWidgetStatsA
           color="danger"
           value={
@@ -301,7 +307,7 @@ const WidgetsDropdown = (props) => {
               </span>
             </>
           }
-          title="Sessions"
+          title="Expenses"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-import { CChartLine } from '@coreui/react-chartjs'
+import { CChartBar } from '@coreui/react-chartjs'
 import { getStyle } from '@coreui/utils'
 
 const MainChart = () => {
@@ -30,14 +30,14 @@ const MainChart = () => {
 
   return (
     <>
-      <CChartLine
+      <CChartBar
         ref={chartRef}
         style={{ height: '300px', marginTop: '40px' }}
         data={{
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
           datasets: [
             {
-              label: 'My First dataset',
+              label: 'Profit',
               backgroundColor: `rgba(${getStyle('--cui-info-rgb')}, .1)`,
               borderColor: getStyle('--cui-info'),
               pointHoverBackgroundColor: getStyle('--cui-info'),
@@ -54,7 +54,7 @@ const MainChart = () => {
               fill: true,
             },
             {
-              label: 'My Second dataset',
+              label: 'Losses',
               backgroundColor: 'transparent',
               borderColor: getStyle('--cui-success'),
               pointHoverBackgroundColor: getStyle('--cui-success'),
@@ -70,7 +70,7 @@ const MainChart = () => {
               ],
             },
             {
-              label: 'My Third dataset',
+              label: 'Expenses',
               backgroundColor: 'transparent',
               borderColor: getStyle('--cui-danger'),
               pointHoverBackgroundColor: getStyle('--cui-danger'),
