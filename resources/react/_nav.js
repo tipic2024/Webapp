@@ -141,6 +141,11 @@ const _nav = [
         name: 'Profit and Loss Report',
         to: 'Reports/pnl_Report',
       },
+      {
+        component: CNavItem,
+        name: 'Report',
+        to: 'Reports/Reports',
+      },
     ],
   },
   
