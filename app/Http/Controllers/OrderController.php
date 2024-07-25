@@ -145,10 +145,11 @@ class OrderController extends Controller
         $endDate = $request->query('endDate');
         
         $query = Order::whereNotIn('orderStatus', [0, 1])
-                       ->where('orderStatus',2) ;// Initial filter for orderStatus = 2
+                       ->where('orderStatus',2) // Initial filter for orderStatus = 2 => Pending delivery
+                       ->where('invoiceType',2) ;// Initial filter for invoicetype = 2 => advance booking
         
         if ($startDate && $endDate) {
-            $query->whereBetween('invoiceDate', [$startDate, $endDate]);
+            $query->whereBetween('deliveryDate', [$startDate, $endDate]);
         }
         
         $result = $query->get()->filter(function ($order) {
