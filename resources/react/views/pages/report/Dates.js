@@ -33,7 +33,7 @@ export function Quarter() {
   )
 }
  
-import React from 'react'
+
 
 export function Year() {
   return (
@@ -43,7 +43,7 @@ export function Year() {
   )
 }
 
-import React from 'react'
+
 
 export  function Custom() {
   return (
@@ -53,7 +53,7 @@ export  function Custom() {
   )
 }
 
-import React from 'react'
+
 
 export  function week() {
   return (
