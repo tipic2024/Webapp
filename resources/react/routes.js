@@ -33,6 +33,7 @@ const NewExpense = React.lazy(() => import('./views/pages/expense/NewExpense'))
 const ExpenseReport = React.lazy(() => import('./views/pages/report/ExpenseReport'))
 const SalesReport = React.lazy(() => import('./views/pages/report/SalesReport'))
 const PnLReport = React.lazy(() => import('./views/pages/report/PnLReport'))
+const All_Reports=React.lazy(() => import('./views/pages/report/All_Reports'))
 
 //Password Newpassword
 const Updatepassword = React.lazy(() => import('./views/pages/Password/Newpassword'))
@@ -66,10 +67,13 @@ const routes = [
   { path: '/Reports/Expense_Report', name: 'Expense Report', element: ExpenseReport },
   { path: 'Reports/Sales_Report', name: 'Sales Report', element: SalesReport },
   { path: 'Reports/pnl_Report', name: 'Profit and Loss Report', element: PnLReport },
+  { path: '/Reports/Reports', name: 'Reports', element: All_Reports },
   { path: 'products/updateqty', name: 'Update Bulk Quantity', element: BulkQuantity },
   { path:'/updatepassword', name: 'Update Password', element: Updatepassword },
   { path:'/usermanagement/create-user', name: 'Create User', element: NewUsers },
   { path:'usermanagement/all-users', name: 'All Users', element: AllUser },
+  
+  
   
 ]
 
