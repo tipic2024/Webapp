@@ -1,187 +1,64 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { CWidgetStatsD, CRow, CCol } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cibFacebook, cibLinkedin, cibTwitter, cilCalendar } from '@coreui/icons'
-import { CChart } from '@coreui/react-chartjs'
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { CWidgetStatsD, CRow, CCol } from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import { cilCalendar } from '@coreui/icons';
+import { getAPICall } from '../../util/api';
+
+const today = new Date();
+const fulldate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+const Tomorrow = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate() + 1);
 
 const WidgetsBrand = (props) => {
-  const chartOptions = {
-    elements: {
-      line: {
-        tension: 0.4,
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      },
-    },
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    scales: {
-      x: {
-        display: false,
-      },
-      y: {
-        display: false,
-      },
-    },
-  }
+  const [todaysDeliveries, setTodaysDeliveries] = useState(0); // State to store today's deliveries count
+  const [tomorrowsDeliveries, setTomorrowsDeliveries] = useState(0); // State to store today's deliveries count
+
+  useEffect(() => {
+    TodaysDeliveries(); // Fetch deliveries on component mount
+    TomorrowsDeliveries();
+    
+  }, []);
+
+  const TodaysDeliveries = async () => {
+    try {
+      const resp = await getAPICall(`/api/totalDeliveries?startDate=${fulldate}&endDate=${fulldate}`);
+      const todaysCount = resp.length;
+      setTodaysDeliveries(todaysCount); // Update state with today's deliveries count
+    } catch (error) {
+      console.error('Error fetching deliveries:', error);
+    }
+  };
+  const TomorrowsDeliveries = async () => {
+    try {
+      const resp = await getAPICall(`/api/totalDeliveries?startDate=${Tomorrow}&endDate=${Tomorrow}`);
+      const tomorrowsCount = resp.length;
+      setTomorrowsDeliveries(tomorrowsCount); // Update state with tomorrow's deliveries count
+    } catch (error) {
+      console.error('Error fetching deliveries:', error);
+    }
+  };
 
   return (
     <CRow className={props.className} xs={{ gutter: 4 }}>
-      {/* <CCol sm={6} xl={4} xxl={3}>
-        <CWidgetStatsD
-          {...(props.withCharts && {
-            chart: (
-              <CChart
-                className="position-absolute w-100 h-100"
-                type="line"
-                data={{
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                  datasets: [
-                    {
-                      backgroundColor: 'rgba(255,255,255,.1)',
-                      borderColor: 'rgba(255,255,255,.55)',
-                      pointHoverBackgroundColor: '#fff',
-                      borderWidth: 2,
-                      data: [65, 59, 84, 84, 51, 55, 40],
-                      fill: true,
-                    },
-                  ],
-                }}
-                options={chartOptions}
-              />
-            ),
-          })}
-          icon={<CIcon icon={cibFacebook} height={52} className="my-4 text-white" />}
-          values={[
-            { title: 'friends', value: '89K' },
-            { title: 'feeds', value: '459' },
-          ]}
-          style={{
-            '--cui-card-cap-bg': '#3b5998',
-          }}
-        />
-      </CCol>
-      <CCol sm={6} xl={4} xxl={3}>
-        <CWidgetStatsD
-          {...(props.withCharts && {
-            chart: (
-              <CChart
-                className="position-absolute w-100 h-100"
-                type="line"
-                data={{
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                  datasets: [
-                    {
-                      backgroundColor: 'rgba(255,255,255,.1)',
-                      borderColor: 'rgba(255,255,255,.55)',
-                      pointHoverBackgroundColor: '#fff',
-                      borderWidth: 2,
-                      data: [1, 13, 9, 17, 34, 41, 38],
-                      fill: true,
-                    },
-                  ],
-                }}
-                options={chartOptions}
-              />
-            ),
-          })}
-          icon={<CIcon icon={cibTwitter} height={52} className="my-4 text-white" />}
-          values={[
-            { title: 'followers', value: '973k' },
-            { title: 'tweets', value: '1.792' },
-          ]}
-          style={{
-            '--cui-card-cap-bg': '#00aced',
-          }}
-        />
-      </CCol>
-      <CCol sm={6} xl={4} xxl={3}>
-        <CWidgetStatsD
-          {...(props.withCharts && {
-            chart: (
-              <CChart
-                className="position-absolute w-100 h-100"
-                type="line"
-                data={{
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                  datasets: [
-                    {
-                      backgroundColor: 'rgba(255,255,255,.1)',
-                      borderColor: 'rgba(255,255,255,.55)',
-                      pointHoverBackgroundColor: '#fff',
-                      borderWidth: 2,
-                      data: [78, 81, 80, 45, 34, 12, 40],
-                      fill: true,
-                    },
-                  ],
-                }}
-                options={chartOptions}
-              />
-            ),
-          })}
-          icon={<CIcon icon={cibLinkedin} height={52} className="my-4 text-white" />}
-          values={[
-            { title: 'contacts', value: '500' },
-            { title: 'feeds', value: '1.292' },
-          ]}
-          style={{
-            '--cui-card-cap-bg': '#4875b4',
-          }}
-        />
-      </CCol> */}
       <CCol sm={12} xl={12} xxl={12}>
         <CWidgetStatsD
           color="warning"
-          // {...(props.withCharts && {
-          //   chart: (
-          //     <CChart
-          //       className="position-absolute w-100 h-100"
-          //       type="line"
-          //       data={{
-          //         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          //         datasets: [
-          //           {
-          //             backgroundColor: 'rgba(255,255,255,.1)',
-          //             borderColor: 'rgba(255,255,255,.55)',
-          //             pointHoverBackgroundColor: '#fff',
-          //             borderWidth: 2,
-          //             data: [35, 23, 56, 22, 97, 23, 64],
-          //             fill: true,
-          //           },
-          //         ],
-          //       }}
-          //       options={chartOptions}
-          //     />
-          //   ),
-          // })}
-          // value={[ 
-          //   {title: "Deliveries"}]        
-          //     }
-          icon={<CIcon icon={cilCalendar} height={20} className="my-4  text-white" />}
-          values={ [
-            { title: 'Today', value: '12+' },
-            { title: 'Tomorrow', value: '4' },
+          icon={<CIcon icon={cilCalendar} height={20} className="my-4 text-white" />}
+          values={[
+            { title: 'Today', value: todaysDeliveries }, // Display today's deliveries count here
+            { title: 'Tomorrow', value: tomorrowsDeliveries }, // Display tomorrow's deliveries count
           ]}
-          >
-            <h1 className='text-white'>Hello</h1>
-          </CWidgetStatsD>
+        >
+          <h1 className='text-white'>Hello</h1> {/* Example of additional content */}
+        </CWidgetStatsD>
       </CCol>
     </CRow>
-  )
-}
+  );
+};
 
 WidgetsBrand.propTypes = {
   className: PropTypes.string,
   withCharts: PropTypes.bool,
-}
+};
 
-export default WidgetsBrand
+export default WidgetsBrand;

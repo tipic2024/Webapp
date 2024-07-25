@@ -21,12 +21,13 @@ import { useNavigate } from 'react-router-dom'
 const AllProducts = () => {
   const navigate = useNavigate()
   const [products, setProducts] = useState([])
+
   const [deleteProduct, setDeleteProduct] = useState()
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
   const fetchProducts = async () => {
     const response = await getAPICall('/api/product')
     setProducts(response)
-    console.log(response)
+     console.log(response)
   }
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const AllProducts = () => {
     setDeleteModalVisible(false)
     fetchProducts()
   }
-
+  console.log(products);
   const handleEdit = (p) => {
     navigate('/products/edit/' + p.id)
   }
@@ -66,7 +67,7 @@ const AllProducts = () => {
             <CTable>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Id</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Local Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>

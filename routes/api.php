@@ -26,12 +26,11 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::resource('product',ProductController::class);
     Route::resource('order',OrderController::class);
     Route::get('/reportSales', [OrderController::class, 'Sales']);
+    Route::get('/totalDeliveries', [OrderController::class, 'TotalDeliverie']);
     Route::resource('expenseType',ExpenseTypeController::class);
     Route::resource('expense',ExpenseController::class);
     Route::post('/newStock',[ProductController::class, 'newStock'])->name('newStock');
     Route::get('/lowStock',[ProductController::class, 'lowStock'])->name('lowStock');
-    Route::post('/uploadFile', [FileUpload::class, 'fileUpload'])->name('fileUpload');
-    Route::post('/uploadFiles', [FileUpload::class, 'filesUpload'])->name('filesUpload');
     Route::get('/categories',[CategoryController::class, 'categories']);
     Route::resource('category',CategoryController::class);
     Route::resource('subCategory',SubCategoryController::class);

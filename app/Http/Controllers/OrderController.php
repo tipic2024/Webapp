@@ -138,4 +138,24 @@ class OrderController extends Controller
         return response()->json($result);
     }
 
+
+    public function TotalDeliverie(Request $request)
+    {
+        $startDate = $request->query('startDate');
+        $endDate = $request->query('endDate');
+        
+        $query = Order::whereNotIn('orderStatus', [0, 1])
+                       ->where('orderStatus',2) ;// Initial filter for orderStatus = 2
+        
+        if ($startDate && $endDate) {
+            $query->whereBetween('invoiceDate', [$startDate, $endDate]);
+        }
+        
+        $result = $query->get()->filter(function ($order) {
+            return $order->orderStatus == 2; // Filter out any order with orderStatus other than 1
+        });
+        
+        return response()->json($result);
+    }
+
 }
