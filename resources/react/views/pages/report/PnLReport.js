@@ -92,6 +92,7 @@ const PnLReport = () => {
       const expenses = await fetchExpenses()
 
       const combinedData = [...sales, ...expenses]
+      console.log('combinedData',combinedData);
       const groupedData = combinedData.reduce((acc, entry) => {
         const date = entry.invoiceDate || entry.expense_date
         if (!acc[date]) {
