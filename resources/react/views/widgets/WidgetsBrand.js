@@ -4,6 +4,7 @@ import { CWidgetStatsD, CRow, CCol } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilCalendar } from '@coreui/icons';
 import { getAPICall } from '../../util/api';
+import Dashboard from '../dashboard/Dashboard';
 
 const today = new Date();
 const fulldate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
@@ -23,7 +24,9 @@ const WidgetsBrand = (props) => {
     try {
       const resp = await getAPICall(`/api/totalDeliveries?startDate=${fulldate}&endDate=${fulldate}`);
       const todaysCount = resp.length;
+      
       setTodaysDeliveries(todaysCount); // Update state with today's deliveries count
+      Dashboard({todaysCount});
     } catch (error) {
       console.error('Error fetching deliveries:', error);
     }
@@ -40,10 +43,10 @@ const WidgetsBrand = (props) => {
 
   return (
     <CRow className={props.className} xs={{ gutter: 4 }}>
-      <CCol sm={12} xl={12} xxl={12}>
+      <CCol sm={8} xl={8} xxl={8}>
         <CWidgetStatsD
           color="warning"
-          icon={<CIcon icon={cilCalendar} height={20} className="my-4 text-white" />}
+          icon={<div className="d-flex align-items-center"><CIcon icon={cilCalendar} height={40} className="pr-4 text-white align-items-center " /><span className="text-white display-6 mr-2">Schedule Delivery</span></div>}
           values={[
             { title: 'Today', value: todaysDeliveries }, // Display today's deliveries count here
             { title: 'Tomorrow', value: tomorrowsDeliveries }, // Display tomorrow's deliveries count
