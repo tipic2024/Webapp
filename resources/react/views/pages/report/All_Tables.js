@@ -9,8 +9,8 @@ import {
   CBadge
 } from '@coreui/react';
 
-function All_Tables({ selectedOption,Sales,expenses, data, totalSales, totalPaid, totalRemaining, totalExpense, expenseType }) {
-     console.log(Sales);
+function All_Tables({ selectedOption, salesData, expenseData, pnlData, expenseType }) {
+     console.log(pnlData, selectedOption);
     const handleDelete = (p) => {
         setDeleteResource(p)
         setDeleteModalVisible(true)
@@ -29,7 +29,7 @@ function All_Tables({ selectedOption,Sales,expenses, data, totalSales, totalPaid
     
   return (
     <div>
-      {selectedOption === 1 ? (
+      {selectedOption === '1' && (
         <div className='table-responsive'>
           <CTable>
             <CTableHead>
@@ -41,7 +41,7 @@ function All_Tables({ selectedOption,Sales,expenses, data, totalSales, totalPaid
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {Sales.map((sale, index) => (
+              {salesData.data.map((sale, index) => (
                 <CTableRow key={index}>
                   <CTableDataCell>{sale.invoiceDate}</CTableDataCell>
                   <CTableDataCell>{sale.totalAmount}</CTableDataCell>
@@ -51,18 +51,19 @@ function All_Tables({ selectedOption,Sales,expenses, data, totalSales, totalPaid
               ))}
               <CTableRow>
                 <CTableHeaderCell>Total</CTableHeaderCell>
-                <CTableHeaderCell>{totalSales}</CTableHeaderCell>
+                <CTableHeaderCell>{salesData.totalSales}</CTableHeaderCell>
                 <CTableHeaderCell>
-                  <CBadge color="success">{totalPaid}</CBadge>
+                  <CBadge color="success">{salesData.totalPaid}</CBadge>
                 </CTableHeaderCell>
                 <CTableHeaderCell>
-                  <CBadge color="danger">{totalRemaining}</CBadge>
+                  <CBadge color="danger">{salesData.totalRemaining}</CBadge>
                 </CTableHeaderCell>
               </CTableRow>
             </CTableBody>
           </CTable>
         </div>
-      ) : (
+      ) }
+      {selectedOption === '2' && (
         <div className='table-responsive'>
           <CTable>
             <CTableHead>
@@ -79,9 +80,9 @@ function All_Tables({ selectedOption,Sales,expenses, data, totalSales, totalPaid
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {data.map((p, index) => {
+              {expenseData.data.map((p, index) => {
                 return (
-                  <CTableRow key={p.slug + p.id}>
+                  <CTableRow key={p.id}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                     <CTableDataCell>{p.expense_date}</CTableDataCell>
                     <CTableDataCell>{expenseType[p.expense_id]}</CTableDataCell>
@@ -123,11 +124,49 @@ function All_Tables({ selectedOption,Sales,expenses, data, totalSales, totalPaid
                 <CTableHeaderCell className="text-end" colSpan={5}>
                   {'Total '}
                 </CTableHeaderCell>
-                <CTableHeaderCell colSpan={3}>{totalExpense}</CTableHeaderCell>
+                <CTableHeaderCell colSpan={3}>{expenseData.totalExpense}</CTableHeaderCell>
               </CTableRow>
             </CTableBody>
           </CTable>
         </div>
+      )}
+      {selectedOption === '3' && (
+        <div className='table-responsive'>
+        <CTable>
+          <CTableHead>
+            <CTableRow>
+              <CTableHeaderCell>Date</CTableHeaderCell>
+              <CTableHeaderCell>Total Sales</CTableHeaderCell>
+              <CTableHeaderCell>Total Expenses</CTableHeaderCell>
+              <CTableHeaderCell>Profit/Loss</CTableHeaderCell>
+            </CTableRow>
+          </CTableHead>
+          <CTableBody>
+            {pnlData.data.map((data, index) => (
+              <CTableRow key={index}>
+                <CTableDataCell>{data.date}</CTableDataCell>
+                <CTableDataCell>{data.totalSales}</CTableDataCell>
+                <CTableDataCell>{data.totalExpenses}</CTableDataCell>
+                <CTableDataCell>
+                  <CBadge color={data.profitOrLoss >= 0 ? 'success' : 'danger'}>
+                    {data.profitOrLoss}
+                  </CBadge>
+                </CTableDataCell>
+              </CTableRow>
+            ))}
+            <CTableRow>
+              <CTableHeaderCell>Total</CTableHeaderCell>
+              <CTableHeaderCell>{pnlData.totalSales}</CTableHeaderCell>
+              <CTableHeaderCell>{pnlData.totalExpenses}</CTableHeaderCell>
+              <CTableHeaderCell>
+                <CBadge color={pnlData.totalProfitOrLoss >= 0 ? 'success' : 'danger'}>
+                  {pnlData.totalProfitOrLoss}
+                </CBadge>
+              </CTableHeaderCell>
+            </CTableRow>
+          </CTableBody>
+        </CTable>
+      </div>
       )}
     </div>
   );

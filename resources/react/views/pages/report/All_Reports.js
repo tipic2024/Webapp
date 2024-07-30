@@ -19,34 +19,28 @@ function All_Reports() {
 
 
   //for Sales Report 
-  const [rawSales, setRawSales] = useState([])
-  const [Sales, setSales] = useState([])
-  const [totalSales, setTotalSales] = useState(0)
-  const [totalPaid, setTotalPaid] = useState(0)
-  const [totalRemaining, setTotalRemaining] = useState(0)
+  const [salesData, setSalesData] = useState({
+    data: [],
+    totalSales: 0,
+    totalPaid: 0,
+    totalRemaining: 0
+  });
   const [errorMessage, setErrorMessage] = useState()
 
-
-
   //for Expence Report
-  const [rawExpence, setRawExpence] = useState([])
+  const [expenseData, setExpenseData] = useState({
+    data: [],
+    totalExpense: 0
+  });
   const [expenseType, setExpenseType] = useState({})
-  const [expenses, setExpenses] = useState([])
-  const [totalExpense, setTotalExpense] = useState(0)
-  const [deleteResource, setDeleteResource] = useState()
-  const [validated, setValidated] = useState(false)
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
-
 
   //Profit & Loss
-  const [pnlData, setPnLData] = useState([])
-  const [totalProfitOrLoss, setTotalProfitOrLoss] = useState(0) 
-  const [reportData, setReportData] = useState([])
-
-
-
-
-
+  const [pnlData, setPnLData] = useState({
+    data: [],
+    totalSales: 0,
+    totalExpenses: 0,
+    totalProfitOrLoss: 0
+  });
 
   const handleTabChange = (value) => {
    
@@ -58,25 +52,27 @@ function All_Reports() {
 //  let reportData={};
 
 
-useEffect(() => {
-  switch(selectedOption)
- { case '1':
-  // reportData=Sales;
-  setReportData(Sales);
+// useEffect(() => {
+//   switch(selectedOption)
+//  { case '1':
+//   // reportData=Sales;
+//   setReportData(Sales);
 
-  break
-  case '2':
-    setReportData(expenses);
-  break
-  case '3':
-    setReportData(pnlData);
+//   break
+//   case '2':
+//     setReportData(expenses);
+//   break
+//   case '3':
+//     setReportData(pnlData);
 
- }
+//  }
 
-}, [selectedOption]); 
+// }, [selectedOption]); 
  
   const fetchReportData = async() => {
     let date = {};
+    let rawSalesData = [];
+    let rawExpenseData = [];
     switch (activeTab1) {
       case 'Custom':
         date = stateCustom;
@@ -98,97 +94,103 @@ useEffect(() => {
       alert("Please select dates before fetching data.");
       return;
     }
-     if(selectedOption==='1'||selectedOption==='3') {
-    const resp = await getAPICall(
-      '/api/reportSales?startDate=' + date.start_date + '&endDate=' + date.end_date,
-    )
-    if (resp) {
-      const groupedSales = resp.reduce((acc, sale) => {
-        if (!acc[sale.invoiceDate]) {
-          acc[sale.invoiceDate] = {
-            invoiceDate: sale.invoiceDate,
-            totalAmount: 0,
-            paidAmount: 0,
+    if(selectedOption==='1'|| selectedOption==='3') {
+      const resp = await getAPICall(
+        '/api/reportSales?startDate=' + date.start_date + '&endDate=' + date.end_date,
+      )
+      if (resp) {
+        const groupedSales = resp.reduce((acc, sale) => {
+          if (!acc[sale.invoiceDate]) {
+            acc[sale.invoiceDate] = {
+              invoiceDate: sale.invoiceDate,
+              totalAmount: 0,
+              paidAmount: 0,
+            }
           }
-        }
-        acc[sale.invoiceDate].totalAmount += sale.totalAmount
-        acc[sale.invoiceDate].paidAmount += sale.paidAmount
-        return acc
-      }, {})
+          acc[sale.invoiceDate].totalAmount += sale.totalAmount
+          acc[sale.invoiceDate].paidAmount += sale.paidAmount
+          return acc
+        }, {})
 
-      const salesArray = Object.values(groupedSales).map(sale => ({
-        ...sale,
-        totalAmount: Math.round(sale.totalAmount),
-        paidAmount: Math.round(sale.paidAmount),
-        remainingAmount: Math.round(sale.totalAmount - sale.paidAmount)
-      }))
+        const salesArray = Object.values(groupedSales).map(sale => ({
+          ...sale,
+          totalAmount: Math.round(sale.totalAmount),
+          paidAmount: Math.round(sale.paidAmount),
+          remainingAmount: Math.round(sale.totalAmount - sale.paidAmount)
+        }))
+
+        //TODO: Samir to fix this raw sales data mapping
+        rawSalesData = [...salesArray];
+        const totalSales = salesArray.reduce((acc, current) => acc + current.totalAmount, 0)
+        const totalPaid = salesArray.reduce((acc, current) => acc + current.paidAmount, 0)
+        const totalRemaining = salesArray.reduce((acc, current) => acc + current.remainingAmount, 0)
+        setSalesData((prev)=>{
+          return {
+            ...prev,
+            data: salesArray,
+            totalSales: Math.round(totalSales),
+            totalPaid: Math.round(totalPaid),
+            totalRemaining: Math.round(totalRemaining)
+          }
+        })
+        setErrorMessage(null)
+      } else {
+        setErrorMessage('Failed to fetch records')
+      }
+    }
+    
+    if(selectedOption==='2'|| selectedOption==='3') {
+      const resp = await getAPICall(
+        '/api/expense?startDate=' + date.start_date + '&endDate=' + date.end_date,
+      )
       
-      setSales(salesArray)
-
-      const totalSales = salesArray.reduce((acc, current) => acc + current.totalAmount, 0)
-      const totalPaid = salesArray.reduce((acc, current) => acc + current.paidAmount, 0)
-      const totalRemaining = salesArray.reduce((acc, current) => acc + current.remainingAmount, 0)
-
-      setTotalSales(Math.round(totalSales))
-      setTotalPaid(Math.round(totalPaid))
-      setTotalRemaining(Math.round(totalRemaining))
-      setErrorMessage(null)
-    } else {
-      setErrorMessage('Failed to fetch records')
-    }
-
-   
-  } 
-
-  if(selectedOption==='2'||selectedOption==='3') {
-    const resp = await getAPICall(
-      '/api/expense?startDate=' + date.start_date + '&endDate=' + date.end_date,
-    )
-    
-    if (resp) {
-      setExpenses(resp)
-      const totalExp = resp.reduce((acc, current) => {
-        if (current.show) {
-          return acc + current.total_price
-        }
-        return acc
-      }, 0)
-      setTotalExpense(totalExp)
-      setErrorMessage(null)
-
-      // Grouping expenses by expense_date and summing total_price
-      const groupedExpenses = resp.reduce((acc, expense) => {
-        if (!acc[expense.expense_date]) {
-          acc[expense.expense_date] = {
-            expense_date: expense.expense_date,
-            totalExpense: 0,
+      if (resp) {
+        rawExpenseData = [...resp];
+        const totalExp = resp.reduce((acc, current) => {
+          if (current.show) {
+            return acc + current.total_price
           }
-        }
-        acc[expense.expense_date].totalExpense += expense.total_price
-        return acc
-      }, {})
+          return acc
+        }, 0)
+        setExpenseData(prev=>{
+          return {
+            ...prev,
+            data: resp,
+            totalExpense: Math.round(totalExp)
+          }
+        })
+        setErrorMessage(null)
 
-      const expensesArray = Object.values(groupedExpenses)
-      console.log(expensesArray)
-    } else {
-      setErrorMessage('Failed to fetch records')
+        // Grouping expenses by expense_date and summing total_price
+        const groupedExpenses = resp.reduce((acc, expense) => {
+          if (!acc[expense.expense_date]) {
+            acc[expense.expense_date] = {
+              expense_date: expense.expense_date,
+              totalExpense: 0,
+            }
+          }
+          acc[expense.expense_date].totalExpense += expense.total_price
+          return acc
+        }, {})
+
+        const expensesArray = Object.values(groupedExpenses)
+        console.log(expensesArray)
+      } else {
+        setErrorMessage('Failed to fetch records')
+      }
+
     }
-
-  }
-
-  if(selectedOption==='3'){
-    calculatePnL();
-  }
-
     
+    if(selectedOption==='3'){
+      calculatePnL(rawExpenseData, rawSalesData);
+    }
   };
  
-  const calculatePnL = async() => {
+  const calculatePnL = async(rawExpenseData, rawSalesData) => {
+    console.log('rawExpenseData, rawSalesData', rawExpenseData, rawSalesData);
     try {
-      const sales =  rawSales;
-      const expenses = rawExpence
-
-      const combinedData = [...sales, ...expenses]
+      const combinedData = [...rawSalesData, ...rawExpenseData];
+      console.log(combinedData);
       const groupedData = combinedData.reduce((acc, entry) => {
         const date = entry.invoiceDate || entry.expense_date
         if (!acc[date]) {
@@ -216,10 +218,15 @@ useEffect(() => {
       const totalExpenses = pnlData.reduce((acc, current) => acc + current.totalExpenses, 0)
       const totalProfitOrLoss = pnlData.reduce((acc, current) => acc + current.profitOrLoss, 0)
 
-      setPnLData(pnlData)
-      setTotalSales(totalSales)
-      setTotalExpenses(totalExpenses)
-      setTotalProfitOrLoss(totalProfitOrLoss)
+      setPnLData(prev=>{
+        return{
+          ...prev,
+          data: pnlData,
+          totalSales: totalSales,
+          totalExpenses: totalExpenses,
+          totalProfitOrLoss: totalProfitOrLoss
+          }
+      })
       setErrorMessage(null)
     } catch (error) {
       setErrorMessage(error.message)
@@ -241,16 +248,10 @@ useEffect(() => {
             <Custom setStateCustom={setStateCustom} />
             <All_Tables 
             selectedOption={selectedOption}
-            data={reportData}
-             totalSales={totalSales}
-            totalPaid={totalPaid}
-           totalRemaining={totalRemaining}
-           totalExpense={totalExpense}
+            salesData= {salesData}
+            expenseData = {expenseData}
+            pnlData={pnlData}
             expenseType={expenseType}
-            Sales={Sales}
-            expenses={expenses}
-            // handleEdit={handleEdit}
-            // handleDelete={handleDelete}
            />
 
           </CTabPanel>
