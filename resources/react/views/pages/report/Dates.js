@@ -211,9 +211,9 @@ export function Quarter({ setStateQuarter }) {
         value={selectedYear}
         onChange={handleYearChange}
       >
-        {Array.from({ length: 26 }, (_, i) => (
-          <option key={2010 + i} value={2010 + i}>
-            {`${2010 + i}-${(2010 + i + 1).toString().slice(-2)}`}
+        {Array.from({ length: 7 }, (_, i) => (
+          <option key={2023 + i} value={2023 + i}>
+            {`${2023 + i}-${(2023 + i + 1).toString().slice(-2)}`}
           </option>
         ))}
       </CFormSelect>
@@ -259,8 +259,8 @@ export function Year({ setStateYear }) {
         value={selectedYear}
         onChange={(e) => setSelectedYear(e.target.value)}
       >
-        {Array.from({ length: 26 }, (_, i) => {
-          const year = 2010 + i;
+        {Array.from({ length: 7}, (_, i) => {
+          const year = 2023 + i;
           return <option key={year} value={year.toString()}>{`${year}-${(year + 1).toString().slice(-2)}`}</option>;
         })}
       </CFormSelect>
