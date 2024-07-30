@@ -6,6 +6,11 @@ import { getStyle } from '@coreui/utils'
 const MainChart = () => {
   const chartRef = useRef(null)
 
+  const getBarColor = (value) => {
+    return value < 0 ? 'red' : getStyle('--cui-success'); // 'red' for negative values, green for non-negative
+  };
+
+
   useEffect(() => {
     document.documentElement.addEventListener('ColorSchemeChange', () => {
       if (chartRef.current) {
@@ -34,12 +39,14 @@ const MainChart = () => {
         ref={chartRef}
         style={{ height: '300px', marginTop: '40px' }}
         data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October',
+                    'November','December'],
           datasets: [
             {
               label: 'Profit',
-              backgroundColor: `rgba(${getStyle('--cui-info-rgb')}, .1)`,
-              borderColor: getStyle('--cui-info'),
+              backgroundColor: getStyle('--cui-success'),
+          //     backgroundColor: dataValues.map(value => getBarColor(value)), // Apply color function to each value
+          //     borderColor: dataValues.map(value => getBarColor(value)), // Optional: Apply color function to border as well
               pointHoverBackgroundColor: getStyle('--cui-info'),
               borderWidth: 2,
               data: [
@@ -50,33 +57,38 @@ const MainChart = () => {
                 random(50, 200),
                 random(50, 200),
                 random(50, 200),
+                random(50, 200),
+                random(50, 200),
+                random(50, 200),
+                random(50, 200),
+                random(50, 200),
               ],
               fill: true,
             },
-            {
-              label: 'Losses',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-success'),
-              pointHoverBackgroundColor: getStyle('--cui-success'),
-              borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
-            },
+            // {
+            //   label: 'Losses',
+            //   backgroundColor: getStyle('--cui-success'),
+            //   borderColor: getStyle('--cui-success'),
+            //   pointHoverBackgroundColor: getStyle('--cui-success'),
+            //   borderWidth: 2,
+            //   data: [
+            //     random(50, 200),
+            //     random(50, 200),
+            //     random(50, 200),
+            //     random(50, 200),
+            //     random(50, 200),
+            //     random(50, 200),
+            //     random(50, 200),
+            //   ],
+            // },
             {
               label: 'Expenses',
-              backgroundColor: 'transparent',
+              backgroundColor: getStyle('--cui-danger'),
               borderColor: getStyle('--cui-danger'),
               pointHoverBackgroundColor: getStyle('--cui-danger'),
               borderWidth: 1,
               borderDash: [8, 5],
-              data: [65, 65, 65, 65, 65, 65, 65],
+              data: [65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65],
             },
           ],
         }}
@@ -86,6 +98,11 @@ const MainChart = () => {
             legend: {
               display: false,
             },
+            datalabels: {
+              color: 'white',
+              display:true,
+              formatter: (value) => value,  // Display the actual data value
+            }
           },
           scales: {
             x: {

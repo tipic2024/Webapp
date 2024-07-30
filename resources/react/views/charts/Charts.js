@@ -10,6 +10,30 @@ import {
 } from '@coreui/react-chartjs'
 import { DocsCallout } from 'resources/react/components'
 
+
+
+//testing
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+// Register Chart.js components and plugins
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartDataLabels
+);
+
+//testing ends
+
+
+
+
+
+
 const Charts = () => {
   const random = () => Math.round(Math.random() * 100)
 

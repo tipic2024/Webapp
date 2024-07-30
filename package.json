@@ -17,9 +17,9 @@
     "@coreui/react-chartjs": "^3.0.0",
     "@coreui/utils": "^2.0.2",
     "@popperjs/core": "^2.11.8",
-    
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.2",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "classnames": "^2.5.1",
     "core-js": "^3.36.1",
     "font-awesome": "^4.7.0",
