@@ -51,11 +51,7 @@ const MainChart = () => {
     random()
   ];
 
-  const convertToPositiveValues = (values) => {
-    return values.map(value => Math.abs(value));
-  };
-
-  const dataVal = convertToPositiveValues(dataValues);
+  const positiveDataValues = dataValues.map(value => Math.abs(value));
 
   const labelProfitOrLoss = labelName(dataValues);
 
@@ -69,12 +65,12 @@ const MainChart = () => {
                     'November','December'],
           datasets: [
             {
-              label: labelProfitOrLoss,
+              label: labelProfitOrLoss ,
               backgroundColor: dataValues.map(value => getBarColor(value)), // Apply color function to each value
               borderColor: dataValues.map(value => getBarColor(value)), // Optional: Apply color function to border as well
               pointHoverBackgroundColor: getStyle('--cui-info'),
               borderWidth: 2,
-              data: dataVal,
+              data: positiveDataValues,
               fill: true,
             },
             // {
@@ -109,6 +105,15 @@ const MainChart = () => {
           plugins: {
             legend: {
               display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const value = context.raw;
+                  const label = labelName(dataValues[context.dataIndex]);
+                  return `${label}: ${value}`;
+                },
+              },
             },
             datalabels: {
               color: 'white',
