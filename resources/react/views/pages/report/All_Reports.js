@@ -269,8 +269,8 @@ function All_Reports() {
           </CTabPanel>
         </CTabContent>
       </CTabs>
-
-      <div className="mt-2 col-sm-8 d-flex justify-content-center">
+      <div d-flex>
+      <div className="mt-2 w-18 d-flex justify-content-center">
         <CFormSelect
           className="pl-3"
           aria-label="Select Report Type"
@@ -280,10 +280,11 @@ function All_Reports() {
         />
       </div>
 
-      <div className="mt-2 col-sm-8 d-flex justify-content-center">
+      <div className="mt-2 sm-2 d-flex justify-content-center order-3">
         <CButton color="success" onClick={fetchReportData}>
           Fetch Report
         </CButton>
+      </div>
       </div>
     </>
   );
