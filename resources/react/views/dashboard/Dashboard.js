@@ -72,7 +72,7 @@ const Dashboard = (Props) => {
   tomorrow.setDate(tomorrow.getDate() + 1);
   const Tomorrow = tomorrow.toISOString().split('T')[0];
 
-console.log(fulldate);
+
   const fetchOrders = async () => {
     const resp = await getAPICall(`/api/totalDeliveries?startDate=${fulldate}&endDate=${Tomorrow}`);
     setOrders(resp)
@@ -81,6 +81,7 @@ console.log(fulldate);
   useEffect(() => {
     fetchOrders()
   }, [route, currentPage])
+
 
   const handleDelete = (p) => {
     setDeleteProduct(p)
@@ -245,6 +246,9 @@ console.log(fulldate);
       </CCard> 
     </>
   )
+
+
+  
 }
 
 export default Dashboard

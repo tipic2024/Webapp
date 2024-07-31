@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\ProductSize;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -158,5 +159,36 @@ class OrderController extends Controller
         
         return response()->json($result);
     }
+
+   
+    /**
+     * Get the monthly sales totals.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getMonthlySales()
+    {
+        // Query to get the sum of sales (totalAmount) grouped by month
+        $monthlySales = Order::select(
+                DB::raw('SUM(totalAmount) as total_sales'),
+                DB::raw('MONTH(invoiceDate) as month')
+            )
+            ->where('orderStatus', 1) // Only consider completed orders
+            ->groupBy(DB::raw('MONTH(invoiceDate)'))
+            ->get()
+            ->keyBy('month')
+            ->toArray();
+
+        // Initialize an array with 12 zeros
+        $salesData = array_fill(0, 12, 0);
+
+        // Fill in the sales data
+        foreach ($monthlySales as $month => $data) {
+            $salesData[$month - 1] = $data['total_sales'];
+        }
+
+        return response()->json($salesData);
+    }
+
 
 }

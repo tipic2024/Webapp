@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react'
 
 import { CChartBar } from '@coreui/react-chartjs'
 import { getStyle } from '@coreui/utils'
+import SalesInfo from './SalesInfo'
+
 
 const MainChart = () => {
   const chartRef = useRef(null)
@@ -36,19 +38,19 @@ const MainChart = () => {
   }, [chartRef])
 
   const random = (min = -100, max = 200) => Math.round(Math.random() * (max - min) + min);
-  const  dataValues= [
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random()
+ let  dataValues= [
+  random(),
+  random(),
+  random(),
+  random(),
+  random(),
+  random(),
+  random(),
+  random(),
+  random(),
+  random(),
+  random(),
+  random()
   ];
 
   const positiveDataValues = dataValues.map(value => Math.abs(value));
@@ -57,6 +59,7 @@ const MainChart = () => {
 
   return (
     <>
+    <SalesInfo></SalesInfo>
       <CChartBar
         ref={chartRef}
         style={{ height: '300px', marginTop: '40px' }}
