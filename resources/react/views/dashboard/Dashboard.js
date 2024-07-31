@@ -67,9 +67,11 @@ const Dashboard = (Props) => {
   const [totalPage, setTotalPage] = useState(1)
   const route = window.location.href.split('/').pop()
   const today = new Date();
-  const fulldate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  const Tomorrow = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate() + 1);
-   
+  const fulldate =today.toISOString().split('T')[0];
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const Tomorrow = tomorrow.toISOString().split('T')[0];
+
 console.log(fulldate);
   const fetchOrders = async () => {
     const resp = await getAPICall(`/api/totalDeliveries?startDate=${fulldate}&endDate=${Tomorrow}`);

@@ -48,7 +48,7 @@ const WidgetsDropdown = (props) => {
                             
   <CCol sm={4} xl={4} xxl={4}>
     <CWidgetStatsA
-      color="secondary"
+      color="dark"
       value={
         <>
           44K{' '}
@@ -133,7 +133,7 @@ const WidgetsDropdown = (props) => {
 
   <CCol sm={4} xl={4} xxl={4}>
     <CWidgetStatsA
-      color="secondary"
+      color="dark"
       value={
         <>
           20K{' '}
@@ -166,7 +166,7 @@ const WidgetsDropdown = (props) => {
             datasets: [
               {
                 label: 'My First dataset',
-                backgroundColor: 'rgba(0,0,255,.8)',
+                backgroundColor: 'rgba(0,0,255,1)',
                 borderColor: 'rgba(255,255,255,.55)',
                 data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98],
               }
@@ -218,7 +218,7 @@ const WidgetsDropdown = (props) => {
 
     <CCol sm={4} xl={4} xxl={4}>
     <CWidgetStatsA
-      color="secondary"
+      color="dark"
       value={
         <>
           4K{' '}

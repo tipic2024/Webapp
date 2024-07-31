@@ -7,7 +7,11 @@ const MainChart = () => {
   const chartRef = useRef(null)
 
   const getBarColor = (value) => {
-    return value < 0 ? 'red' : getStyle('--cui-success'); // 'red' for negative values, green for non-negative
+    return value < 0 ? getStyle('--cui-danger') : getStyle('--cui-success'); // 'red' for negative values, green for non-negative
+  };
+
+  const labelName = (value) => {
+    return value < 0 ? "Loss" : "Profit";
   };
 
 
@@ -31,7 +35,29 @@ const MainChart = () => {
     })
   }, [chartRef])
 
-  const random = () => Math.round(Math.random() * 100)
+  const random = (min = -100, max = 200) => Math.round(Math.random() * (max - min) + min);
+  const  dataValues= [
+    random(),
+    random(),
+    random(),
+    random(),
+    random(),
+    random(),
+    random(),
+    random(),
+    random(),
+    random(),
+    random(),
+    random()
+  ];
+
+  const convertToPositiveValues = (values) => {
+    return values.map(value => Math.abs(value));
+  };
+
+  const dataVal = convertToPositiveValues(dataValues);
+
+  const labelProfitOrLoss = labelName(dataValues);
 
   return (
     <>
@@ -43,26 +69,12 @@ const MainChart = () => {
                     'November','December'],
           datasets: [
             {
-              label: 'Profit',
-              backgroundColor: getStyle('--cui-success'),
-          //     backgroundColor: dataValues.map(value => getBarColor(value)), // Apply color function to each value
-          //     borderColor: dataValues.map(value => getBarColor(value)), // Optional: Apply color function to border as well
+              label: labelProfitOrLoss,
+              backgroundColor: dataValues.map(value => getBarColor(value)), // Apply color function to each value
+              borderColor: dataValues.map(value => getBarColor(value)), // Optional: Apply color function to border as well
               pointHoverBackgroundColor: getStyle('--cui-info'),
               borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
+              data: dataVal,
               fill: true,
             },
             // {
@@ -81,15 +93,15 @@ const MainChart = () => {
             //     random(50, 200),
             //   ],
             // },
-            {
-              label: 'Expenses',
-              backgroundColor: getStyle('--cui-danger'),
-              borderColor: getStyle('--cui-danger'),
-              pointHoverBackgroundColor: getStyle('--cui-danger'),
-              borderWidth: 1,
-              borderDash: [8, 5],
-              data: [65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65],
-            },
+            // {
+            //   label: 'Expenses',
+            //   backgroundColor: getStyle('--cui-danger'),
+            //   borderColor: getStyle('--cui-danger'),
+            //   pointHoverBackgroundColor: getStyle('--cui-danger'),
+            //   borderWidth: 2,
+            //   borderDash: [8, 5],
+            //   data: [65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65],
+            // },
           ],
         }}
         options={{

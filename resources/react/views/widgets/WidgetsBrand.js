@@ -4,36 +4,35 @@ import { CWidgetStatsD, CRow, CCol } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilCalendar } from '@coreui/icons';
 import { getAPICall } from '../../util/api';
-import Dashboard from '../dashboard/Dashboard';
-
-const today = new Date();
-const fulldate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-const Tomorrow = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate() + 1);
 
 const WidgetsBrand = (props) => {
   const [todaysDeliveries, setTodaysDeliveries] = useState(0); // State to store today's deliveries count
-  const [tomorrowsDeliveries, setTomorrowsDeliveries] = useState(0); // State to store today's deliveries count
+  const [tomorrowsDeliveries, setTomorrowsDeliveries] = useState(0); // State to store tomorrow's deliveries count
 
   useEffect(() => {
     TodaysDeliveries(); // Fetch deliveries on component mount
     TomorrowsDeliveries();
-    
   }, []);
 
   const TodaysDeliveries = async () => {
     try {
+      const today = new Date();
+      const fulldate = today.toISOString().split('T')[0];
       const resp = await getAPICall(`/api/totalDeliveries?startDate=${fulldate}&endDate=${fulldate}`);
       const todaysCount = resp.length;
       
       setTodaysDeliveries(todaysCount); // Update state with today's deliveries count
-      Dashboard({todaysCount});
     } catch (error) {
       console.error('Error fetching deliveries:', error);
     }
   };
+
   const TomorrowsDeliveries = async () => {
     try {
-      const resp = await getAPICall(`/api/totalDeliveries?startDate=${Tomorrow}&endDate=${Tomorrow}`);
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const fulldate = tomorrow.toISOString().split('T')[0];
+      const resp = await getAPICall(`/api/totalDeliveries?startDate=${fulldate}&endDate=${fulldate}`);
       const tomorrowsCount = resp.length;
       setTomorrowsDeliveries(tomorrowsCount); // Update state with tomorrow's deliveries count
     } catch (error) {
@@ -51,9 +50,7 @@ const WidgetsBrand = (props) => {
             { title: 'Today', value: todaysDeliveries }, // Display today's deliveries count here
             { title: 'Tomorrow', value: tomorrowsDeliveries }, // Display tomorrow's deliveries count
           ]}
-        >
-
-        </CWidgetStatsD>
+        />
       </CCol>
     </CRow>
   );
