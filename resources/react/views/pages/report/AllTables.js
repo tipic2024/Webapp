@@ -10,7 +10,7 @@ import {
 } from '@coreui/react';
 
 function All_Tables({ selectedOption, salesData, expenseData, pnlData, expenseType }) {
-     console.log(pnlData, selectedOption);
+     
     const handleDelete = (p) => {
         setDeleteResource(p)
         setDeleteModalVisible(true)
@@ -142,7 +142,7 @@ function All_Tables({ selectedOption, salesData, expenseData, pnlData, expenseTy
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {pnlData.data.map((data, index) => (
+            {pnlData.Data.map((data, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{data.date}</CTableDataCell>
                 <CTableDataCell>{data.totalSales}</CTableDataCell>

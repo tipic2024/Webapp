@@ -1,8 +1,11 @@
-import { CButton, CFormSelect, CTabs, CTabList, CTabPanel, CTabContent, CTab } from '@coreui/react';
+import { CButton, CFormSelect, CTabs, CTabList, CTabPanel, CTabContent, CTab, CFormInput } from '@coreui/react';
 import React, { useState, useCallback, useEffect } from 'react';
 import { Year, Custom, Months, Quarter, Week } from './Dates';
 import { getAPICall } from '../../../util/api';
-import All_Tables from './All_Tables';
+import All_Tables from './AllTables';
+import { Button,Dropdown } from '/resources/react/views/pages/report/ButtonDropdowns';
+import { MantineProvider } from '@mantine/core';
+
 
 function All_Reports() {
   const [selectedOption, setSelectedOption] = useState('3');
@@ -11,6 +14,10 @@ function All_Reports() {
   const [stateQuarter, setStateQuarter] = useState({ start_date: '', end_date: '' });
   const [stateYear, setStateYear] = useState({ start_date: '', end_date: '' });
   const [activeTab1, setActiveTab] = useState('Year');
+  const [stateWeek, setStateWeek] = useState({ start_date: '', end_date: '' });
+  
+  
+  
   const ReportOptions = [
     { label: 'Sales', value: '1' },
     { label: 'Expense', value: '2' },
@@ -36,7 +43,7 @@ function All_Reports() {
 
   //Profit & Loss
   const [pnlData, setPnLData] = useState({
-    data: [],
+    Data: [],
     totalSales: 0,
     totalExpenses: 0,
     totalProfitOrLoss: 0
@@ -48,26 +55,6 @@ function All_Reports() {
   
   };
 
-
-//  let reportData={};
-
-
-// useEffect(() => {
-//   switch(selectedOption)
-//  { case '1':
-//   // reportData=Sales;
-//   setReportData(Sales);
-
-//   break
-//   case '2':
-//     setReportData(expenses);
-//   break
-//   case '3':
-//     setReportData(pnlData);
-
-//  }
-
-// }, [selectedOption]); 
  
   const fetchReportData = async() => {
     let date = {};
@@ -85,6 +72,9 @@ function All_Reports() {
         break;
       case 'Year':
         date = stateYear;
+        break;
+      case 'Week':
+        date = stateWeek;
         break;
       default:
         break;
@@ -174,7 +164,7 @@ function All_Reports() {
         }, {})
 
         const expensesArray = Object.values(groupedExpenses)
-        console.log(expensesArray)
+        
       } else {
         setErrorMessage('Failed to fetch records')
       }
@@ -185,12 +175,14 @@ function All_Reports() {
       calculatePnL(rawExpenseData, rawSalesData);
     }
   };
+
  
-  const calculatePnL = async(rawExpenseData, rawSalesData) => {
-    console.log('rawExpenseData, rawSalesData', rawExpenseData, rawSalesData);
+ 
+  const calculatePnL = (rawExpenseData, rawSalesData) => {
+    console.log(rawExpenseData);
     try {
-      const combinedData = [...rawSalesData, ...rawExpenseData];
-      console.log(combinedData);
+      const combinedData = [...rawExpenseData, ...rawSalesData]
+      console.log('combinedData',combinedData);
       const groupedData = combinedData.reduce((acc, entry) => {
         const date = entry.invoiceDate || entry.expense_date
         if (!acc[date]) {
@@ -203,38 +195,47 @@ function All_Reports() {
         if (entry.totalAmount) {
           acc[date].totalSales += entry.totalAmount
         }
-        if (entry.totalExpense) {
-          acc[date].totalExpenses += entry.totalExpense
+        if (entry.total_price) {
+         
+          acc[date].totalExpenses += entry.total_price;
+          console.log(acc[date].totalExpenses);
         }
+        ;
         return acc
       }, {})
 
+
+  
+      // Convert the grouped data into an array and calculate profit or loss
       const pnlData = Object.values(groupedData).map(data => ({
         ...data,
         profitOrLoss: data.totalSales - data.totalExpenses,
-      }))
-
-      const totalSales = pnlData.reduce((acc, current) => acc + current.totalSales, 0)
-      const totalExpenses = pnlData.reduce((acc, current) => acc + current.totalExpenses, 0)
-      const totalProfitOrLoss = pnlData.reduce((acc, current) => acc + current.profitOrLoss, 0)
-
-      setPnLData(prev=>{
-        return{
-          ...prev,
-          data: pnlData,
-          totalSales: totalSales,
-          totalExpenses: totalExpenses,
-          totalProfitOrLoss: totalProfitOrLoss
-          }
-      })
-      setErrorMessage(null)
+      }));
+  
+      // Calculate total sales, expenses, and profit/loss
+      const totalSales = pnlData.reduce((acc, current) => acc + current.totalSales, 0);
+      const totalExpenses = pnlData.reduce((acc, current) => acc + current.totalExpenses, 0);
+      const totalProfitOrLoss = pnlData.reduce((acc, current) => acc + current.profitOrLoss, 0);
+  
+      // Set the PnL data
+      setPnLData(prev => ({
+        ...prev,
+        Data: pnlData,
+        totalSales: totalSales,
+        totalExpenses: totalExpenses,
+        totalProfitOrLoss: totalProfitOrLoss,
+      }));
     } catch (error) {
-      setErrorMessage(error.message)
+      setErrorMessage(error.message);
     }
   }
+  
+
+  
 
   return (
     <>
+     <MantineProvider withGlobalStyles withNormalizeCSS>
       <CTabs activeItemKey={activeTab1} onChange={handleTabChange}>
         <CTabList variant="tabs">
           <CTab itemKey="Year">Year</CTab>
@@ -243,49 +244,158 @@ function All_Reports() {
           <CTab itemKey="Week">Week</CTab>
           <CTab itemKey="Custom" default>Custom</CTab>
         </CTabList>
-        <CTabContent>
-          <CTabPanel className="p-3" itemKey="Custom">
-            <Custom setStateCustom={setStateCustom} />
-            <All_Tables 
-            selectedOption={selectedOption}
-            salesData= {salesData}
-            expenseData = {expenseData}
-            pnlData={pnlData}
-            expenseType={expenseType}
-           />
+  <CTabContent>
 
-          </CTabPanel>
-          <CTabPanel className="p-3" itemKey="Week">
-            <Week setStateCustom={setStateCustom} /> {/* Update if Week component has its own state */}
-          </CTabPanel>
-          <CTabPanel className="p-3" itemKey="Month">
-            <Months setStateMonth={setStateMonth} />
-          </CTabPanel>
-          <CTabPanel className="p-3" itemKey="Quarter">
-            <Quarter setStateQuarter={setStateQuarter} />
-          </CTabPanel>
-          <CTabPanel className="p-3" itemKey="Year">
-            <Year setStateYear={setStateYear} />
-          </CTabPanel>
-        </CTabContent>
-      </CTabs>
-      <div d-flex>
-      <div className="mt-2 w-18 d-flex justify-content-center">
-        <CFormSelect
-          className="pl-3"
-          aria-label="Select Report Type"
-          options={ReportOptions}
-          value={selectedOption}
-          onChange={(e) => setSelectedOption(e.target.value)}
+  <CTabPanel className="p-3" itemKey="Custom">
+
+  <div className="d-flex mb-3 justify-content-between ">
+  <div className="flex-fill mx-1">
+    <Custom setStateCustom={setStateCustom} />
+  </div>
+  <div className="row mt-2">
+  <div className="flex-fill mx-1 mt-4 col-sm-3 ">
+    <Dropdown
+      setSelectedOption={setSelectedOption}
+      ReportOptions={ReportOptions}
+      selectedOption={selectedOption}
+    />
+  </div>
+  <div className="flex-fill mx-1 mt-4  ">
+    <Button fetchReportData={fetchReportData} />
+  </div>
+  </div>
+  
+</div>
+<div className="mt-3">
+  <All_Tables
+    selectedOption={selectedOption}
+    salesData={salesData}
+    expenseData={expenseData}
+    pnlData={pnlData}
+    expenseType={expenseType}
+  />
+</div>
+
+</CTabPanel>
+ <CTabPanel className="p-3" itemKey="Week">
+   
+    <div className="d-flex mb-3 m">
+
+    <Week setStateWeek={setStateWeek}/>
+      <div className='mx-1 '>
+      <Dropdown
+          setSelectedOption={setSelectedOption}
+          ReportOptions={ReportOptions}
+          selectedOption={selectedOption}
+          fetchReportData={fetchReportData}
+        />
+
+      </div>
+        
+        <div className='mx-1 '>
+
+<Button fetchReportData={fetchReportData}/>
+        </div>
+         
+      </div>
+      <div className="mt-3">
+      
+        <All_Tables
+          selectedOption={selectedOption}
+          salesData={salesData}
+          expenseData={expenseData}
+          pnlData={pnlData}
+          expenseType={expenseType}
         />
       </div>
+             
+</CTabPanel>
 
-      <div className="mt-2 sm-2 d-flex justify-content-center order-3">
-        <CButton color="success" onClick={fetchReportData}>
-          Fetch Report
-        </CButton>
+<CTabPanel className="p-3" itemKey="Month">
+<div className="d-flex mb-3 justify-content-between">
+  <div className="flex-fill mx-1">
+    <Months setStateMonth={setStateMonth} />
+  </div>
+  <div className="flex-fill mx-1">
+    <Dropdown
+      setSelectedOption={setSelectedOption}
+      ReportOptions={ReportOptions}
+      selectedOption={selectedOption}
+    />
+  </div>
+  <div className="flex-fill mx-1">
+    <Button fetchReportData={fetchReportData} />
+  </div>
+</div>
+
+      <div className="mt-3">
+        <All_Tables
+          selectedOption={selectedOption}
+          salesData={salesData}
+          expenseData={expenseData}
+          pnlData={pnlData}
+          expenseType={expenseType}
+        />
       </div>
+</CTabPanel>
+
+ <CTabPanel className="p-3" itemKey="Quarter">
+           
+     <div className="d-flex mb-3">
+     <Quarter setStateQuarter={setStateQuarter} />
+        <Dropdown
+          setSelectedOption={setSelectedOption}
+          ReportOptions={ReportOptions}
+          selectedOption={selectedOption}
+          fetchReportData={fetchReportData}
+        />
+         <Button fetchReportData={fetchReportData}/>
       </div>
+      <div className="mt-3">
+        <All_Tables
+          selectedOption={selectedOption}
+          salesData={salesData}
+          expenseData={expenseData}
+          pnlData={pnlData}
+          expenseType={expenseType}
+        />
+      </div>
+  </CTabPanel>
+
+  <CTabPanel className="p-3" itemKey="Year">
+      <div className="d-flex mb-3 m">
+
+      <Year setStateYear={setStateYear} />
+      <div className='mx-1 mt-2'>
+      <Dropdown
+          setSelectedOption={setSelectedOption}
+          ReportOptions={ReportOptions}
+          selectedOption={selectedOption}
+          fetchReportData={fetchReportData}
+        />
+
+      </div>
+        
+        <div className='mx-1 mt-2'>
+
+<Button fetchReportData={fetchReportData}/>
+        </div>
+         
+      </div>
+      <div className="mt-3">
+        <All_Tables
+          selectedOption={selectedOption}
+          salesData={salesData}
+          expenseData={expenseData}
+          pnlData={pnlData}
+          expenseType={expenseType}
+        />
+      </div>
+    </CTabPanel>
+   </CTabContent>
+  </CTabs>
+  </MantineProvider>
+      
     </>
   );
 }

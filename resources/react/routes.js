@@ -33,7 +33,7 @@ const NewExpense = React.lazy(() => import('./views/pages/expense/NewExpense'))
 const ExpenseReport = React.lazy(() => import('./views/pages/report/ExpenseReport'))
 const SalesReport = React.lazy(() => import('./views/pages/report/SalesReport'))
 const PnLReport = React.lazy(() => import('./views/pages/report/PnLReport'))
-const All_Reports=React.lazy(() => import('./views/pages/report/All_Reports'))
+const All_Reports=React.lazy(() => import('./views/pages/report/AllReports'))
 
 //Password Newpassword
 const Updatepassword = React.lazy(() => import('./views/pages/Password/Newpassword'))

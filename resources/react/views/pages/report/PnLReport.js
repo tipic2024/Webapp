@@ -92,7 +92,7 @@ const PnLReport = () => {
       const expenses = await fetchExpenses()
 
       const combinedData = [...sales, ...expenses]
-      console.log('combinedData',combinedData);
+     
       const groupedData = combinedData.reduce((acc, entry) => {
         const date = entry.invoiceDate || entry.expense_date
         if (!acc[date]) {
@@ -106,7 +106,7 @@ const PnLReport = () => {
           acc[date].totalSales += entry.totalAmount
         }
         if (entry.totalExpense) {
-          acc[date].totalExpenses += entry.totalExpense
+         acc[date].totalExpenses += entry.totalExpense
         }
         return acc
       }, {})
