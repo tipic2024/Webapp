@@ -1,5 +1,8 @@
 import { CFormInput, CFormLabel, CFormSelect } from '@coreui/react';
 import React, { useEffect, useRef, useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { WeekPicker } from './Weekpicker';
 
 export function Custom({ setStateCustom }) {
   const startRef = useRef();
@@ -15,35 +18,37 @@ export function Custom({ setStateCustom }) {
 
   return (
     <div className="row">
-      <div className="col-sm-4">
-        <div className="mb-1">
-          <CFormLabel htmlFor="start_date">Start Date</CFormLabel>
-          <CFormInput
-            type="date"
-            ref={startRef}
-            id="start_date"
-            name="start_date"
-            onChange={handleChange}
-            required
-            feedbackInvalid="Please select date."
-          />
-        </div>
-      </div>
-      <div className="col-sm-4">
-        <div className="mb-1">
-          <CFormLabel htmlFor="end_date">End Date</CFormLabel>
-          <CFormInput
-            type="date"
-            id="end_date"
-            ref={endRef}
-            name="end_date"
-            onChange={handleChange}
-            required
-            feedbackInvalid="Please select date."
-          />
-        </div>
-      </div>
+  <div className="col-sm-5 mb-3">
+    <div className="mb-1">
+      <CFormLabel htmlFor="start_date">Start Date</CFormLabel>
+      <CFormInput
+        type="date"
+        ref={startRef}
+        id="start_date"
+        name="start_date"
+        onChange={handleChange}
+        required
+        feedbackInvalid="Please select a date."
+      />
     </div>
+  </div>
+  <div className="col-sm-5 mb-3">
+    <div className="mb-1">
+      <CFormLabel htmlFor="end_date">End Date</CFormLabel>
+      <CFormInput
+        type="date"
+        id="end_date"
+        ref={endRef}
+        name="end_date"
+        onChange={handleChange}
+        required
+        feedbackInvalid="Please select a date."
+      />
+    </div>
+  </div>
+</div>
+
+  
   );
 }
 
@@ -130,24 +135,29 @@ export function Months({ setStateMonth }) {
   }, [selectedYear, selectedMonth]);
 
   return (
-    <div className='d-flex'>
-      <CFormSelect 
-        className='pl-3'
-        aria-label="Select Year"
-        value={selectedYear}
-        onChange={handleYearChange}
-      >
-        {generateYearOptions()}
-      </CFormSelect>
-      <CFormSelect 
-        className='pl-3'
-        aria-label="Select Month"
-        value={selectedMonth}
-        onChange={handleMonthChange}
-      >
-        {generateMonthOptions()}
-      </CFormSelect>
-    </div>
+    <div className="d-flex mb-3">
+  <div className="flex-fill mx-1">
+    <CFormSelect
+      className="pl-3"
+      aria-label="Select Year"
+      value={selectedYear}
+      onChange={handleYearChange}
+    >
+      {generateYearOptions()}
+    </CFormSelect>
+  </div>
+  <div className="flex-fill mx-1">
+    <CFormSelect
+      className="pl-3"
+      aria-label="Select Month"
+      value={selectedMonth}
+      onChange={handleMonthChange}
+    >
+      {generateMonthOptions()}
+    </CFormSelect>
+  </div>
+</div>
+
   );
 }
 
@@ -205,8 +215,9 @@ export function Quarter({ setStateQuarter }) {
 
   return (
     <div className="d-flex">
+    <div className="flex-fill mx-1">
       <CFormSelect
-        className="pl-3"
+        className="pl-3 w-100"
         aria-label="Select Financial Year"
         value={selectedYear}
         onChange={handleYearChange}
@@ -217,8 +228,10 @@ export function Quarter({ setStateQuarter }) {
           </option>
         ))}
       </CFormSelect>
+    </div>
+    <div className="flex-fill mx-1">
       <CFormSelect
-        className="pl-3"
+        className="pl-3 w-100"
         aria-label="Select Quarter"
         value={selectedQuarter}
         onChange={handleQuarterChange}
@@ -235,6 +248,8 @@ export function Quarter({ setStateQuarter }) {
         ))}
       </CFormSelect>
     </div>
+  </div>
+  
   );
 }
 
@@ -252,23 +267,60 @@ export function Year({ setStateYear }) {
   }, [selectedYear, setStateYear]);
 
   return (
-    <div className='mt-2 col-sm-8 d-flex justify-content-center'>
+    <div className="mt-2 col-sm-2 d-flex justify-content-center">
+    <div className="flex-fill mx-1">
       <CFormSelect
-        className='pl-3'
+        className="pl-3 w-100"
         aria-label="Select Financial Year"
         value={selectedYear}
         onChange={(e) => setSelectedYear(e.target.value)}
       >
-        {Array.from({ length: 7}, (_, i) => {
+        {Array.from({ length: 7 }, (_, i) => {
           const year = 2023 + i;
-          return <option key={year} value={year.toString()}>{`${year}-${(year + 1).toString().slice(-2)}`}</option>;
+          return (
+            <option key={year} value={year.toString()}>
+              {`${year}-${(year + 1).toString().slice(-2)}`}
+            </option>
+          );
         })}
       </CFormSelect>
     </div>
+  </div>
+  
   );
 }
 
 
-export function Week({ setState }) {
-  // Implement Week component similar to other components
+
+
+
+export function Week({ setStateWeek }) {
+  const [week, setWeek] = useState({
+    firstDay: new Date(),
+    lastDay: new Date()
+  });
+
+  // Function to convert date to yyyy-mm-dd format
+  const convertDate = (date) => {
+    let dt = new Date(date);
+    let year = dt.getFullYear();
+    let month = String(dt.getMonth() + 1).padStart(2, '0'); // Ensure two digits
+    let day = String(dt.getDate()).padStart(2, '0'); // Ensure two digits
+    return `${year}-${month}-${day}`;
+  };
+
+  // Update week and set formatted start and end dates
+  const onChange = (week) => {
+    setWeek(week);
+    setStateWeek({
+      start_date: convertDate(week.firstDay),
+      end_date: convertDate(week.lastDay)
+    });
+  };
+
+  return (
+    <div className="App">
+      <WeekPicker onChange={onChange} />
+    </div>
+  );
 }
