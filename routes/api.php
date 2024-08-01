@@ -40,11 +40,12 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::resource('subCategory',SubCategoryController::class);
     Route::resource('subSubCategory',SubSubCategoryController::class);
     Route::post('/product/updateQty', [ProductController::class, 'updateQty']);
+    Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
 });
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/monthly-sales', [OrderController::class, 'getMonthlySales']);
+
 

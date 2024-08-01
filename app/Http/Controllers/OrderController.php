@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Expense;
 use App\Models\OrderDetail;
 use App\Models\ProductSize;
 use Illuminate\Http\Request;
@@ -166,29 +167,66 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getMonthlySales()
-    {
-        // Query to get the sum of sales (totalAmount) grouped by month
-        $monthlySales = Order::select(
-                DB::raw('SUM(totalAmount) as total_sales'),
-                DB::raw('MONTH(invoiceDate) as month')
-            )
-            ->where('orderStatus', 1) // Only consider completed orders
-            ->groupBy(DB::raw('MONTH(invoiceDate)'))
-            ->get()
-            ->keyBy('month')
-            ->toArray();
+    public function getMonthlyReport()
+{
+    // Fetch and process monthly expenses
+    $monthlyExpense = Expense::select(
+        DB::raw('SUM(total_price) as total_expense'),
+        DB::raw('MONTH(expense_date) as month')
+    )
+    ->where('show', 1) // Only consider visible expenses
+    ->groupBy(DB::raw('MONTH(expense_date)'))
+    ->get()
+    ->keyBy('month')
+    ->toArray();
 
-        // Initialize an array with 12 zeros
-        $salesData = array_fill(0, 12, 0);
+    // Initialize an array with 12 zeros for expenses
+    $expenseData = array_fill(0, 12, 0);
 
-        // Fill in the sales data
-        foreach ($monthlySales as $month => $data) {
-            $salesData[$month - 1] = $data['total_sales'];
-        }
+    // Fill in the expense data
+    foreach ($monthlyExpense as $month => $data) {
+        $expenseData[$month - 1] = $data['total_expense'];
+    }    
 
-        return response()->json($salesData);
+    // Fetch and process monthly sales
+    $monthlySales = Order::select(
+        DB::raw('SUM(totalAmount) as total_sales'),
+        DB::raw('MONTH(invoiceDate) as month')
+    )
+    ->where('orderStatus', 1) // Only consider completed orders
+    ->groupBy(DB::raw('MONTH(invoiceDate)'))
+    ->get()
+    ->keyBy('month')
+    ->toArray();
+
+    // Initialize an array with 12 zeros for sales
+    $salesData = array_fill(0, 12, 0);
+
+    // Fill in the sales data
+    foreach ($monthlySales as $month => $data) {
+        $salesData[$month - 1] = $data['total_sales'];
     }
 
+    // Calculate the Profit and Loss (PL) data
+    $PLdata = array_fill(0, 12, 0);
+    foreach ($monthlySales as $month => $sales) {
+        if (isset($monthlyExpense[$month])) {
+            $expense = $monthlyExpense[$month];
+            $PLdata[$month - 1] = $sales['total_sales'] - $expense['total_expense'];
+        } else {
+            $PLdata[$month - 1] = $sales['total_sales'];
+        }
+    }
+
+    return response()->json([
+        'success'=>true,
+        'monthlySales' => $salesData,
+        'monthlyExpense'=>$expenseData,
+       'monthlyPandL'=>$PLdata,
+    ]);
+
+
+
+}
 
 }

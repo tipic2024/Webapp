@@ -17,8 +17,8 @@ export function Custom({ setStateCustom }) {
   };
 
   return (
-    <div className="row">
-  <div className="col-sm-5 mb-3">
+    <div className="row mt-1">
+  <div className="col-sm-6 mb-3">
     <div className="mb-1">
       <CFormLabel htmlFor="start_date">Start Date</CFormLabel>
       <CFormInput
@@ -26,13 +26,14 @@ export function Custom({ setStateCustom }) {
         ref={startRef}
         id="start_date"
         name="start_date"
+        placeholder="Select Start Date"
         onChange={handleChange}
         required
         feedbackInvalid="Please select a date."
       />
     </div>
   </div>
-  <div className="col-sm-5 mb-3">
+  <div className="col-sm-6 mb-3">
     <div className="mb-1">
       <CFormLabel htmlFor="end_date">End Date</CFormLabel>
       <CFormInput
@@ -215,7 +216,7 @@ export function Quarter({ setStateQuarter }) {
 
   return (
     <div className="d-flex">
-    <div className="flex-fill mx-1">
+    <div className="flex-fill mx-1 col-sm-3">
       <CFormSelect
         className="pl-3 w-100"
         aria-label="Select Financial Year"
@@ -229,7 +230,7 @@ export function Quarter({ setStateQuarter }) {
         ))}
       </CFormSelect>
     </div>
-    <div className="flex-fill mx-1">
+    <div className="flex-fill mx-1 col-sm-3">
       <CFormSelect
         className="pl-3 w-100"
         aria-label="Select Quarter"
@@ -319,7 +320,7 @@ export function Week({ setStateWeek }) {
   };
 
   return (
-    <div className="App">
+    <div className="App ">
       <WeekPicker onChange={onChange} />
     </div>
   );

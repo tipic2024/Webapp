@@ -60,6 +60,14 @@ export const WeekPicker = ({ onChange }) => {
     return `${year}-${month}-${day}`;
   };
 
+  const onDisplayDate = (date) => {
+    let dt = new Date(date);
+    let year = dt.getFullYear();
+    let month = String(dt.getMonth() + 1).padStart(2, '0'); // Ensure two digits
+    let day = String(dt.getDate()).padStart(2, '0'); // Ensure two digits
+    return `${day}.${month}.${year}`;
+  };
+
   const handleClick = (e) => {
     let localDate;
     if (e.target.id.includes("prev")) {
@@ -211,37 +219,39 @@ export const WeekPicker = ({ onChange }) => {
 
   return (
     <div
-      className="week-picker-display"
-      onBlur={() => setOpen(false)}
-      onClick={() => setOpen(true)}
-      tabIndex={0}
-    >
-      <p>
-        {convertDate(week.firstDay)} - {convertDate(week.lastDay)}
-      </p>
-      {open && (
-        <div className="week-picker-options">
-          <div className="title-week">
-            <div onClick={() => handleDate(false)} className="arrow-container">
-              {ArrowLeft}
-            </div>
-            {`${months[date.getMonth()]} ${date.getFullYear()}.`}
-            <div onClick={() => handleDate(true)} className="arrow-container">
-              {ArrowRight}
-            </div>
+    className="week-picker-display"
+    onBlur={() => setOpen(false)}
+    onClick={() => setOpen(true)}
+    tabIndex={0}
+  >
+    <h6>
+      {onDisplayDate(week.firstDay)} &nbsp; to &nbsp; {onDisplayDate(week.lastDay)}
+    </h6>
+    {open && (
+      <div className="week-picker-options">
+        <div className="title-week">
+          <div onClick={() => handleDate(false)} className="arrow-container">
+            {ArrowLeft}
           </div>
-          <div className="numbers-container">
-            <div className="single-number day">Mon</div>
-            <div className="single-number day">Tue</div>
-            <div className="single-number day">Wed</div>
-            <div className="single-number day">Thu</div>
-            <div className="single-number day">Fri</div>
-            <div className="single-number day">Sat</div>
-            <div className="single-number day">Sun</div>
+          {`${months[date.getMonth()]} ${date.getFullYear()}.`}
+          <div onClick={() => handleDate(true)} className="arrow-container">
+            {ArrowRight}
           </div>
-          <div className="numbers-container">{renderDays()}</div>
         </div>
-      )}
-    </div>
+        <div className="numbers-container">
+          <div className="single-number day">Mon</div>
+          <div className="single-number day">Tue</div>
+          <div className="single-number day">Wed</div>
+          <div className="single-number day">Thu</div>
+          <div className="single-number day">Fri</div>
+          <div className="single-number day">Sat</div>
+          <div className="single-number day">Sun</div>
+        </div>
+        <div className="numbers-container">{renderDays()}</div>
+      </div>
+    )}
+  </div>
   );
 };
+
+

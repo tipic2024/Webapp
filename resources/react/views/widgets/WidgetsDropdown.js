@@ -20,7 +20,10 @@ import WidgetsBrand from './WidgetsBrand'
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
   const widgetChartRef2 = useRef(null)
-
+  
+  const date= new Date();
+  const currentMonth= date.getMonth();
+  console.log(currentMonth);
   useEffect(() => {
     document.documentElement.addEventListener('ColorSchemeChange', () => {
       if (widgetChartRef1.current) {
@@ -46,7 +49,7 @@ const WidgetsDropdown = (props) => {
         <WidgetsBrand ></WidgetsBrand>
       </CCol> */}
                             
-  <CCol sm={4} xl={4} xxl={4}>
+  <CCol sm={4} xl={4} xxl={4} className='vh-[40%]'>
     <CWidgetStatsA
       color="dark"
       value={
@@ -71,64 +74,7 @@ const WidgetsDropdown = (props) => {
           </CDropdownMenu>
         </CDropdown>
       }
-      chart={
-        <CChartBar
-          className="mt-3 mx-3"
-          style={{ height: '70px' }}
-          data={{
-            labels: [
-              'January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'November', 'December'
-            ],
-            datasets: [
-              {
-                label: 'My First dataset',
-                backgroundColor: '#4CBB17',
-                borderColor: 'rgba(255,255,255,.55)',
-                data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98],
-              },
-            ],
-          }}
-          options={{
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
-              },
-               datalabels: {
-                color: 'white',
-                display:true,
-                formatter: (value) => value,  // Display the actual data value
-              }
-            },
-            scales: {
-              x: {
-                grid: {
-                  display: false,
-                  drawTicks: false,
-                },
-                ticks: {
-                  display: false,
-                },
-              },
-              y: {
-                border: {
-                  display: false,
-                },
-                grid: {
-                  display: false,
-                  drawBorder: false,
-                  drawTicks: false,
-                },
-                ticks: {
-                  display: false,
-                },
-              },
-            },
-          }}
-        />
-      }
-    />
+     />
   </CCol>
 
   <CCol sm={4} xl={4} xxl={4}>
@@ -154,65 +100,8 @@ const WidgetsDropdown = (props) => {
           </CDropdownMenu>
         </CDropdown>
       }
-      chart={
-        <CChartBar
-          className="mt-3 mx-3"
-          style={{ height: '70px' }}
-          data={{
-            labels: [
-              'January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'November', 'December'
-            ],
-            datasets: [
-              {
-                label: 'My First dataset',
-                backgroundColor: 'rgba(0,0,255,1)',
-                borderColor: 'rgba(255,255,255,.55)',
-                data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98],
-              }
-            ]
-          }}
-          options={{
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
-              },
-              datalabels: {
-                color: 'white',
-                display: true,
-                // align: 'end',
-                // anchor: 'end',
-                formatter: (value) => value,  // Display the actual data value
-              }
-            },
-            scales: {
-              x: {
-                grid: {
-                  display: false,
-                  drawTicks: false,
-                },
-                ticks: {
-                  display: false,
-                },
-              },
-              y: {
-                border: {
-                  display: false,
-                },
-                grid: {
-                  display: false,
-                  drawBorder: false,
-                  drawTicks: false,
-                },
-                ticks: {
-                  display: false,
-                },
-              }
-            }
-          }}
-        />
-      }
+      
+        
     />
   </CCol>
 
@@ -239,65 +128,7 @@ const WidgetsDropdown = (props) => {
           </CDropdownMenu>
         </CDropdown>
       }
-      chart={
-        <CChartBar
-          className="mt-3 mx-3"
-          style={{ height: '70px' }}
-          data={{
-            labels: [
-              'January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'November', 'December'
-            ],
-            datasets: [
-              {
-                label: 'My First dataset',
-                backgroundColor: 'rgba(200,50,0,.8)',
-                borderColor: 'rgba(255,255,255,.55)',
-                data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98],
-              }
-            ]
-          }}
-          options={{
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
-              },
-              datalabels: {
-                color: 'white',
-                display: true,
-                // align: 'end',
-                // anchor: 'end',
-                formatter: (value) => value,  // Display the actual data value
-              }
-            },
-            scales: {
-              x: {
-                grid: {
-                  display: false,
-                  drawTicks: false,
-                },
-                ticks: {
-                  display: false,
-                },
-              },
-              y: {
-                border: {
-                  display: false,
-                },
-                grid: {
-                  display: false,
-                  drawBorder: false,
-                  drawTicks: false,
-                },
-                ticks: {
-                  display: false,
-                },
-              }
-            }
-          }}
-        />
-      }
+     
     />
   </CCol>
      
