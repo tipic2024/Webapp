@@ -216,7 +216,7 @@ export function Quarter({ setStateQuarter }) {
 
   return (
     <div className="d-flex">
-    <div className="flex-fill mx-1 col-sm-3">
+    <div className="flex-fill mx-1 col-sm-2">
       <CFormSelect
         className="pl-3 w-100"
         aria-label="Select Financial Year"
@@ -230,7 +230,7 @@ export function Quarter({ setStateQuarter }) {
         ))}
       </CFormSelect>
     </div>
-    <div className="flex-fill mx-1 col-sm-3">
+    <div className="flex-fill mx-1 col-sm-4">
       <CFormSelect
         className="pl-3 w-100"
         aria-label="Select Quarter"

@@ -252,7 +252,11 @@ function All_Reports() {
   <div className="d-flex mx-1">
     <Custom setStateCustom={setStateCustom} />
 
-    <div className="flex-fill mx-2 mt-3 col-sm-3">
+    <div className="flex-fill mx-2 mt-1 col-sm-3">
+      <h1></h1>
+      <br/>
+     
+    
     <Dropdown
       setSelectedOption={setSelectedOption}
       ReportOptions={ReportOptions}
@@ -260,10 +264,10 @@ function All_Reports() {
     />
     </div>
   </div>
-  
-  
- 
-  <div className="flex-fill mx-1 mt-3  ">
+
+  <div className="flex-fill px-0 mt-1  ">
+  <h1></h1>
+  <br/>
   <Button fetchReportData={fetchReportData} />
   </div>
   </div>
@@ -344,14 +348,18 @@ function All_Reports() {
  <CTabPanel className="p-3" itemKey="Quarter">
            
      <div className="d-flex mb-3 col-md-10">
-     <Quarter setStateQuarter={setStateQuarter} />
+     <Quarter  setStateQuarter={setStateQuarter} />
         <Dropdown
           setSelectedOption={setSelectedOption}
           ReportOptions={ReportOptions}
           selectedOption={selectedOption}
           fetchReportData={fetchReportData}
         />
-         <Button fetchReportData={fetchReportData}/>
+        <div className='px-2'>
+        <Button fetchReportData={fetchReportData}/>
+        </div>
+        
+         
       </div>
       <div className="mt-3">
         <All_Tables

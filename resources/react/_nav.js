@@ -1,5 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
+// import { BsBack } from "react-icons/bs";
 import {
   // cilBell,
   // cilCalculator,
@@ -13,6 +14,8 @@ import {
   cilNoteAdd,
   cilGroup,
   // cilStar,
+  cibElasticStack
+
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -22,7 +25,7 @@ const _nav = [
     component: CNavItem,
     name: 'Dashboard',
     to: '/dashboard',
-    icon: <CIcon icon={cilNoteAdd} customClassName="nav-icon" />,
+    icon: <CIcon icon={cibElasticStack} customClassName="nav-icon" />,
   },
  
   {

@@ -15,7 +15,6 @@ import { getStyle } from '@coreui/utils'
 import { CChartBar } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
-import WidgetsBrand from './WidgetsBrand'
 
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
@@ -25,7 +24,7 @@ const WidgetsDropdown = (props) => {
     currentExpense:0,
     currentPandL:0
   });
-  console.log(reportMonth);
+  
   const date= new Date();
   const currentMonth= date.getMonth();
  
@@ -104,7 +103,7 @@ CalCulateMonthlyReport();
           </div>
         </>
       }
-      title="Profit (In Thousands)"
+      title="Profit / Loss (In Thousands)"
       action={
         <CDropdown alignment="end">
           <CDropdownToggle color="transparent" caret={false} className="text-white p-0">

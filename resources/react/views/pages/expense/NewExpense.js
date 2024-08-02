@@ -106,6 +106,7 @@ const NewExpense = () => {
     }
   };
 
+  const today = new Date().toISOString().split('T')[0];
   const handleClear = async () => {
     setState({
       name: '',
@@ -168,6 +169,7 @@ const NewExpense = () => {
                       type="date"
                       id="expense_date"
                       name="expense_date"
+                      max={today}
                       value={state.expense_date}
                       onChange={handleChange}
                       required

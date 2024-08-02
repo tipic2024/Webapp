@@ -270,7 +270,7 @@ const Invoice = () => {
                        value={state.customerName}
                       onChange={handleChange}
                        required
-                      feedbackInvalid="Please provide name."
+                      feedbackInvalid="Please provide a valid name."
                       feedbackValid="Looks good!"
                     />
                   </div>
@@ -286,7 +286,7 @@ const Invoice = () => {
                       value={state.customerAddress}
                       onChange={handleChange}
                       required
-                      feedbackInvalid="Please provide address."
+                      feedbackInvalid="Please provide a valid address."
                     />
                   </div>
                 </div>
@@ -297,7 +297,7 @@ const Invoice = () => {
                     <CFormInput
                          type="text"
                          maxLength="10"
-                         minLength
+                         minLength = "10"
                          pattern="[0-9]*"
                          id="customerMobile"
                          placeholder="9123456780"
@@ -451,7 +451,7 @@ const Invoice = () => {
       
                       invalid={oitem.invalidQty == true}
                       required
-                      feedbackInvalid={`Max ${oitem.stockQty}`}
+                      feedbackInvalid={`Quantity ${oitem.stockQty}`}
                       onChange={() => handleQtyChange(event, index)}
                     />
                   </div>

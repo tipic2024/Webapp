@@ -247,7 +247,7 @@ const Dashboard = (Props) => {
               {/* <CButton color="primary" className="float-end">
                 <CIcon icon={cilCloudDownload} />
               </CButton> */}
-              <CButtonGroup className="float-end me-3">
+              {/*<CButtonGroup className="float-end me-3">
                 {['Day', 'Month', 'Year'].map((value) => (
                   <CButton
                     color="outline-secondary"
@@ -257,11 +257,11 @@ const Dashboard = (Props) => {
                   >
                     {value}
                   </CButton>
-                ))}
-              </CButtonGroup>
+                 ))}
+               </CButtonGroup> */}
             </CCol>
           </CRow>
-          <MainChart />
+          <MainChart monthlyPandL={reportMonth.monthlyPandL}/>
         </CCardBody>
       </CCard> 
     </>

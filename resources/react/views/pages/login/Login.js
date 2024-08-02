@@ -72,7 +72,7 @@ const handleLogin = async (event) => {
   setValidated(true);
   const email = userNameRef.current?.value;
   const password = userPwdRef.current?.value;
-  console.log(userPwdRef.current?.value);
+  
   try {
     const resp = await login({ email, password });
     console.log(resp);
