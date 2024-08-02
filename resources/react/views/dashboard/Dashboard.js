@@ -50,7 +50,7 @@ import {
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
-import Orders from '../pages/invoice/Orders'
+
 
 
 import { getAPICall, put } from '../../util/api'
@@ -71,6 +71,26 @@ const Dashboard = (Props) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const Tomorrow = tomorrow.toISOString().split('T')[0];
+  const [reportMonth, setReportMonth] = useState({
+    monthlySales: Array(12).fill(0), 
+    monthlyExpense: Array(12).fill(0),
+    monthlyPandL: Array(12).fill(0)
+
+  });
+
+
+  useEffect(() => {
+    const fetchMonthlySales = async () => {
+     
+        const response = await getAPICall('/api/monthlyReport');
+        
+        setReportMonth(
+          response);
+       
+    };
+
+    fetchMonthlySales();
+  }, []);
 
 
   const fetchOrders = async () => {
@@ -105,7 +125,7 @@ const Dashboard = (Props) => {
 
   return (
     <>
-      <WidgetsDropdown className="mb-4" />
+      <WidgetsDropdown className="mb-4" reportMonth={reportMonth} />
       <CCol sm={12} xl={12} xxl={12}>
       <div className='d-flex justify-content-center'> 
         <WidgetsBrand className='d-flex justify-content-center' />

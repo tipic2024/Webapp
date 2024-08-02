@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import 'chartjs-plugin-datalabels'// To modify the data on barghaph
 
@@ -20,10 +20,53 @@ import WidgetsBrand from './WidgetsBrand'
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
   const widgetChartRef2 = useRef(null)
-  
+  const [reportMonth,setReportMonth]=useState({
+    currentSales:0,
+    currentExpense:0,
+    currentPandL:0
+  });
+  console.log(reportMonth);
   const date= new Date();
   const currentMonth= date.getMonth();
-  console.log(currentMonth);
+ 
+  
+  useEffect(()=>{
+
+CalCulateMonthlyReport();
+  },[props.reportMonth]);
+  
+  function CalCulateMonthlyReport (){
+    let sales=[];
+  let expence=[];
+  let pandL=[];
+ 
+  sales=props.reportMonth.monthlySales;
+  expence=props.reportMonth.monthlyExpense;
+  pandL=props.reportMonth.monthlyPandL;
+  let length = sales.length;
+
+
+  if (currentMonth >= 0 && currentMonth < length) {
+    const currentSales = sales[currentMonth];
+    const currentExpense = expence[currentMonth];
+    const currentPandL = pandL[currentMonth];
+    setReportMonth(resp=>({
+      ...resp,
+    currentSales:currentSales,
+    currentExpense:currentExpense,
+    currentPandL: currentPandL
+    }))
+    return (currentSales,currentExpense,currentPandL)
+    
+      } else {
+    console.log("Index is out of bounds.");
+     }
+  }
+
+  
+
+
+
   useEffect(() => {
     document.documentElement.addEventListener('ColorSchemeChange', () => {
       if (widgetChartRef1.current) {
@@ -53,11 +96,12 @@ const WidgetsDropdown = (props) => {
     <CWidgetStatsA
       color="dark"
       value={
-        <>
-          44K{' '}
+        <><div d-flex>
+          <span className='fs-4'>{reportMonth.currentPandL} </span>
           <span className="fs-6 fw-normal">
             /Month
           </span>
+          </div>
         </>
       }
       title="Profit (In Thousands)"
@@ -82,7 +126,8 @@ const WidgetsDropdown = (props) => {
       color="dark"
       value={
         <>
-          20K{' '}
+         
+          <span className='fs-4'>{reportMonth.currentSales} </span>
           <span className="fs-6 fw-normal">/Month</span>
         </>
       }
@@ -110,8 +155,8 @@ const WidgetsDropdown = (props) => {
       color="dark"
       value={
         <>
-          4K{' '}
-          <span className="fs-6 fw-normal">/Month</span>
+          <span className='fs-4'>{reportMonth.currentExpense} </span>
+           <span className="fs-6 fw-normal">/Month</span>
         </>
       }
       title="Expenses (In Thousands)"
