@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   CBadge,
   CCard,
@@ -6,45 +6,85 @@ import {
   CCardHeader,
   CCol,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-} from '@coreui/react'
-import { deleteAPICall, getAPICall } from '../../../util/api'
-import ConfirmationModal from '../../common/ConfirmationModal'
-import { useNavigate } from 'react-router-dom'
+} from '@coreui/react';
+import { MantineReactTable } from 'mantine-react-table';
+import { deleteAPICall, getAPICall } from '../../../util/api';
+import ConfirmationModal from '../../common/ConfirmationModal';
+import { useNavigate } from 'react-router-dom';
 
 const AllExpenseType = () => {
-  const navigate = useNavigate()
-  const [expenseType, setExpenseType] = useState([])
-  const [deleteResource, setDeleteResource] = useState()
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
+  const navigate = useNavigate();
+  const [expenseType, setExpenseType] = useState([]);
+  const [deleteResource, setDeleteResource] = useState();
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
   const fetchExpenseType = async () => {
-    const response = await getAPICall('/api/expenseType')
-    setExpenseType(response)
-  }
+    const response = await getAPICall('/api/expenseType');
+    setExpenseType(response);
+  };
 
   useEffect(() => {
-    fetchExpenseType()
-  }, [])
+    fetchExpenseType();
+  }, []);
 
   const handleDelete = (p) => {
-    setDeleteResource(p)
-    setDeleteModalVisible(true)
-  }
+    setDeleteResource(p);
+    setDeleteModalVisible(true);
+  };
 
   const onDelete = async () => {
-    await deleteAPICall('/api/expenseType/' + deleteResource.id)
-    setDeleteModalVisible(false)
-    fetchExpenseType()
-  }
+    await deleteAPICall('/api/expenseType/' + deleteResource.id);
+    setDeleteModalVisible(false);
+    fetchExpenseType();
+  };
 
   const handleEdit = (p) => {
-    navigate('/expense/edit-type/' + p.id)
-  }
+    navigate('/expense/edit-type/' + p.id);
+  };
+
+  const columns = [
+    { accessorKey: 'id', header: 'Sr.No.' },
+    { accessorKey: 'name', header: 'Name' },
+    { accessorKey: 'localName', header: 'Local Name' },
+    { accessorKey: 'desc', header: 'Short Desc' },
+    {
+      accessorKey: 'show',
+      header: 'Status',
+      Cell: ({ cell }) => (
+        <CBadge color={cell.row.original.show === 1 ? 'success' : 'danger'}>
+          {cell.row.original.show === 1 ? 'Visible' : 'Hidden'}
+        </CBadge>
+      ),
+    },
+    {
+      accessorKey: 'actions',
+      header: 'Actions',
+      Cell: ({ cell }) => (
+        <div>
+          <CBadge
+            color="info"
+            onClick={() => handleEdit(cell.row.original)}
+            role="button"
+          >
+            Edit
+          </CBadge>{' '}
+          &nbsp;
+          <CBadge
+            color="danger"
+            onClick={() => handleDelete(cell.row.original)}
+            role="button"
+          >
+            Delete
+          </CBadge>
+        </div>
+      ),
+    },
+  ];
+
+  const data = expenseType.map((type, index) => ({
+    ...type,
+    id: index + 1,
+  }));
 
   return (
     <CRow>
@@ -55,68 +95,10 @@ const AllExpenseType = () => {
         resource={'Delete expense type - ' + deleteResource?.name}
       />
       <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>All ExpenseType</strong>
-          </CCardHeader>
-          <CCardBody>
-          <div className='table-responsive'>
-            <CTable>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Local Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Short Desc</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {expenseType.map((p, index) => {
-                  return (
-                    <CTableRow key={p.slug + p.id}>
-                      <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                      <CTableDataCell>{p.name}</CTableDataCell>
-                      <CTableDataCell>{p.localName}</CTableDataCell>
-                      <CTableDataCell>{p.desc}</CTableDataCell>
-                      <CTableDataCell>
-                        {p.show == 1 ? (
-                          <CBadge color="success">Visible</CBadge>
-                        ) : (
-                          <CBadge color="danger">Hidden</CBadge>
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge
-                          color="info"
-                          onClick={() => {
-                            handleEdit(p)
-                          }}
-                        >
-                          Edit
-                        </CBadge>{' '}
-                        &nbsp;
-                        <CBadge
-                          color="danger"
-                          onClick={() => {
-                            handleDelete(p)
-                          }}
-                        >
-                          Delete
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                  )
-                })}
-              </CTableBody>
-            </CTable>
-            </div>
-          </CCardBody>
-        </CCard>
+            <MantineReactTable columns={columns} data={data}  enableFullScreenToggle={false}/>
       </CCol>
     </CRow>
-  )
-}
+  );
+};
 
-export default AllExpenseType
+export default AllExpenseType;

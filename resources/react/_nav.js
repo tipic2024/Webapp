@@ -51,7 +51,7 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Bulk Quantity ',
+        name: 'Add Quantity ',
         to: 'products/updateqty',
       },
 
