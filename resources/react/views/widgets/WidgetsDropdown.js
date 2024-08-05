@@ -93,7 +93,7 @@ CalCulateMonthlyReport();
                             
   <CCol sm={4} xl={4} xxl={4} className='vh-[40%]'>
     <CWidgetStatsA
-      color="dark"
+      color="secondary"
       value={
         <><div d-flex>
           <span className='fs-4'>{reportMonth.currentPandL} </span>
@@ -122,7 +122,7 @@ CalCulateMonthlyReport();
 
   <CCol sm={4} xl={4} xxl={4}>
     <CWidgetStatsA
-      color="dark"
+      color="secondary"
       value={
         <>
          
@@ -151,7 +151,7 @@ CalCulateMonthlyReport();
 
     <CCol sm={4} xl={4} xxl={4}>
     <CWidgetStatsA
-      color="dark"
+      color="secondary"
       value={
         <>
           <span className='fs-4'>{reportMonth.currentExpense} </span>
