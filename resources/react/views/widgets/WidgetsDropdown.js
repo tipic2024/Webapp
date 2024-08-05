@@ -123,15 +123,15 @@ CalCulateMonthlyReport();
 
   <CCol sm={4} xl={4} xxl={4}>
     <CWidgetStatsA
-      color="secondary"
+          style={{ backgroundColor: '#669DB3FF' }} 
       value={
         <>
          
-          <span className='fs-4'>{reportMonth.currentSales} </span>
-          <span className="fs-6 fw-normal">/Month</span>
+          <span className='fs-4'style={{color: 'white'}}>{reportMonth.currentSales} </span>
+          <span className="fs-6 fw-normal" style={{color: 'white'}}>/Month</span>
         </>
       }
-      title="Sales (In Rupees)"
+       title= {<span style={{ color: 'white' }}>Sales (In Rupees)</span>}
       // action={
       //   <CDropdown alignment="end">
       //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -152,14 +152,14 @@ CalCulateMonthlyReport();
 
     <CCol sm={4} xl={4} xxl={4}>
     <CWidgetStatsA
-      color="secondary"
+      style={{ backgroundColor: '#D09683' }} 
       value={
         <>
-          <span className='fs-4'>{reportMonth.currentExpense} </span>
-           <span className="fs-6 fw-normal">/Month</span>
+          <span className='fs-4' style={{color:'white'}}>{reportMonth.currentExpense} </span>
+           <span className="fs-6 fw-normal" style={{color:'white'}}>/Month</span>
         </>
       }
-      title="Expenses (In Rupees)"
+      title= {<span style={{ color: 'white' }}>Expense (In Rupees)</span>}
       // action={
       //   <CDropdown alignment="end">
       //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
