@@ -15,6 +15,7 @@ import { getStyle } from '@coreui/utils'
 import { CChartBar } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import { color } from 'chart.js/helpers'
 
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
@@ -93,10 +94,10 @@ CalCulateMonthlyReport();
                             
   <CCol sm={4} xl={4} xxl={4} className='vh-[40%]'>
     <CWidgetStatsA
-      color="secondary"
+    color={reportMonth.currentPandL > 0 ? "success" : "danger"}
       value={
         <><div d-flex>
-          <span className='fs-4'>{reportMonth.currentPandL} </span>
+          <span className='fs-4'>{Math.abs(reportMonth.currentPandL)} </span>
           <span className="fs-6 fw-normal">
             /Month
           </span>
@@ -104,19 +105,19 @@ CalCulateMonthlyReport();
         </>
       }
       title="Profit / Loss (In Rupees)"
-      action={
-        <CDropdown alignment="end">
-          <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-            <CIcon icon={cilOptions} />
-          </CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem>Action</CDropdownItem>
-            <CDropdownItem>Another action</CDropdownItem>
-            <CDropdownItem>Something else here...</CDropdownItem>
-            <CDropdownItem disabled>Disabled action</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
-      }
+      // action={
+      //   <CDropdown alignment="end">
+      //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+      //       <CIcon icon={cilOptions} />
+      //     </CDropdownToggle>
+      //     {/* <CDropdownMenu>
+      //       <CDropdownItem>Action</CDropdownItem>
+      //       <CDropdownItem>Another action</CDropdownItem>
+      //       <CDropdownItem>Something else here...</CDropdownItem>
+      //       <CDropdownItem disabled>Disabled action</CDropdownItem>
+      //     </CDropdownMenu> */}
+      //   </CDropdown>
+      // }
      />
   </CCol>
 
@@ -131,19 +132,19 @@ CalCulateMonthlyReport();
         </>
       }
       title="Sales (In Rupees)"
-      action={
-        <CDropdown alignment="end">
-          <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-            <CIcon icon={cilOptions} />
-          </CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem>Action</CDropdownItem>
-            <CDropdownItem>Another action</CDropdownItem>
-            <CDropdownItem>Something else here...</CDropdownItem>
-            <CDropdownItem disabled>Disabled action</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
-      }
+      // action={
+      //   <CDropdown alignment="end">
+      //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+      //       <CIcon icon={cilOptions} />
+      //     </CDropdownToggle>
+      //     {/* <CDropdownMenu>
+      //       <CDropdownItem>Action</CDropdownItem>
+      //       <CDropdownItem>Another action</CDropdownItem>
+      //       <CDropdownItem>Something else here...</CDropdownItem>
+      //       <CDropdownItem disabled>Disabled action</CDropdownItem>
+      //     </CDropdownMenu> */}
+      //   </CDropdown>
+      // }
       
         
     />
@@ -159,19 +160,19 @@ CalCulateMonthlyReport();
         </>
       }
       title="Expenses (In Rupees)"
-      action={
-        <CDropdown alignment="end">
-          <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-            <CIcon icon={cilOptions} />
-          </CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem>Action</CDropdownItem>
-            <CDropdownItem>Another action</CDropdownItem>
-            <CDropdownItem>Something else here...</CDropdownItem>
-            <CDropdownItem disabled>Disabled action</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
-      }
+      // action={
+      //   <CDropdown alignment="end">
+      //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+      //       <CIcon icon={cilOptions} />
+      //     </CDropdownToggle>
+      //     {/* <CDropdownMenu>
+      //       <CDropdownItem>Action</CDropdownItem>
+      //       <CDropdownItem>Another action</CDropdownItem>
+      //       <CDropdownItem>Something else here...</CDropdownItem>
+      //       <CDropdownItem disabled>Disabled action</CDropdownItem>
+      //     </CDropdownMenu> */}
+      //   </CDropdown>
+      // }
      
     />
   </CCol>
