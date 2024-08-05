@@ -103,7 +103,7 @@ CalCulateMonthlyReport();
           </div>
         </>
       }
-      title="Profit / Loss (In Thousands)"
+      title="Profit / Loss (In Rupees)"
       action={
         <CDropdown alignment="end">
           <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -130,7 +130,7 @@ CalCulateMonthlyReport();
           <span className="fs-6 fw-normal">/Month</span>
         </>
       }
-      title="Sales (In Thousands)"
+      title="Sales (In Rupees)"
       action={
         <CDropdown alignment="end">
           <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -158,7 +158,7 @@ CalCulateMonthlyReport();
            <span className="fs-6 fw-normal">/Month</span>
         </>
       }
-      title="Expenses (In Thousands)"
+      title="Expenses (In Rupees)"
       action={
         <CDropdown alignment="end">
           <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
