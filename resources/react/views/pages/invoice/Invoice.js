@@ -56,13 +56,14 @@ const Invoice = () => {
   const fetchProduct = async () => {
     const response = await getAPICall('/api/products')
     setAllProducts(response)
-    const options = ['Select Product']
+    console.log(response);
+    const options = ['Pick Product']
     options.push(
       ...response
         .filter((p) => p.show == 1)
         .map((p) => {
           return {
-            label: p.name,
+            label:`${ p.name} (${ p.localName})`,
             value: p.id,
             disabled: p.show !== 1,
           }
@@ -263,7 +264,7 @@ const Invoice = () => {
                     <CFormLabel htmlFor="pname">Customer Name</CFormLabel>
                     <CFormInput
                       type="text"
-                       pattern="^[a-zA-Z ]+$"               
+                      pattern="^[a-zA-Z ]+$"            
                       id="pname"
                       placeholder="Customer Name"
                        name="customerName"
@@ -295,7 +296,7 @@ const Invoice = () => {
                   <div className="mb-3">
                     <CFormLabel htmlFor="customerMobile">Mobile Number</CFormLabel>
                     <CFormInput
-                         type="text"
+                         type="number"
                          maxLength="10"
                          minLength = "10"
                          pattern="[0-9]*"
