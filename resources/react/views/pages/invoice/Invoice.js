@@ -166,7 +166,11 @@ const Invoice = () => {
     const { value } = e.target
     setState((prev) => {
       const old = { ...prev }
-      old.items[index].qty = value
+      if(value <= 0){
+        old.items[index].qty = 0;
+      }else{
+        old.items[index].qty = value;
+      }
       old.items[index].total_price = old.items[index].oPrice * old.items[index].qty
       old.totalAmount = calculateTotal(old.items)
       calculateFinalAmount(old)
@@ -215,7 +219,18 @@ const Invoice = () => {
       setErrorMessage('Failed to create order. ' + error.message)
     }
   }
+
   
+    const [inputValue, setInputValue] = useState('');
+  
+    const handleInputChange = (event) => {
+      const value = event.target.value;
+      const filteredValue = value.replace(/[0-9]/g, ''); // Remove numbers
+      setInputValue(filteredValue);
+    }
+  
+
+
   const today = new Date().toISOString().split('T')[0];
   const handleClear = async () => {
     setState({
@@ -267,8 +282,8 @@ const Invoice = () => {
                       id="pname"
                       placeholder="Customer Name"
                        name="customerName"
-                       value={state.customerName}
-                      onChange={handleChange}
+                       value={inputValue}
+                       onChange={handleInputChange}               
                        required
                       feedbackInvalid="Please provide a valid name."
                       feedbackValid="Looks good!"
@@ -448,7 +463,7 @@ const Invoice = () => {
                   <div className="col-2">
                     <CFormInput
                       type="number"
-      
+                      min="1"
                       invalid={oitem.invalidQty == true}
                       required
                       feedbackInvalid={`Quantity ${oitem.stockQty}`}
