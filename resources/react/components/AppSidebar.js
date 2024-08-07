@@ -21,6 +21,8 @@ const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  
+
 
   return (
     
@@ -36,7 +38,8 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
-          <img src={logo} height={50} width={120} />
+      
+          {unfoldable?(<img src={logo} height={50} width={50} />):(<img src={logo} height={50} width={120} />)}
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"

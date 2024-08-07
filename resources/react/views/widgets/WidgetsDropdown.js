@@ -16,8 +16,11 @@ import { CChartBar } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import { color } from 'chart.js/helpers'
+import { getUserType } from '../../util/session'
 
 const WidgetsDropdown = (props) => {
+
+  const user= getUserType();
   const widgetChartRef1 = useRef(null)
   const widgetChartRef2 = useRef(null)
   const [reportMonth,setReportMonth]=useState({
@@ -86,100 +89,106 @@ CalCulateMonthlyReport();
   }, [widgetChartRef1, widgetChartRef2])
 
   return (
-    <CRow className={props.className} xs={{ gutter: 4 }}>
+    <>
+      {user === 0 ? (
+        <CRow className={props.className} xs={{ gutter: 4 }}>
        
-       {/* <CCol sm={6} xl={6} xxl={6}>
-        <WidgetsBrand ></WidgetsBrand>
-      </CCol> */}
-                            
-  <CCol sm={4} xl={4} xxl={4} className='vh-[40%]'>
-    <CWidgetStatsA
-    color={reportMonth.currentPandL > 0 ? "success" : "danger"}
-      value={
-        <><div d-flex>
-          <span className='fs-4'>{Math.abs(reportMonth.currentPandL)} </span>
-          <span className="fs-6 fw-normal">
-            /Month
-          </span>
-          </div>
-        </>
-      }
-      title="Profit / Loss (In Rupees)"
-      // action={
-      //   <CDropdown alignment="end">
-      //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-      //       <CIcon icon={cilOptions} />
-      //     </CDropdownToggle>
-      //     {/* <CDropdownMenu>
-      //       <CDropdownItem>Action</CDropdownItem>
-      //       <CDropdownItem>Another action</CDropdownItem>
-      //       <CDropdownItem>Something else here...</CDropdownItem>
-      //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-      //     </CDropdownMenu> */}
-      //   </CDropdown>
-      // }
-     />
-  </CCol>
-
-  <CCol sm={4} xl={4} xxl={4}>
-    <CWidgetStatsA
-          style={{ backgroundColor: '#669DB3FF' }} 
-      value={
-        <>
+        {/* <CCol sm={6} xl={6} xxl={6}>
+         <WidgetsBrand ></WidgetsBrand>
+       </CCol> */}
+                             
+   <CCol sm={4} xl={4} xxl={4} className='vh-[40%]'>
+     <CWidgetStatsA
+     color={reportMonth.currentPandL > 0 ? "success" : "danger"}
+       value={
+         <><div d-flex>
+           <span className='fs-4'>{Math.abs(reportMonth.currentPandL)} </span>
+           <span className="fs-6 fw-normal">
+             /Month
+           </span>
+           </div>
+         </>
+       }
+       title="Profit / Loss (In Rupees)"
+       // action={
+       //   <CDropdown alignment="end">
+       //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+       //       <CIcon icon={cilOptions} />
+       //     </CDropdownToggle>
+       //     {/* <CDropdownMenu>
+       //       <CDropdownItem>Action</CDropdownItem>
+       //       <CDropdownItem>Another action</CDropdownItem>
+       //       <CDropdownItem>Something else here...</CDropdownItem>
+       //       <CDropdownItem disabled>Disabled action</CDropdownItem>
+       //     </CDropdownMenu> */}
+       //   </CDropdown>
+       // }
+      />
+   </CCol>
+ 
+   <CCol sm={4} xl={4} xxl={4}>
+     <CWidgetStatsA
+           style={{ backgroundColor: '#669DB3FF' }} 
+       value={
+         <>
+          
+           <span className='fs-4'style={{color: 'white'}}>{reportMonth.currentSales} </span>
+           <span className="fs-6 fw-normal" style={{color: 'white'}}>/Month</span>
+         </>
+       }
+        title= {<span style={{ color: 'white' }}>Sales (In Rupees)</span>}
+       // action={
+       //   <CDropdown alignment="end">
+       //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+       //       <CIcon icon={cilOptions} />
+       //     </CDropdownToggle>
+       //     {/* <CDropdownMenu>
+       //       <CDropdownItem>Action</CDropdownItem>
+       //       <CDropdownItem>Another action</CDropdownItem>
+       //       <CDropdownItem>Something else here...</CDropdownItem>
+       //       <CDropdownItem disabled>Disabled action</CDropdownItem>
+       //     </CDropdownMenu> */}
+       //   </CDropdown>
+       // }
+       
          
-          <span className='fs-4'style={{color: 'white'}}>{reportMonth.currentSales} </span>
-          <span className="fs-6 fw-normal" style={{color: 'white'}}>/Month</span>
-        </>
-      }
-       title= {<span style={{ color: 'white' }}>Sales (In Rupees)</span>}
-      // action={
-      //   <CDropdown alignment="end">
-      //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-      //       <CIcon icon={cilOptions} />
-      //     </CDropdownToggle>
-      //     {/* <CDropdownMenu>
-      //       <CDropdownItem>Action</CDropdownItem>
-      //       <CDropdownItem>Another action</CDropdownItem>
-      //       <CDropdownItem>Something else here...</CDropdownItem>
-      //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-      //     </CDropdownMenu> */}
-      //   </CDropdown>
-      // }
+     />
+   </CCol>
+ 
+     <CCol sm={4} xl={4} xxl={4}>
+     <CWidgetStatsA
+       style={{ backgroundColor: '#D09683' }} 
+       value={
+         <>
+           <span className='fs-4' style={{color:'white'}}>{reportMonth.currentExpense} </span>
+            <span className="fs-6 fw-normal" style={{color:'white'}}>/Month</span>
+         </>
+       }
+       title= {<span style={{ color: 'white' }}>Expense (In Rupees)</span>}
+       // action={
+       //   <CDropdown alignment="end">
+       //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
+       //       <CIcon icon={cilOptions} />
+       //     </CDropdownToggle>
+       //     {/* <CDropdownMenu>
+       //       <CDropdownItem>Action</CDropdownItem>
+       //       <CDropdownItem>Another action</CDropdownItem>
+       //       <CDropdownItem>Something else here...</CDropdownItem>
+       //       <CDropdownItem disabled>Disabled action</CDropdownItem>
+       //     </CDropdownMenu> */}
+       //   </CDropdown>
+       // }
       
-        
-    />
-  </CCol>
-
-    <CCol sm={4} xl={4} xxl={4}>
-    <CWidgetStatsA
-      style={{ backgroundColor: '#D09683' }} 
-      value={
-        <>
-          <span className='fs-4' style={{color:'white'}}>{reportMonth.currentExpense} </span>
-           <span className="fs-6 fw-normal" style={{color:'white'}}>/Month</span>
-        </>
-      }
-      title= {<span style={{ color: 'white' }}>Expense (In Rupees)</span>}
-      // action={
-      //   <CDropdown alignment="end">
-      //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-      //       <CIcon icon={cilOptions} />
-      //     </CDropdownToggle>
-      //     {/* <CDropdownMenu>
-      //       <CDropdownItem>Action</CDropdownItem>
-      //       <CDropdownItem>Another action</CDropdownItem>
-      //       <CDropdownItem>Something else here...</CDropdownItem>
-      //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-      //     </CDropdownMenu> */}
-      //   </CDropdown>
-      // }
-     
-    />
-  </CCol>
-     
-        
-    </CRow>
-  )
+     />
+   </CCol>
+      
+         
+     </CRow>
+      ) : (
+        <div></div>
+      )}
+    </>
+  );
 }
 
 WidgetsDropdown.propTypes = {
