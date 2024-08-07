@@ -1,53 +1,101 @@
-import React, { useEffect, useState } from 'react'
-import {
-  CBadge,
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-} from '@coreui/react'
-import { deleteAPICall, getAPICall, post } from '../../../util/api'
-import ConfirmationModal from '../../common/ConfirmationModal'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { CBadge, CCard, CCardBody, CCardHeader, CCol, CRow, CButton } from '@coreui/react';
+import { MantineReactTable } from 'mantine-react-table';
+import { deleteAPICall, getAPICall } from '../../../util/api';
+import ConfirmationModal from '../../common/ConfirmationModal';
+import { useNavigate } from 'react-router-dom';
 
 const AllProducts = () => {
-  const navigate = useNavigate()
-  const [products, setProducts] = useState([])
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [deleteProduct, setDeleteProduct] = useState();
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  const [deleteProduct, setDeleteProduct] = useState()
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
   const fetchProducts = async () => {
-    const response = await getAPICall('/api/product')
-    setProducts(response)
-     console.log(response)
-  }
+    const response = await getAPICall('/api/product');
+    setProducts(response);
+    console.log(response);
+  };
 
   useEffect(() => {
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
   const handleDelete = (p) => {
-    setDeleteProduct(p)
-    setDeleteModalVisible(true)
-  }
+    setDeleteProduct(p);
+    setDeleteModalVisible(true);
+  };
 
   const onDelete = async () => {
-    await deleteAPICall('/api/product/' + deleteProduct.id)
-    setDeleteModalVisible(false)
-    fetchProducts()
-  }
-  console.log(products);
+    await deleteAPICall('/api/product/' + deleteProduct.id);
+    setDeleteModalVisible(false);
+    fetchProducts();
+  };
+
   const handleEdit = (p) => {
-    navigate('/products/edit/' + p.id)
-  }
+    navigate('/products/edit/' + p.id);
+  };
+
+
+  const columns = [
+    { accessorKey: 'id', header: 'Id' },
+    { accessorKey: 'name', header: 'Name' },
+    { accessorKey: 'localName', header: 'Local Name' },
+    {
+      accessorKey: 'basePrice',
+      header: 'Base Price',
+      Cell: ({ cell }) => cell.row.original.sizes?.[0]?.bPrice || '',
+    },
+    {
+      accessorKey: 'sellingPrice',
+      header: 'Selling Price',
+      Cell: ({ cell }) => cell.row.original.sizes?.[0]?.oPrice || '',
+    },
+    {
+      accessorKey: 'quantity',
+      header: 'Quantity',
+      Cell: ({ cell }) => cell.row.original.sizes?.[0]?.qty || '',
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      Cell: ({ cell }) => (
+        cell.row.original.show == 1 ? (
+          <CBadge color="success">Visible</CBadge>
+        ) : (
+          <CBadge color="danger">Hidden</CBadge>
+        )
+      ),
+    },
+    {
+      accessorKey: 'actions',
+      header: 'Actions',
+      Cell: ({ cell }) => (
+        <div>
+          <CBadge
+            role="button"
+            color="info"
+            onClick={() => handleEdit(cell.row.original)}
+          >
+            Edit
+          </CBadge>
+          &nbsp;
+          <CBadge
+            role="button"
+            color="danger"
+            onClick={() => handleDelete(cell.row.original)}
+          >
+            Delete
+          </CBadge>
+        </div>
+      ),
+    },
+  ];
+
+  const data = products.map((p, index) => ({
+    ...p,
+    id: index + 1,
+  }));
 
   return (
     <CRow>
@@ -57,82 +105,13 @@ const AllProducts = () => {
         onYes={onDelete}
         resource={'Delete product - ' + deleteProduct?.name}
       />
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>All Products</strong>
-          </CCardHeader>
-          <CCardBody>
-          <div className='table-responsive'>
-            <CTable>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell scope="col">Id</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Local Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Selling Price</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Quantity</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {products.map((p, index) => {
-                  return (
-                    <CTableRow key={p.slug + p.id}>
-                      <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                      <CTableDataCell>{p.name}</CTableDataCell>
-                      <CTableDataCell>{p.localName}</CTableDataCell>
-                      <CTableDataCell>{p.sizes?.[0]?.bPrice || ''}</CTableDataCell>
-                      <CTableDataCell>{p.sizes?.[0]?.oPrice || ''}</CTableDataCell>
-                      <CTableDataCell>{p.sizes?.[0]?.qty || ''}</CTableDataCell>
-                      <CTableDataCell>
-                        {p.show == 1 ? (
-                          <CBadge color="success">Visible</CBadge>
-                        ) : (
-                          <CBadge color="danger">Hidden</CBadge>
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge role="button"
-                          color="info"
-                          onClick={() => {
-                            handleEdit(p)
-                          }}
-                        >
-                          Edit
-                        </CBadge>{' '}
-                        &nbsp;
-                        <CBadge role="button"
-                          color="danger"
-                          onClick={() => {
-                            handleDelete(p)
-                          }}
-                        >
-                          Delete
-                        </CBadge>
-                        &nbsp;
-                        <CBadge role="button"
-                          color="danger"
-                          onClick={() => {
-                            handleAdd(p)
-                          }}
-                        >
-                          Add
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                  )
-                })}
-              </CTableBody>
-            </CTable>
-            </div>
-          </CCardBody>
-        </CCard>
-      </CCol>
+      
+          
+            <MantineReactTable columns={columns} data={data} enableFullScreenToggle={false}/>
+        
+      
     </CRow>
-  )
-}
+  );
+};
 
-export default AllProducts
+export default AllProducts;

@@ -39,13 +39,13 @@ function All_Tables({ selectedOption, salesData, expenseData, pnlData, expenseTy
   return (
     <div>
       {selectedOption === '1' && (
-        <MantineReactTable columns={salesColumns} data={salesData.data} />
+        <MantineReactTable columns={salesColumns} data={salesData.data} enableFullScreenToggle={false}/>
       )}
       {selectedOption === '2' && (
-        <MantineReactTable columns={expenseColumns} data={expenseData.data} />
+        <MantineReactTable columns={expenseColumns} data={expenseData.data} enableFullScreenToggle={false}/>
       )}
       {selectedOption === '3' && (
-        <MantineReactTable columns={pnlColumns} data={pnlData.Data} />
+        <MantineReactTable columns={pnlColumns} data={pnlData.Data} enableFullScreenToggle={false} />
       )}
     </div>
   );
