@@ -45,7 +45,7 @@ const WidgetsBrand = (props) => {
       <CCol sm={12} xl={12} xxl={12}>
         <CWidgetStatsD
           color="warning"
-          icon={<div className="d-flex align-items-center"><CIcon icon={cilCalendar} height={40} className="pr-4 text-white align-items-center " /><span className="text-white display-6 mr-2">Schedule Delivery</span></div>}
+          icon={<div className="d-flex align-items-center"><CIcon icon={cilCalendar} height={40} className="pr-4 text-white align-items-center " /><span className="text-white display-6 mr-2">&nbsp;Schedule Delivery</span></div>}
           values={[
             { title: 'Today', value: todaysDeliveries }, // Display today's deliveries count here
             { title: 'Tomorrow', value: tomorrowsDeliveries }, // Display tomorrow's deliveries count

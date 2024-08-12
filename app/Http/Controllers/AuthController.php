@@ -60,8 +60,9 @@ class AuthController extends Controller
                 'blocked'=> true
             ], 201);
         }
-    
-        $token = $user->createToken('webapp')->plainTextToken;
+        
+
+        $token = $user->createToken('webapp',[$user])->plainTextToken;
         $response = [
             'user' => $user,
             'token' => $token

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -15,12 +15,18 @@ import { AppSidebarNav } from './AppSidebarNav'
 import logo from './../assets/brand/tipic.webp'
 
 // sidebar nav config
-import navigation from '../_nav'
+import fetchNavItems from '../_nav'
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const [navigation, setNavigation] = useState([])
+
+  useEffect(()=>{
+    const navItems = fetchNavItems();
+    setNavigation(navItems);
+  },[])
   
 
 

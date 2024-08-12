@@ -110,6 +110,40 @@ class OrderController extends Controller
         return $order;
     }
 
+    public function updateAmount(Request $request)
+{
+    // Validate request inputs
+    $request->validate([
+        'id' => 'required|integer',
+        'newAmount' => 'required|numeric||min:0',
+       
+    ]);
+
+    
+    $orderData = Order::find($request->id);
+    $remainingAmount= $orderData['finalAmount']- $orderData['paidAmount'];
+    $checkAmount= $remainingAmount- $request['newAmount'];
+    echo($remainingAmount);
+    
+    if ($checkAmount >= 0 ){
+      
+        if ($request->filled('newAmount')) {
+            $orderData->paidAmount = $orderData->paidAmount + $request->newAmount;
+
+        }
+        
+        $orderData->save();
+       
+        $orderData = Order::find($request->id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Amount Updated Successfully.',
+            'updated order' => $orderData,
+        ]);
+    }
+  }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -159,6 +193,27 @@ class OrderController extends Controller
         });
         
         return response()->json($result);
+    }
+
+    public function getCredit(Request $request)
+    {
+        
+    
+        $query = Order::whereNotIn('orderStatus', [0])
+        ->whereRaw('finalAmount - paidAmount != 0')
+        ->get();
+
+                       
+        
+        // if ($startDate && $endDate) {
+        //     $query->whereBetween('deliveryDate', [$startDate, $endDate]);
+        // }
+        
+        // $result = $query->get()->filter(function ($order) {
+        //     return $order->orderStatus == 2; // Filter out any order with orderStatus other than 1
+        // });
+        
+        return response()->json($query);
     }
 
    

@@ -10,6 +10,7 @@ use App\Http\Controllers\SubSubCategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Middleware\Authorization;
 
 
 
@@ -29,6 +30,8 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::get('/appUsers',[AuthController::class, 'allUsers']);
     Route::resource('product',ProductController::class);
     Route::resource('order',OrderController::class);
+    Route::get('/credit',[OrderController::class,'getCredit']);
+    Route::post('/updateAmount',[OrderController::class,'updateAmount']);
     Route::get('/reportSales', [OrderController::class, 'Sales']);
     Route::get('/totalDeliveries', [OrderController::class, 'TotalDeliverie']);
     Route::resource('expenseType',ExpenseTypeController::class);
@@ -40,8 +43,22 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::resource('subCategory',SubCategoryController::class);
     Route::resource('subSubCategory',SubSubCategoryController::class);
     Route::post('/product/updateQty', [ProductController::class, 'updateQty']);
-    Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
+   
+    
 });
+
+Route::middleware(['auth:sanctum','role:admin'])->group(function () {
+    Route::get('/admin/dashboard', 'AdminController@dashboard');
+    Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
+
+});
+
+Route::middleware(['auth:sanctum','role:user'])->group(function () {
+    Route::get('/admin/dashboard', 'AdminController@dashboard');
+    Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
+
+});
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();

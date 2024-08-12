@@ -5,6 +5,7 @@
  */
 export function storeUserData(userData) {
   sessionStorage.setItem('userData', JSON.stringify(userData))
+  console.log(userData);
 }
 
 /**
@@ -17,6 +18,9 @@ export function deleteUserData() {
 export function isLogIn() {
   return !!sessionStorage.getItem('userData')
 }
+
+
+
 
 export function getToken() {
   const userData = JSON.parse(sessionStorage.getItem('userData'))
