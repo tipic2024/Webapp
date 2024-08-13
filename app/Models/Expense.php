@@ -16,7 +16,9 @@ class Expense extends Model
         'price',
         'total_price',
         'expense_date',
-        'show'
+        'show',
+        'company_id',
+        'created_by'
     ];
 
     // /**
