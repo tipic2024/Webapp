@@ -13,6 +13,8 @@ const AllUser = React.lazy(() => import('./views/pages/register/AllUser'))
 const Invoice = React.lazy(() => import('./views/pages/invoice/Invoice'))
 const Orders = React.lazy(() => import('./views/pages/invoice/Orders'))
 const InvoiceDetails = React.lazy(() => import('./views/pages/invoice/InvoiceDetails'))
+const InvoiceCustomization = React.lazy(() => import('./views/pages/invoice/InvoiceCustomization'))
+
 
 //Products
 const NewProduct = React.lazy(() => import('./views/pages/products/NewProduct'))
@@ -55,6 +57,8 @@ if(user===0){
     { path: '/dashboard', name: 'Dashboard', element: Dashboard },
     { path: '/invoice', name: 'Invoice', element: Invoice },
     { path: '/invoice-details/:id', name: 'InvoiceDetails', element: InvoiceDetails },
+    { path: '/invoiceCustomization', name: 'InvoiceCustomization', element: InvoiceCustomization },
+
     { path: '/bookings', name: 'Advance Bookings', element: Orders },
     { path: '/regular', name: 'Regular Orders', element: Orders },
     { path: '/order', name: 'All Orders', element: Orders },

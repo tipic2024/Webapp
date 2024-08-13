@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Models\ProductMedia;
 use App\Models\ProductSize;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use App\Helpers\Util;
 
 class ProductController extends Controller

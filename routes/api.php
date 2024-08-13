@@ -49,3 +49,12 @@ Route::get('/user', function (Request $request) {
 
 
 
+// routes/api.php
+use App\Http\Controllers\InvoiceCustomizationController;
+
+Route::post('/invoiceCustomization', [InvoiceCustomizationController::class, 'store']);
+;
+
+
+
+

@@ -33,6 +33,13 @@ if(user===0){
 
     {
       component: CNavItem,
+      name: 'Invoice Customize',
+      to: '/invoiceCustomization',
+      icon: <CIcon icon={cibElasticStack} customClassName="nav-icon" />,
+    },
+
+    {
+      component: CNavItem,
       name: 'Dashboard',
       to: '/dashboard',
       icon: <CIcon icon={cibElasticStack} customClassName="nav-icon" />,
