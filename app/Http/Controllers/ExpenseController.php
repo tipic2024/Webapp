@@ -1,26 +1,41 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Auth::user();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    {    $user=Auth::user();
+     
+        $userId = $user->id;
+        $ComapanyId = $user->company_id;
         $startDate = $request->query('startDate');
         $endDate = $request->query('endDate');
-        if ($startDate?? false && $endDate?? false) {
-            $query = Expense::whereBetween('expense_date', [$startDate, $endDate]);
-            return $query->get();
+
+        $query = Expense::where('company_id', $ComapanyId);
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('expense_date', [$startDate, $endDate])
+                  ->where('created_by', $userId) ;
         }
-        return Expense::all(); 
+        //  echo($query);
+       
+        return $query->get();
     }
 
     /**
@@ -31,22 +46,33 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+
         $request->validate([
-            'name'=> 'required|string',
-            'expense_date'=> 'required',
-            'price'=> 'required|integer|min:0',
-            'qty'=> 'required|integer|min:0',
-            'total_price'=> 'required|integer|:min:0',
-            'show'=> 'required'
+            'name' => 'required|string',
+            'expense_date' => 'required|date',
+            'price' => 'required|integer|min:0',
+            'qty' => 'required|integer|min:0',
+            'total_price' => 'required|integer|min:0',
+            'show' => 'required|boolean',
         ]);
 
+        $expStore = Expense::create([
+            'name' => $request->name,
+            'expense_date' => $request->expense_date,
+            'price' => $request->price,
+            'qty' => $request->qty,
+            'total_price' => $request->total_price,
+            'show' => $request->show,
+            'company_id' => $user->company_id, // Set company_id based on the authenticated user
+            'user_id' => $user->id, // Optionally store user ID if needed
+        ]);
 
-        $expStore= Expense::create($request->all());
-        
         return response()->json([
             'success' => true,
-            'message' => 'Expence  created successfully.',
-            'product' => $expStore,
+            'message' => 'Expense created successfully.',
+            'expense' => $expStore,
         ]);
     }
 
@@ -58,7 +84,15 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        return Expense::find($id); 
+        $company_id = $this->user->company_id;
+
+        $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
+
+        if (!$expense) {
+            return response()->json(['message' => 'Expense not found'], 404);
+        }
+
+        return $expense;
     }
 
     /**
@@ -70,18 +104,30 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $company_id = $this->user->company_id;
+
         $request->validate([
-            'name'=> 'required',
-            'expense_date'=> 'required',
-            'price'=> 'required',
-            'qty'=> 'required',
-            'total_price'=> 'required',
-            'show'=> 'required'
+            'name' => 'required|string',
+            'expense_date' => 'required|date',
+            'price' => 'required|integer|min:0',
+            'qty' => 'required|integer|min:0',
+            'total_price' => 'required|integer|min:0',
+            'show' => 'required|boolean',
         ]);
 
-        $Expense = Expense::find($id);
-        $Expense->update($request->all());
-        return $Expense;
+        $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
+
+        if (!$expense) {
+            return response()->json(['message' => 'Expense not found'], 404);
+        }
+
+        $expense->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Expense updated successfully.',
+            'expense' => $expense,
+        ]);
     }
 
     /**
@@ -92,6 +138,19 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
-        return Expense::destroy($id);
+        $company_id = $this->user->company_id;
+
+        $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
+
+        if (!$expense) {
+            return response()->json(['message' => 'Expense not found'], 404);
+        }
+
+        $expense->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Expense deleted successfully.',
+        ]);
     }
 }
