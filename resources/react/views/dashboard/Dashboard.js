@@ -56,8 +56,10 @@ import MainChart from './MainChart'
 import { getAPICall, put } from '../../util/api'
 import ConfirmationModal from '../common/ConfirmationModal'
 import { useNavigate } from 'react-router-dom'
+import { getUserType } from '../../util/session'
 
 const Dashboard = (Props) => {
+  const user=getUserType();
 
   const navigate = useNavigate()
   const [orders, setOrders] = useState([])
@@ -77,6 +79,7 @@ const Dashboard = (Props) => {
     monthlyPandL: Array(12).fill(0)
 
   });
+
 
 
   useEffect(() => {
@@ -150,7 +153,7 @@ const Dashboard = (Props) => {
             <CTable >
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">ID</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Mobile</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Balance</CTableHeaderCell>
@@ -160,48 +163,52 @@ const Dashboard = (Props) => {
                   <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
-              <CTableBody>
-                {orders.map((order, index) => {
-                  return (
+              {
+                orders===null?(<h1>No pending Orders</h1>):(<CTableBody>
+                  {orders.map((order, index) => {
+                    return (
+                      
+                      <CTableRow key={order.id}>
+                        <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                        <CTableDataCell>{order.customerName}</CTableDataCell>
+                        <CTableDataCell>{order.customerMobile}</CTableDataCell>
+                        <CTableDataCell>{order.finalAmount - order.paidAmount}</CTableDataCell>
+                        <CTableDataCell>{order.paidAmount}</CTableDataCell>
+                        <CTableDataCell>{order.finalAmount}</CTableDataCell>
+                        <CTableDataCell>{order.deliveryDate}</CTableDataCell>
                     
-                    <CTableRow key={order.id}>
-                      <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                      <CTableDataCell>{order.customerName}</CTableDataCell>
-                      <CTableDataCell>{order.customerMobile}</CTableDataCell>
-                      <CTableDataCell>{order.finalAmount - order.paidAmount}</CTableDataCell>
-                      <CTableDataCell>{order.paidAmount}</CTableDataCell>
-                      <CTableDataCell>{order.finalAmount}</CTableDataCell>
-                      <CTableDataCell>{order.deliveryDate}</CTableDataCell>
-                  
-                      <CTableDataCell>
-                        <CBadge
-                          color="success"
-                          onClick={() => {
-                            handleShow(order)
-                          }}
-                          role="button"
-                        >
-                          Show
-                        </CBadge>{' '}
-                        {order.orderStatus == 2 && (
+                        <CTableDataCell>
                           <CBadge
-                            color="info"
+                            color="success"
                             onClick={() => {
-                              handleEdit(order)
+                              handleShow(order)
                             }}
                             role="button"
                           >
-                            Mark Delivered
-                          </CBadge>
-                        )}{' '}
-                      </CTableDataCell>
-                    </CTableRow>
-                  )
-                })}
-              </CTableBody>
+                            Show
+                          </CBadge>{' '}
+                          {order.orderStatus == 2 && (
+                            <CBadge
+                              color="info"
+                              onClick={() => {
+                                handleEdit(order)
+                              }}
+                              role="button"
+                            >
+                              Mark Delivered
+                            </CBadge>
+                          )}{' '}
+                        </CTableDataCell>
+                      </CTableRow>
+                    )
+                  })}
+                </CTableBody>)
+
+              }
+              
             </CTable>
             </div>
-            <CPagination aria-label="Page navigation example">
+            {/* <CPagination aria-label="Page navigation example">
               <CPaginationItem
                 onClick={() =>
                   setCurrentPage((pre) => {
@@ -227,13 +234,13 @@ const Dashboard = (Props) => {
               >
                 Next
               </CPaginationItem>
-            </CPagination>
+            </CPagination> */}
           </CCardBody>
         </CCard>
       </CCol>
     </CRow>
 
-
+    {user===0?(
       <CCard className="mt-4 mb-4">
         <CCardBody>
           <CRow>
@@ -263,7 +270,7 @@ const Dashboard = (Props) => {
           </CRow>
           <MainChart monthlyPandL={reportMonth.monthlyPandL}/>
         </CCardBody>
-      </CCard> 
+      </CCard> ):(<div></div>)}
     </>
   )
 

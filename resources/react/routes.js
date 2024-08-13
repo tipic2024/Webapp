@@ -12,6 +12,7 @@ const AllUser = React.lazy(() => import('./views/pages/register/AllUser'))
 //Invoice
 const Invoice = React.lazy(() => import('./views/pages/invoice/Invoice'))
 const Orders = React.lazy(() => import('./views/pages/invoice/Orders'))
+const Credit = React.lazy(() => import('./views/pages/invoice/Credit'))
 const InvoiceDetails = React.lazy(() => import('./views/pages/invoice/InvoiceDetails'))
 const InvoiceCustomization = React.lazy(() => import('./views/pages/invoice/InvoiceCustomization'))
 
@@ -47,12 +48,51 @@ const Charts = React.lazy(() => import('./views/charts/Charts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
-const user=getUserType();
-let routes=[];
+export default function fetchRoutes(){
+  const user=getUserType();
+  let routes=[];
 
-if(user===0){
+  if(user===0){
 
-   routes = [
+    routes = [
+      { path: '/', exact: true, name: 'Home' },
+      { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+      { path: '/invoice', name: 'Invoice', element: Invoice },
+      { path: '/invoice-details/:id', name: 'InvoiceDetails', element: InvoiceDetails },
+      { path: '/bookings', name: 'Advance Bookings', element: Orders },
+      { path: '/regular', name: 'Regular Orders', element: Orders },
+      { path: '/order', name: 'All Orders', element: Orders },
+      { path: '/credit', name: 'Update Credit', element: Credit },
+
+      { path: '/products/new', name: 'New Product', element: NewProduct },
+      { path: '/category/new', name: 'New Category', element: NewCategory },
+      { path: '/products/all', name: 'All Products', element: AllProducts },
+      { path: '/category/all', name: 'All Category', element: AllCategory },
+      { path: '/products/edit/:id', name: 'Edit Products', element: EditProduct },
+      { path: '/category/edit/:id', name: 'Edit Category', element: EditCategory },
+      { path: '/expense/new-type', name: 'New Type', element: NewExpenseType },
+      { path: '/expense/edit-type/:id', name: 'Edit Type', element: EditExpenseType },
+      { path: '/expense/all-type', name: 'All Types', element: AllExpenseType },
+      { path: '/expense/new', name: 'New Expense', element: NewExpense },
+
+      { path: '/Reports/Expense_Report', name: 'Expense Report', element: ExpenseReport },
+      { path: 'Reports/Sales_Report', name: 'Sales Report', element: SalesReport },
+      { path: 'Reports/pnl_Report', name: 'Profit and Loss Report', element: PnLReport },
+      { path: '/Reports/Reports', name: 'Reports', element: All_Reports },
+      { path: 'products/updateqty', name: 'Update Bulk Quantity', element: BulkQuantity },
+      { path:'/updatepassword', name: 'Update Password', element: Updatepassword },
+      { path:'/usermanagement/create-user', name: 'Create User', element: NewUsers },
+      { path:'usermanagement/all-users', name: 'All Users', element: AllUser },
+      
+      
+      
+    ]
+    
+    
+  }
+  else if(user===1){
+
+    routes = [
     { path: '/', exact: true, name: 'Home' },
     { path: '/dashboard', name: 'Dashboard', element: Dashboard },
     { path: '/invoice', name: 'Invoice', element: Invoice },
@@ -64,7 +104,7 @@ if(user===0){
     { path: '/order', name: 'All Orders', element: Orders },
     { path: '/products/new', name: 'New Product', element: NewProduct },
     { path: '/category/new', name: 'New Category', element: NewCategory },
-    { path: '/products/all', name: 'All Products', element: AllProducts },
+    //  { path: '/products/all', name: 'All Products', element: AllProducts },
     { path: '/category/all', name: 'All Products', element: AllCategory },
     { path: '/products/edit/:id', name: 'Edit Products', element: EditProduct },
     { path: '/category/edit/:id', name: 'Edit Products', element: EditCategory },
@@ -72,52 +112,18 @@ if(user===0){
     { path: '/expense/edit-type/:id', name: 'Edit Type', element: EditExpenseType },
     { path: '/expense/all-type', name: 'All Types', element: AllExpenseType },
     { path: '/expense/new', name: 'New Expense', element: NewExpense },
-
-    { path: '/Reports/Expense_Report', name: 'Expense Report', element: ExpenseReport },
-    { path: 'Reports/Sales_Report', name: 'Sales Report', element: SalesReport },
-    { path: 'Reports/pnl_Report', name: 'Profit and Loss Report', element: PnLReport },
-    { path: '/Reports/Reports', name: 'Reports', element: All_Reports },
+    
     { path: 'products/updateqty', name: 'Update Bulk Quantity', element: BulkQuantity },
     { path:'/updatepassword', name: 'Update Password', element: Updatepassword },
-    { path:'/usermanagement/create-user', name: 'Create User', element: NewUsers },
-    { path:'usermanagement/all-users', name: 'All Users', element: AllUser },
+
     
     
     
   ]
   
   
+  }
+  return routes;
 }
-else if(user===1){
-
-  routes = [
-   { path: '/', exact: true, name: 'Home' },
-   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-   { path: '/invoice', name: 'Invoice', element: Invoice },
-   { path: '/invoice-details/:id', name: 'InvoiceDetails', element: InvoiceDetails },
-   { path: '/bookings', name: 'Advance Bookings', element: Orders },
-   { path: '/regular', name: 'Regular Orders', element: Orders },
-   { path: '/order', name: 'All Orders', element: Orders },
-   { path: '/products/new', name: 'New Product', element: NewProduct },
-   { path: '/category/new', name: 'New Category', element: NewCategory },
-  //  { path: '/products/all', name: 'All Products', element: AllProducts },
-   { path: '/category/all', name: 'All Products', element: AllCategory },
-   { path: '/products/edit/:id', name: 'Edit Products', element: EditProduct },
-   { path: '/category/edit/:id', name: 'Edit Products', element: EditCategory },
-   { path: '/expense/new-type', name: 'New Type', element: NewExpenseType },
-   { path: '/expense/edit-type/:id', name: 'Edit Type', element: EditExpenseType },
-   { path: '/expense/all-type', name: 'All Types', element: AllExpenseType },
-   { path: '/expense/new', name: 'New Expense', element: NewExpense },
-  
-   { path: 'products/updateqty', name: 'Update Bulk Quantity', element: BulkQuantity },
-   { path:'/updatepassword', name: 'Update Password', element: Updatepassword },
-
-   
-   
-   
- ]
- 
- 
-}
-export default routes
+//export default routes
 

@@ -21,12 +21,14 @@ import { getUserType } from '../../util/session'
 const WidgetsDropdown = (props) => {
 
   const user= getUserType();
+  console.log(user);
   const widgetChartRef1 = useRef(null)
   const widgetChartRef2 = useRef(null)
   const [reportMonth,setReportMonth]=useState({
     currentSales:0,
     currentExpense:0,
-    currentPandL:0
+    currentPandL:0,
+    currentMonth:''
   });
   
   const date= new Date();
@@ -53,11 +55,14 @@ CalCulateMonthlyReport();
     const currentSales = sales[currentMonth];
     const currentExpense = expence[currentMonth];
     const currentPandL = pandL[currentMonth];
+    const months= ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const monthName=months[currentMonth];
     setReportMonth(resp=>({
       ...resp,
     currentSales:currentSales,
     currentExpense:currentExpense,
-    currentPandL: currentPandL
+    currentPandL: currentPandL,
+    currentMonth: monthName
     }))
     return (currentSales,currentExpense,currentPandL)
     
@@ -93,91 +98,50 @@ CalCulateMonthlyReport();
       {user === 0 ? (
         <CRow className={props.className} xs={{ gutter: 4 }}>
        
-        {/* <CCol sm={6} xl={6} xxl={6}>
-         <WidgetsBrand ></WidgetsBrand>
-       </CCol> */}
+
                              
    <CCol sm={4} xl={4} xxl={4} className='vh-[40%]'>
-     <CWidgetStatsA
+     <CWidgetStatsA   className='pb-3'
      color={reportMonth.currentPandL > 0 ? "success" : "danger"}
        value={
          <><div d-flex>
-           <span className='fs-4'>{Math.abs(reportMonth.currentPandL)} </span>
+           <span className='fs-4'>{Math.abs(reportMonth.currentPandL)}&nbsp;₹ </span>
            <span className="fs-6 fw-normal">
-             /Month
+             in {reportMonth.currentMonth}
            </span>
            </div>
          </>
        }
-       title="Profit / Loss (In Rupees)"
-       // action={
-       //   <CDropdown alignment="end">
-       //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-       //       <CIcon icon={cilOptions} />
-       //     </CDropdownToggle>
-       //     {/* <CDropdownMenu>
-       //       <CDropdownItem>Action</CDropdownItem>
-       //       <CDropdownItem>Another action</CDropdownItem>
-       //       <CDropdownItem>Something else here...</CDropdownItem>
-       //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-       //     </CDropdownMenu> */}
-       //   </CDropdown>
-       // }
+       title="Profit / Loss "
+      
       />
    </CCol>
  
    <CCol sm={4} xl={4} xxl={4}>
-     <CWidgetStatsA
+     <CWidgetStatsA className='pb-3'
            style={{ backgroundColor: '#669DB3FF' }} 
        value={
          <>
           
-           <span className='fs-4'style={{color: 'white'}}>{reportMonth.currentSales} </span>
-           <span className="fs-6 fw-normal" style={{color: 'white'}}>/Month</span>
+           <span className='fs-4'style={{color: 'white'}}>{reportMonth.currentSales}&nbsp;₹ </span>
+           <span className="fs-6 fw-normal" style={{color: 'white'}}>in {reportMonth.currentMonth}</span>
          </>
        }
-        title= {<span style={{ color: 'white' }}>Sales (In Rupees)</span>}
-       // action={
-       //   <CDropdown alignment="end">
-       //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-       //       <CIcon icon={cilOptions} />
-       //     </CDropdownToggle>
-       //     {/* <CDropdownMenu>
-       //       <CDropdownItem>Action</CDropdownItem>
-       //       <CDropdownItem>Another action</CDropdownItem>
-       //       <CDropdownItem>Something else here...</CDropdownItem>
-       //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-       //     </CDropdownMenu> */}
-       //   </CDropdown>
-       // }
-       
-         
-     />
+        title= {<span style={{ color: 'white' }}>Sales </span>}
+      />
    </CCol>
  
      <CCol sm={4} xl={4} xxl={4}>
-     <CWidgetStatsA
+     <CWidgetStatsA  className='pb-3'
        style={{ backgroundColor: '#D09683' }} 
        value={
          <>
-           <span className='fs-4' style={{color:'white'}}>{reportMonth.currentExpense} </span>
-            <span className="fs-6 fw-normal" style={{color:'white'}}>/Month</span>
+           <span className='fs-4' style={{color:'white'}}>{reportMonth.currentExpense}&nbsp;₹ </span>
+            <span className="fs-6 fw-normal" style={{color:'white'}}>in {reportMonth.currentMonth}</span>
          </>
        }
-       title= {<span style={{ color: 'white' }}>Expense (In Rupees)</span>}
-       // action={
-       //   <CDropdown alignment="end">
-       //     <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-       //       <CIcon icon={cilOptions} />
-       //     </CDropdownToggle>
-       //     {/* <CDropdownMenu>
-       //       <CDropdownItem>Action</CDropdownItem>
-       //       <CDropdownItem>Another action</CDropdownItem>
-       //       <CDropdownItem>Something else here...</CDropdownItem>
-       //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-       //     </CDropdownMenu> */}
-       //   </CDropdown>
-       // }
+       title= {<span style={{ color: 'white' }}>Expenses</span>}
+      
       
      />
    </CCol>

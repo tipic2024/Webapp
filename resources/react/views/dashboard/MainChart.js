@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import { CChartBar } from '@coreui/react-chartjs'
 import { getStyle } from '@coreui/utils'
+import { getUserType } from '../../util/session'
 
 const MainChart = (props) => {
+
+  
   const chartRef = useRef(null)
 
   const getBarColor = (value) => {
@@ -40,7 +43,7 @@ const MainChart = (props) => {
 
   return (
     <>
-      <CChartBar
+     <CChartBar
         ref={chartRef}
         style={{ height: '300px', marginTop: '40px' }}
         data={{
