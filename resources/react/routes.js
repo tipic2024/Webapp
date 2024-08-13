@@ -58,6 +58,8 @@ export default function fetchRoutes(){
       { path: '/', exact: true, name: 'Home' },
       { path: '/dashboard', name: 'Dashboard', element: Dashboard },
       { path: '/invoice', name: 'Invoice', element: Invoice },
+      { path: '/invoiceCustomization', name: 'Invoice Customization', element: InvoiceCustomization },
+
       { path: '/invoice-details/:id', name: 'InvoiceDetails', element: InvoiceDetails },
       { path: '/bookings', name: 'Advance Bookings', element: Orders },
       { path: '/regular', name: 'Regular Orders', element: Orders },
