@@ -206,7 +206,7 @@ const Invoice = () => {
 
       if (!isInvalid && form.checkValidity() === true) {
         const res = await post('/api/order', { ...state, orderStatus: state.invoiceType })
-        console.log('Response', res)
+        console.log('Response', state)
         if (res) {
           navigate('/invoice-details/' + res.id)
         }
@@ -227,7 +227,7 @@ const Invoice = () => {
     const handleInputChange = (event) => {
       const value = event.target.value;
       const filteredValue = value.replace(/[0-9]/g, ''); // Remove numbers
-      setInputValue(filteredValue);
+      setState((prevState) => ({...prevState,customerName: filteredValue,}));
     }
   
 
@@ -278,17 +278,17 @@ const Invoice = () => {
                   <div className="mb-3">
                     <CFormLabel htmlFor="pname">Customer Name</CFormLabel>
                     <CFormInput
-                      type="text"
-                      pattern="^[a-zA-Z ]+$"            
-                      id="pname"
-                      placeholder="Customer Name"
-                       name="customerName"
-                       value={inputValue}
-                       onChange={handleInputChange}               
-                       required
-                      feedbackInvalid="Please provide a valid name."
-                      feedbackValid="Looks good!"
-                    />
+                          type="text"
+                          pattern="^[a-zA-Z ]+$"
+                          id="pname"
+                          placeholder="Customer Name"
+                          name="customerName"
+                          value={state.customerName}
+                          onChange={handleInputChange}
+                          required
+                          feedbackInvalid="Please provide a valid name."
+                          feedbackValid="Looks good!"
+                        />
                   </div>
                 </div>
                 <div className="col-sm-4">
@@ -316,7 +316,7 @@ const Invoice = () => {
                          minLength = "10"
                          pattern="[0-9]*"
                          id="customerMobile"
-                         placeholder="9123456780"
+                         placeholder="XXXXXX"
                          name="customerMobile"
                          value={state.customerMobile}
                          onChange={handleChange}

@@ -15,7 +15,45 @@ export async function register(data) {
  * @param {string} url - The URL to post to.
  * @param {object} data - The data to post.
  * @returns {Promise<object>} A promise that resolves to the response data.
+ * 
+ * 
  */
+export async function postFormData(url = '', data ) {
+  try {
+    const token = getToken()
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        // 'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: data,
+    })
+
+    if (!response.ok) {
+      if (response.status === 401 && !url.includes('/login')) {
+        // handle unauthorized
+        deleteUserData()
+        window.location.replace('/')
+      }
+      if (response.status === 422) {
+        const error = await response.json()
+        if (error.message) {
+          throw new Error(error.message)
+        }
+      }
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return response.json()
+  } catch (error) {
+    console.error('Error posting data:', error)
+    throw error
+  }
+}
+
+
 async function postOrPutData(url = '', data = {}, method = 'POST') {
   try {
     const token = getToken()

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   CCard,
   CCardBody,
@@ -10,10 +10,13 @@ import {
   CRow,
   CButton
 } from '@coreui/react';
-import { post } from '../../../util/api';
+import { post, postFormData } from '../../../util/api';
 
 function InvoiceCustomization() {
   const [formData, setFormData] = useState({
+
+    companyName: '',
+    companyId: '',
     land_mark: '',
     Tal: '',
     Dist: '',
@@ -22,43 +25,61 @@ function InvoiceCustomization() {
     bank_name: '',
     account_no: '',
     IFSC: '',
-    logo: 'fghgjgj',
-    sign: 'dgfgf'
+    logo: '',
+    sign: ''
   });
+  
+  const logoInputRef = useRef(null);
+  const signInputRef = useRef(null);
 
   console.log(formData);
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
     if (files && files.length > 0) {
-      setFormData({ ...formData, [name]: files[0] });
+      setFormData({ ...formData, [name]: files[0] }); // Ensure the file is stored as a file object
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData();
-  
-    // Append all fields to FormData
-    for (const key in formData) {
-      if (formData[key] !== null && formData[key] !== '') {
-        data.append(key, formData[key]);
-      }
-    }
-  
-    // Print FormData content for debugging
-    // for (let pair of data.entries()) {
-    //   console.log(`${pair[0]}: ${pair[1]}`);
-    // }
-  
+   
     try {
-      const response = await post('/api/invoiceCustomization', formData)
-    
-      console.log( data);
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+      };
+      const logoData = new FormData();
+
+      logoData.append("file", formData.logo);
+      logoData.append("dest", "invoice");
+      const responseLogo = await postFormData('/api/fileUpload', logoData);
+      const logoPath = responseLogo.fileName;
+       
+      const signData = new FormData();
+      signData.append("file", formData.sign);
+      signData.append("dest", "invoice");
+      const responseSign = await postFormData('/api/fileUpload', signData);
+      const signPath = responseSign.fileName;
+
+      const finalData = {...formData,
+        logo: logoPath,
+        sign: signPath
+      };
+
+      if(finalData.logo != null && finalData.sign != null){
+        const responce= await post('/api/invoiceCustomization', finalData);
+        console.log('Data successfully submitted:',responce)
+      }
+     
+       
+      console.log( responseLogo,responseSign);
       setFormData({
         
+        companyName: '',
+        companyId: '',
         land_mark: '',
         Tal: '',
         Dist: '',
@@ -70,6 +91,13 @@ function InvoiceCustomization() {
         logo: '',
         sign: ''
       });
+
+      if (logoInputRef.current) {
+        logoInputRef.current.value = '';
+      }
+      if (signInputRef.current) {
+        signInputRef.current.value = '';
+      }
     } catch (error) {
       console.error('Error posting data:', error.response ? error.response.data : error.message);
     }
@@ -83,8 +111,36 @@ function InvoiceCustomization() {
             <strong>Customize Invoice</strong>
           </CCardHeader>
           <CCardBody>
-            <CForm onSubmit={handleSubmit}>
+            <CForm onSubmit={handleSubmit} encType='multipart/form-data'>
               <div className='row'>
+               <div className='col-sm-4'>
+                  <div className='mb-3'>
+                    <CFormLabel htmlFor="land_mark">Company Name</CFormLabel>
+                    <CFormInput
+                      type='text'
+                      name='companyName'
+                      id='companyName'
+                      maxLength="32"
+                      value={formData.companyName}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+                <div className='col-sm-4'>
+                  <div className='mb-3'>
+                    <CFormLabel htmlFor="companyId">Company Id</CFormLabel>
+                    <CFormInput
+                      type='text'
+                      name='companyId'
+                      id='companyId'
+                      maxLength="32"
+                      value={formData.companyId}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
                 <div className='col-sm-4'>
                   <div className='mb-3'>
                     <CFormLabel htmlFor="land_mark">Address/Land Mark</CFormLabel>
@@ -98,7 +154,9 @@ function InvoiceCustomization() {
                     />
                   </div>
                 </div>
+              </div>
 
+              <div className='row'>
                 <div className='col-sm-4'>
                   <div className='mb-3'>
                     <CFormLabel htmlFor="Tal">Tal</CFormLabel>
@@ -106,7 +164,7 @@ function InvoiceCustomization() {
                       type='text'
                       name='Tal'
                       id='Tal'
-                      maxLength='10'
+                      maxLength='32'
                       value={formData.Tal}
                       onChange={handleChange}
                     />
@@ -120,20 +178,19 @@ function InvoiceCustomization() {
                       type='text'
                       name='Dist'
                       id='Dist'
-                      maxLength='10'
+                      maxLength='32'
                       value={formData.Dist}
                       onChange={handleChange}
                     />
                   </div>
                 </div>
-              </div>
+             
 
-              <div className='row'>
                 <div className='col-sm-4'>
                   <div className='mb-3'>
                     <CFormLabel htmlFor="Pincode">Pin code</CFormLabel>
                     <CFormInput
-                      type='number'
+                      type='text'
                       name='Pincode'
                       id='Pincode'
                       value={formData.Pincode}
@@ -141,7 +198,9 @@ function InvoiceCustomization() {
                     />
                   </div>
                 </div>
+               </div>
 
+              <div className='row'>
                 <div className='col-sm-4'>
                   <div className='mb-3'>
                     <CFormLabel htmlFor="phone_no">Phone No</CFormLabel>
@@ -181,7 +240,9 @@ function InvoiceCustomization() {
                     />
                   </div>
                 </div>
+               </div>
 
+              <div className='row'>
                 <div className='col-sm-4'>
                   <div className='mb-3'>
                     <CFormLabel htmlFor="IFSC">IFSC</CFormLabel>
@@ -195,19 +256,20 @@ function InvoiceCustomization() {
                   </div>
                 </div>
 
-                {/* <div className='col-sm-4'>
+                <div className='col-sm-4'>
                   <div className='mb-3'>
                     <CFormLabel htmlFor="logo">Logo (PNG, max 2MB)</CFormLabel>
                     <CFormInput
                       type='file'
                       name='logo'
                       id='logo'
-                      accept='image/png'
+                      accept='image/png/jpeg'
                       onChange={handleChange}
+                      ref={logoInputRef}
                     />
                   </div>
-                </div> */}
-{/* 
+                </div> 
+
                 <div className='col-sm-4'>
                   <div className='mb-3'>
                     <CFormLabel htmlFor="sign">Sign (PNG, max 2MB)</CFormLabel>
@@ -215,11 +277,12 @@ function InvoiceCustomization() {
                       type='file'
                       name='sign'
                       id='sign'
-                      accept='image/png'
+                      accept='image/png/jpeg'
                       onChange={handleChange}
+                      ref={signInputRef}
                     />
                   </div>
-                </div> */}
+                </div>
               </div>
 
               <CButton type="submit" color="primary">Submit</CButton>

@@ -16,7 +16,7 @@ class FileUpload extends Controller
         ]);
 
         //check file
-        if ($request->hasFile('file'))
+        if ($request->hasFile('file'))  
         {
             $file      = $request->file('file');
             $filename  = $file->getClientOriginalName();

@@ -10,8 +10,10 @@ use App\Http\Controllers\SubSubCategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\FileUpload;
 use App\Http\Middleware\Authorization;
 
+use App\Http\Controllers\InvoiceCustomizationController;
 
 
 
@@ -43,19 +45,23 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::resource('subCategory',SubCategoryController::class);
     Route::resource('subSubCategory',SubSubCategoryController::class);
     Route::post('/product/updateQty', [ProductController::class, 'updateQty']);
-   
+    Route::post('/fileUpload', [FileUpload::class, 'fileUpload']);
+    Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
+   Route::post('/invoiceCustomization', [InvoiceCustomizationController::class, 'store']);
+
     
 });
 
 Route::middleware(['auth:sanctum','role:admin'])->group(function () {
-    Route::get('/admin/dashboard', 'AdminController@dashboard');
     Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
+
+    
 
 });
 
 Route::middleware(['auth:sanctum','role:user'])->group(function () {
-    Route::get('/admin/dashboard', 'AdminController@dashboard');
-    Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
+    
+Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
 
 });
 
@@ -67,9 +73,7 @@ Route::get('/user', function (Request $request) {
 
 
 // routes/api.php
-use App\Http\Controllers\InvoiceCustomizationController;
 
-Route::post('/invoiceCustomization', [InvoiceCustomizationController::class, 'store']);
 ;
 
 
