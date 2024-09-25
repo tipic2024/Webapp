@@ -10,6 +10,7 @@ class CompanyInfo extends Model
     use HasFactory;
     protected $table = 'company_info';
     protected $fillable=[
+    'company_name',
     'comapany_id',
     'land_mark' ,
     'Tal'  ,

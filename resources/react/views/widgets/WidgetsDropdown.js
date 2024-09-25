@@ -96,10 +96,7 @@ CalCulateMonthlyReport();
   return (
     <>
       {user === 0 ? (
-        <CRow className={props.className} xs={{ gutter: 4 }}>
-       
-
-                             
+        <CRow className={props.className} xs={{ gutter: 4 }}>                             
    <CCol sm={4} xl={4} xxl={4} className='vh-[40%]'>
      <CWidgetStatsA   className='pb-3'
      color={reportMonth.currentPandL > 0 ? "success" : "danger"}

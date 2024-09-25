@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
 use App\Http\Middleware\Authorization;
+use App\Http\Middleware\CheckIfBlocked;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
     {
         
         $router->aliasMiddleware('role', Authorization::class);
-
+        $router->aliasMiddleware('blocked', CheckIfBlocked::class);
     }
 }

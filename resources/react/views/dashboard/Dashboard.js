@@ -270,7 +270,9 @@ const Dashboard = (Props) => {
           </CRow>
           <MainChart monthlyPandL={reportMonth.monthlyPandL}/>
         </CCardBody>
-      </CCard> ):(<div></div>)}
+      </CCard> 
+      ):(<div></div>)
+      }
     </>
   )
 

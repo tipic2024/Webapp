@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
-    protected $user;
+    // protected $user;
 
-    public function __construct()
-    {
-        $this->user = Auth::user();
-    }
+    // public function __construct()
+    // {
+    //     $this->user = Auth::user();
+    // }
 
     /**
      * Display a listing of the resource.
@@ -20,22 +20,27 @@ class ExpenseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {    $user=Auth::user();
+     {  //  $user=Auth::user();
      
-        $userId = $user->id;
-        $ComapanyId = $user->company_id;
+        // $userId = $user->id;
+        // $ComapanyId = $user->company_id;
+        // $user=Auth::user();
         $startDate = $request->query('startDate');
         $endDate = $request->query('endDate');
 
-        $query = Expense::where('company_id', $ComapanyId);
-
+        // $query = Expense::where('company_id', $ComapanyId);
+        // $query = Expense::where('created_by', $userId);
+        
         if ($startDate && $endDate) {
-            $query->whereBetween('expense_date', [$startDate, $endDate])
-                  ->where('created_by', $userId) ;
+            // $query->whereBetween('expense_date', [$startDate, $endDate])
+            $query=Expense::whereBetween('expense_date', [$startDate, $endDate]);
+
+            return $query->get();
+                //   ->where('created_by', $userId) ;
         }
         //  echo($query);
        
-        return $query->get();
+        
     }
 
     /**
@@ -46,7 +51,7 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
+        // $user = Auth::user();
 
 
         $request->validate([
@@ -65,8 +70,8 @@ class ExpenseController extends Controller
             'qty' => $request->qty,
             'total_price' => $request->total_price,
             'show' => $request->show,
-            'company_id' => $user->company_id, // Set company_id based on the authenticated user
-            'user_id' => $user->id, // Optionally store user ID if needed
+            // 'company_id' => $user->company_id, // Set company_id based on the authenticated user
+            // 'user_id' => $user->id, // Optionally store user ID if needed
         ]);
 
         return response()->json([
@@ -84,9 +89,11 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        $company_id = $this->user->company_id;
+        // $company_id = $this->user->company_id;
 
-        $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
+        $expense = Expense::where('id', $id)->first();
+        // $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
+
 
         if (!$expense) {
             return response()->json(['message' => 'Expense not found'], 404);
@@ -104,7 +111,7 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $company_id = $this->user->company_id;
+        // $company_id = $this->user->company_id;
 
         $request->validate([
             'name' => 'required|string',
@@ -115,8 +122,9 @@ class ExpenseController extends Controller
             'show' => 'required|boolean',
         ]);
 
-        $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
-
+        // $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
+        $expense = Expense::where('id', $id)->first();
+        
         if (!$expense) {
             return response()->json(['message' => 'Expense not found'], 404);
         }
@@ -138,9 +146,11 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
-        $company_id = $this->user->company_id;
+        // $company_id = $this->user->company_id;
 
-        $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
+        $expense = Expense::where('id', $id)->first();
+        // $expense = Expense::where('id', $id)->where('company_id', $company_id)->first();
+
 
         if (!$expense) {
             return response()->json(['message' => 'Expense not found'], 404);

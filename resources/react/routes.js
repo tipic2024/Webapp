@@ -7,6 +7,12 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const NewUsers = React.lazy(() => import('./views/pages/register/NewUsers'))
 const AllUser = React.lazy(() => import('./views/pages/register/AllUser'))
 
+//Contact Us
+const ContactUs = React.lazy(() => import('./views/pages/contactUs/ContactUs'))
+
+//Enquiry
+const Enquiry = React.lazy(() => import('./views/pages/enquiry/Enquiry'))
+
 
 
 //Invoice
@@ -86,7 +92,9 @@ export default function fetchRoutes(){
       { path:'/usermanagement/create-user', name: 'Create User', element: NewUsers },
       { path:'usermanagement/all-users', name: 'All Users', element: AllUser },
       
-      
+
+      { path:'/contactUs', name: 'Contact Us', element: ContactUs },
+      { path:'/enquiry', name: 'Enquiry ', element: Enquiry },
       
     ]
     

@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\ProductController; 
-use App\Http\Controllers\CategoryController; 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\SubCategoryController; 
 use App\Http\Controllers\SubSubCategoryController;
 use App\Http\Controllers\OrderController;
@@ -14,14 +16,20 @@ use App\Http\Controllers\FileUpload;
 use App\Http\Middleware\Authorization;
 
 use App\Http\Controllers\InvoiceCustomizationController;
-
-
-
+use App\Http\Controllers\MultiformsController;
 
 //public API's
 Route::post('/register',[AuthController::class, 'register']);
 Route::post('/login',[AuthController::class, 'login']);
 Route::post('/mobileLogin',[AuthController::class, 'mobileLogin']);
+
+//ContactUs
+// Route::get('/contactUs', [ContactUsController::class, 'index']);
+
+Route::get('/enquiry', [EnquiryController::class, 'index']);
+
+
+
 //Secured API's
 Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::get('/products',[ProductController::class, 'products']);
@@ -49,7 +57,15 @@ Route::group(['middleware'=>['auth:sanctum']], function(){
     Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
    Route::post('/invoiceCustomization', [InvoiceCustomizationController::class, 'store']);
 
-    
+   Route::middleware(['auth', 'blocked'])->group(function () {
+    Route::get('/contactUs', [MultiformsController::class, 'contactUs']);
+    Route::get('/enquiry', [MultiformsController::class, 'enquiry']);
+    Route::get('/buy', [MultiformsController::class, 'buy']);
+    Route::get('/sells', [MultiformsController::class, 'sells']);
+    Route::get('/other', [MultiformsController::class, 'other']);
+
+});
+
 });
 
 Route::middleware(['auth:sanctum','role:admin'])->group(function () {
@@ -60,7 +76,6 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum','role:user'])->group(function () {
-    
 Route::get('/monthlyReport', [OrderController::class, 'getMonthlyReport']);
 
 });
@@ -71,6 +86,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+Route::get('/invoiceCustomization', [InvoiceCustomizationController::class, 'showInfo']);
 
 // routes/api.php
 

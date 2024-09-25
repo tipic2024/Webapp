@@ -268,9 +268,9 @@ class OrderController extends Controller
         if (isset($monthlyExpense[$month])) {
             $expense = $monthlyExpense[$month];
             $PLdata[$month - 1] = $sales['total_sales'] - $expense['total_expense'];
-        } else {
-            $PLdata[$month - 1] = $sales['total_sales'];
-        }
+         } //else {
+        //     $PLdata[$month - 1] = $sales['total_sales'];
+        // }
     }
 
     return response()->json([

@@ -20,8 +20,6 @@ export function isLogIn() {
 }
 
 
-
-
 export function getToken() {
   const userData = JSON.parse(sessionStorage.getItem('userData'))
   return userData ? userData.token : null
